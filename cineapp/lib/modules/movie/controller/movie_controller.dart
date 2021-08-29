@@ -28,6 +28,7 @@ class MovieController {
           movieResponseModel = movie;
         } else {
           movieResponseModel!.page = movie.page;
+          //Simulando Scroll Infinito
           movieResponseModel!.movies!.addAll(movie.movies as List<MovieModel>);
         }
       },

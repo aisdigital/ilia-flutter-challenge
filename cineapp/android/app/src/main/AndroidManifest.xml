@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.johnnydev.cineapp">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="cineapp"
+        android:label="Cine App"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

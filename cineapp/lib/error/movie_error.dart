@@ -1,8 +1,8 @@
 abstract class MovieError implements Exception {
-  String? message;
+  late String message;
 
   @override
   String toString() {
-    return message ?? '';
+    return message;
   }
 }

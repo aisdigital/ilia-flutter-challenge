@@ -31,6 +31,7 @@ dependencies:
   dio: ^4.0.0
   intl: ^0.17.0
   dartz: ^0.10.0
+  carousel_slider: ^4.0.0
 
 dev_dependencies:
   flutter_test:
