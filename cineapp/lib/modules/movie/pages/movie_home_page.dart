@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cineapp/core/definitions/constraints.dart';
 import 'package:cineapp/error/widget/error_widget.dart';
 import 'package:cineapp/modules/movie/controller/movie_controller.dart';
+import 'package:cineapp/modules/movie/pages/movie_detail.dart';
 import 'package:cineapp/modules/movie/pages/widgets/card_movie.dart';
 import 'package:cineapp/modules/movie/pages/widgets/card_movie_top.dart';
 import 'package:flutter/material.dart';
@@ -64,19 +65,22 @@ class _MovieHomePageState extends State<MovieHomePage> {
           shrinkWrap: true,
           physics: ScrollPhysics(),
           children: [
-            _buildCarrossel(),
-            _buildMovieGrid(),
+            _carrousselWidget(),
+            _gridWidget(),
           ],
         ),
       ),
     );
   }
 
-  _buildCarrossel() {
+  _carrousselWidget() {
     if (_controller.loading) {
       return Container(
-          height: MediaQuery.of(context).size.height / 3,
-          child: Center(child: CircularProgressIndicator()));
+        height: MediaQuery.of(context).size.height / 3,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
     }
 
     if (_controller.movieError != null) {
@@ -89,7 +93,10 @@ class _MovieHomePageState extends State<MovieHomePage> {
         itemBuilder: (BuildContext context, int index, i) {
           final movie = _controller.movies[index];
 
-          return CardMovieTop(movie: movie);
+          return CardMovieTop(
+            movie: movie,
+            onTap: () => _datailPage(movie.id),
+          );
         },
         options: CarouselOptions(
           enableInfiniteScroll: true,
@@ -105,7 +112,7 @@ class _MovieHomePageState extends State<MovieHomePage> {
     );
   }
 
-  _buildMovieGrid() {
+  _gridWidget() {
     if (_controller.loading) {
       return Container(
         height: MediaQuery.of(context).size.height / 4,
@@ -131,25 +138,24 @@ class _MovieHomePageState extends State<MovieHomePage> {
         crossAxisSpacing: Constraints.spacerSmall,
         childAspectRatio: 0.65,
       ),
-      itemBuilder: _buildMovieCard,
+      itemBuilder: _movieCardWidget,
     );
   }
 
-  Widget _buildMovieCard(context, index) {
+  Widget _movieCardWidget(context, index) {
     final movie = _controller.movies[index];
     return CardMovie(
       imagePath: movie.posterPath,
-      onTap: () => _openDetailPage(movie.id),
+      onTap: () => _datailPage(movie.id),
     );
   }
 
-  _openDetailPage(movieId) {
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => MovieDetailPage(movieId),
-    //     ),
-    //   );
-    // }
+  _datailPage(movieId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MovieDetailPage(movieId),
+      ),
+    );
   }
 }
