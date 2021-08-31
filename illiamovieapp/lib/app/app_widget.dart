@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:illiamovieapp/app/app_controller.dart';
+import 'package:illiamovieapp/app/app_module.dart';
+import 'package:illiamovieapp/app/core/style/movie_app_theme.dart';
 
 import 'core/presentation/widgets/connectivity_banner.dart';
 import 'core/utils/screen/design_ui.dart';
@@ -21,10 +23,8 @@ class _AppWidgetState extends ModularState<AppWidget, AppController> {
       builder: (context, constraints, orientation) {
         return MaterialApp(
           title: 'Íllia Movie App',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          initialRoute: '/',
+          theme: MovieAppTheme.theme,
+          initialRoute: AppModule.initialRoute,
           builder: (context, child) {
             return Observer(
               builder: (_) {
