@@ -131,38 +131,48 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             ],
           ),
           const SizedBox(height: Constraints.spacerSmall),
-          Wrap(
-            alignment: WrapAlignment.start,
-            children: _controller.movieDetail!.genres!
-                .map(
-                  (MovieGenre genre) => Text(
-                    '${genre.name}, ',
-                    textAlign: TextAlign.justify,
-                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                          color: Colors.white60,
-                        ),
-                  ),
-                )
-                .toList()
-                .cast<Widget>(),
+          Row(
+            children: [
+              Wrap(
+                alignment: WrapAlignment.start,
+                crossAxisAlignment: WrapCrossAlignment.start,
+                children: _controller.movieDetail!.genres!
+                    .map(
+                      (MovieGenre genre) => Text(
+                        '${genre.name}, ',
+                        textAlign: TextAlign.justify,
+                        style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                              color: Colors.white60,
+                            ),
+                      ),
+                    )
+                    .toList()
+                    .cast<Widget>(),
+              ),
+            ],
           ),
           const SizedBox(height: Constraints.spacerSmall),
-          Wrap(
-            alignment: WrapAlignment.start,
-            children: _controller.movieDetail!.spokenLanguages!
-                .map(
-                  (SpokenLanguageModel spokenLanguages) => Text(
-                    '${spokenLanguages.name} ',
-                    textAlign: TextAlign.justify,
-                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                          color: Colors.white60,
-                        ),
-                  ),
-                )
-                .toList()
-                .cast<Widget>(),
+          Row(
+            children: [
+              Wrap(
+                alignment: WrapAlignment.start,
+                crossAxisAlignment: WrapCrossAlignment.start,
+                children: _controller.movieDetail!.spokenLanguages!
+                    .map(
+                      (SpokenLanguageModel spokenLanguages) => Text(
+                        '${spokenLanguages.name} ',
+                        textAlign: TextAlign.justify,
+                        style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                              color: Colors.white60,
+                            ),
+                      ),
+                    )
+                    .toList()
+                    .cast<Widget>(),
+              ),
+              Text(' | ${_controller.movieDetail!.runtime} min '),
+            ],
           ),
-          Text(' | ${_controller.movieDetail!.runtime} min '),
         ],
       ),
     );

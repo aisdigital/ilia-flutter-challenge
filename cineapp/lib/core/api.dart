@@ -4,7 +4,7 @@ const basURL = 'https://api.themoviedb.org/3/';
 const apiKey =
     'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ZTdkOTgxZDJmZWY5ZDg5ZDE1MzQ1MmE4YTFhNTY4NyIsInN1YiI6IjYwMDg5ZGYwNDFhZDhkMDAzZjhmNGM1OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.DRfH7AeOz4wdLDaLBnTQSFubO7VVinSA1sD9mGz7tKE';
 
-const serverError = 'Faild to connect to the server! Try again later';
+const serverError = 'Failed to connect to the server! Try again later';
 
 final dioOptions = BaseOptions(
   baseUrl: basURL,
