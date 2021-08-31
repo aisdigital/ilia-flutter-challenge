@@ -2,7 +2,7 @@
 
 A new Flutter project.
 
-## Projeto de TESTE e ESTUDO
+## Projeto de para ESTUDO
 
 Consumo de API [TMDb](https://github.com/kleberandrade/movies-flutter#:~:text=a%20API%20do-,TMDb,-criado%20para%20disciplina).
 
