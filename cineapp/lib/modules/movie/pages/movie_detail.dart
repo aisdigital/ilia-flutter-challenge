@@ -39,7 +39,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   _searchYoutube(String? path) async {
     final String searchYoutube = path!.replaceAll(" ", "+");
     final youtubeUrl =
-        'https://www.youtube.com/results?search_query=$searchYoutube';
+        'https://www.youtube.com/results?search_query=$searchYoutube+trailer';
     if (await canLaunch(youtubeUrl)) {
       await launch(youtubeUrl);
     }
@@ -131,7 +131,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             ],
           ),
           const SizedBox(height: Constraints.spacerSmall),
-          Row(
+          Wrap(
+            alignment: WrapAlignment.start,
             children: _controller.movieDetail!.genres!
                 .map(
                   (MovieGenre genre) => Text(
@@ -146,11 +147,12 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                 .cast<Widget>(),
           ),
           const SizedBox(height: Constraints.spacerSmall),
-          Row(
+          Wrap(
+            alignment: WrapAlignment.start,
             children: _controller.movieDetail!.spokenLanguages!
                 .map(
                   (SpokenLanguageModel spokenLanguages) => Text(
-                    '${spokenLanguages.name} | ${_controller.movieDetail!.runtime} min ',
+                    '${spokenLanguages.name} ',
                     textAlign: TextAlign.justify,
                     style: Theme.of(context).textTheme.bodyText2?.copyWith(
                           color: Colors.white60,
@@ -160,6 +162,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                 .toList()
                 .cast<Widget>(),
           ),
+          Text(' | ${_controller.movieDetail!.runtime} min '),
         ],
       ),
     );
