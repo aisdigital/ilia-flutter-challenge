@@ -6,7 +6,7 @@ A new Flutter project.
 
 Consumo de API [TMDb](https://github.com/kleberandrade/movies-flutter#:~:text=a%20API%20do-,TMDb,-criado%20para%20disciplina).
 
-Este projeto foi desenvolvido com objetivo de testes e estudos, utilizando o Padrão MVC com arquitetuira Modular, abordadndo como objeto de estudos o conceito de Programação Funcional.
+Este projeto foi desenvolvido com objetivo de testes e estudos, utilizando o Padrão MVC com arquitetura modular, abordando como objeto de estudos o conceito de Programação Funcional.
 
 
 ## Desenvolvimento
