@@ -24,7 +24,7 @@ Projeto desenvolvido em **Flutter**, utilizando:
 <img src="assets/screeenshots/home.png" width="300">
 
 ### Detalhes
-<img src="assets/screeenshots/detail.png" width="300">
+<img src="assets/screeenshots/details.png" width="300">
 
 
 ### Error
