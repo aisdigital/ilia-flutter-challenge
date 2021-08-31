@@ -21,14 +21,14 @@ Projeto desenvolvido em **Flutter**, utilizando:
 ## Demonstração
 
 ### Home
-<img src="assets/screeenshots/home.png" width="300">
+<img src="assets/screenshots/home.png" width="300">
 
 ### Detalhes
-<img src="assets/screeenshots/details.png" width="300">
+<img src="assets/screenshots/details.png" width="300">
 
 
 ### Error
-<img src="assets/screeenshots/error.png" width="300">
+<img src="assets/screenshots/error.png" width="300">
 
 
 
