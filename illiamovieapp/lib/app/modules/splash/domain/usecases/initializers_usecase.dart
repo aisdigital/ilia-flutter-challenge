@@ -1,10 +1,14 @@
-import 'package:illiamovieapp/app/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
-import 'package:illiamovieapp/app/core/network/dio_config.dart';
-import 'package:illiamovieapp/app/core/network/network_info.dart';
-import 'package:illiamovieapp/app/core/usecases/usecase.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pedantic/pedantic.dart';
 
-class InitializersUseCase implements UseCase<bool, NoParams> {
+import '../../../../core/error/failures.dart';
+import '../../../../core/network/dio_config.dart';
+import '../../../../core/network/network_info.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../../home/home_module.dart';
+
+class InitializersUseCase implements UseCase<void, NoParams> {
   final DioConfig _dioConfig;
   final INetworkInfo _networkInfo;
 
@@ -15,12 +19,12 @@ class InitializersUseCase implements UseCase<bool, NoParams> {
         _networkInfo = networkInfo;
 
   @override
-  Future<Either<IFailure, bool>> call(NoParams params) async {
+  Future<Either<IFailure, void>> call(NoParams params) async {
     try {
       await _networkInfo.init();
       _dioConfig.init();
-
-      return Right(true);
+      unawaited(Modular.to.pushReplacementNamed(HomeModule.routeName));
+      return Right(voidRight);
     } catch (e) {
       return Left(
         Failure(

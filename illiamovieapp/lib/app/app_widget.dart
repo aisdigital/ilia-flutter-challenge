@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:illiamovieapp/app/app_controller.dart';
-import 'package:illiamovieapp/app/app_module.dart';
-import 'package:illiamovieapp/app/core/style/movie_app_theme.dart';
 
+import 'app_controller.dart';
+import 'app_module.dart';
 import 'core/presentation/widgets/connectivity_banner.dart';
+import 'core/style/movie_app_theme.dart';
 import 'core/utils/screen/design_ui.dart';
 import 'core/utils/screen/screen_util.dart';
 
@@ -18,10 +18,11 @@ class _AppWidgetState extends ModularState<AppWidget, AppController> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtil.builder(
-      designUI: DesignUI.iPhone12Pro,
-      designUITablet: DesignUI.iPadPro12dot9,
+      designUI: DesignUI.iPhone11Pro,
+      designUITablet: DesignUI.iPadPro11,
       builder: (context, constraints, orientation) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Íllia Movie App',
           theme: MovieAppTheme.theme,
           initialRoute: AppModule.initialRoute,

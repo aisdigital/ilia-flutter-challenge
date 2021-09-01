@@ -16,7 +16,7 @@ class DioConfig {
     final BaseOptions baseOptions = BaseOptions(
       connectTimeout: Duration(minutes: 1).inMilliseconds,
       baseUrl: _endpoint,
-      headers: {'Authentication': 'Bearer $ApiConst.apiToken'},
+      headers: {'Authorization': 'Bearer ${ApiConst.apiToken}'},
     );
 
     _client.options = baseOptions;

@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:illiamovieapp/app/modules/home/home_module.dart';
-import 'package:illiamovieapp/app/modules/splash/splash_module.dart';
 
 import 'app_controller.dart';
 import 'core/domain/usecases/get_connectivity_stream_usecase.dart';
 import 'core/network/dio_config.dart';
 import 'core/network/network_info.dart';
+import 'modules/home/home_module.dart';
+import 'modules/splash/splash_module.dart';
 
 class AppModule extends Module {
   static String get initialRoute => SplashModule.routeName;

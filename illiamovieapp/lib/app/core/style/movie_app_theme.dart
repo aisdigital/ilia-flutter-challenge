@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:illiamovieapp/app/core/style/movie_app_color.dart';
+
+import '../utils/extensions/screen_extension.dart';
+import 'movie_app_color.dart';
 
 abstract class MovieAppTheme {
   MovieAppTheme._();
@@ -28,6 +30,18 @@ abstract class MovieAppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         fillColor: MovieAppColors.blueGrey.shade300,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.scale),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: EdgeInsets.all(4.scale),
+        filled: true,
+        hintStyle: TextStyle(
+          height: 0.5,
+          color: MovieAppColors.white.withOpacity(.6),
+          fontSize: 18.scale,
+          fontWeight: FontWeight.w400,
+        ),
       ),
     );
   }
