@@ -1,12 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../core/domain/enums/control_state_enum.dart';
+import '../../../../core/utils/debouncer_utils.dart';
 import '../../../../core/utils/extensions/screen_extension.dart';
 import '../../../../core/utils/extensions/string_extension.dart';
-import '../../../../core/utils/debouncer_utils.dart';
 import '../../domain/entities/movie_entity.dart';
 import '../../domain/usecases/get_movies_in_theatre_usecase.dart';
 
@@ -20,8 +18,6 @@ abstract class _HomeControllerBase with Store {
   _HomeControllerBase(
       {required GetMoviesInTheatreUseCase getMoviesInTheatreUseCase})
       : _getMoviesInTheatreUseCase = getMoviesInTheatreUseCase {
-    _listenSearchInput();
-    _listenScrollController();
     pipeline();
   }
 
@@ -44,6 +40,8 @@ abstract class _HomeControllerBase with Store {
   @observable
   String searchText = '';
   @observable
+  bool isGettingNewPage = false;
+  @observable
   ObservableList<Movie> listMovies = <Movie>[].asObservable();
 
   @computed
@@ -55,7 +53,7 @@ abstract class _HomeControllerBase with Store {
 
   @computed
   List<Movie> get movies {
-    List<Movie> outputList = List<Movie>.from(listMovies);
+    List<Movie> outputList = List.from(listMovies);
 
     return _searchFromList(outputList);
   }
@@ -91,12 +89,22 @@ abstract class _HomeControllerBase with Store {
   void handleClearSearch() {
     searchFocusNode.unfocus();
     searchText = '';
-    searchController.clear();
+    searchController.value = TextEditingValue(
+      text: '',
+      selection: TextSelection(
+        extentOffset: 0,
+        baseOffset: 0,
+      ),
+    );
   }
 
   Future<void> pipeline() async {
     try {
       state = ControlState.loading;
+      _listenSearchInput();
+      _listenScrollController();
+      handleClearSearch();
+      page = 1;
       listMovies = (await _getMovies()).asObservable();
       _setState(ControlState.sucess);
     } catch (e) {
@@ -108,19 +116,19 @@ abstract class _HomeControllerBase with Store {
   }
 
   List<Movie> _searchFromList(List<Movie> movies) {
-    if (searchController.text.isNotEmpty && movies.isNotEmpty) {
+    if (searchText.isNotEmpty && movies.isNotEmpty) {
       return movies
           .where((movie) {
             String movieSearch = movie.title;
             movieSearch = movieSearch.trim();
-            movieSearch = movieSearch.toLowerCase();
             movieSearch = movieSearch.removeDiacritics();
+            movieSearch = movieSearch.toLowerCase();
 
-            String searchText = this.searchText;
+            String treatedSearchText = searchText;
 
-            searchText = searchText.trim();
-            searchText = searchText.toLowerCase();
-            searchText = searchText.removeDiacritics();
+            treatedSearchText = treatedSearchText.trim();
+            treatedSearchText = treatedSearchText.removeDiacritics();
+            treatedSearchText = treatedSearchText.toLowerCase();
 
             return movieSearch.contains(searchText);
           })
@@ -132,9 +140,17 @@ abstract class _HomeControllerBase with Store {
   }
 
   Future<void> _getNextPage() async {
-    page++;
-    final List<Movie> newList = await _getMovies();
-    listMovies = newList.asObservable();
+    try {
+      isGettingNewPage = true;
+      page++;
+      final ObservableList<Movie> newList = (await _getMovies()).asObservable();
+      final ObservableList<Movie> oldList = listMovies.asObservable();
+      oldList.addAll(newList);
+      listMovies = oldList.asObservable();
+      isGettingNewPage = false;
+    } catch (e) {
+      isGettingNewPage = false;
+    }
   }
 
   Future<List<Movie>> _getMovies() async {
@@ -173,11 +189,15 @@ abstract class _HomeControllerBase with Store {
   }
 
   void _listenScrollController() {
-    scrollController.addListener(() async {
-      if (scrollController.positions.first.pixels >=
-          scrollController.positions.first.maxScrollExtent) {
-        await _getNextPage();
-      }
-    });
+    scrollController.addListener(
+      () async {
+        if (scrollController.positions.first.pixels >=
+                scrollController.positions.first.maxScrollExtent &&
+            !isGettingNewPage &&
+            !isSearching) {
+          await _getNextPage();
+        }
+      },
+    );
   }
 }

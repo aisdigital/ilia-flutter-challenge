@@ -123,6 +123,22 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
+  final _$isGettingNewPageAtom =
+      Atom(name: '_HomeControllerBase.isGettingNewPage');
+
+  @override
+  bool get isGettingNewPage {
+    _$isGettingNewPageAtom.reportRead();
+    return super.isGettingNewPage;
+  }
+
+  @override
+  set isGettingNewPage(bool value) {
+    _$isGettingNewPageAtom.reportWrite(value, super.isGettingNewPage, () {
+      super.isGettingNewPage = value;
+    });
+  }
+
   final _$listMoviesAtom = Atom(name: '_HomeControllerBase.listMovies');
 
   @override
@@ -203,6 +219,7 @@ state: ${state},
 stateMessage: ${stateMessage},
 page: ${page},
 searchText: ${searchText},
+isGettingNewPage: ${isGettingNewPage},
 listMovies: ${listMovies},
 isSearching: ${isSearching},
 top10Movies: ${top10Movies},

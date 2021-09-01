@@ -90,7 +90,7 @@ class HomePersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
                           scrollDirection: Axis.horizontal,
                           listController: controller.listPosterController,
                           itemSize: 145.scale,
-                          scrollPhysics: AlwaysScrollableScrollPhysics(
+                          scrollPhysics: const AlwaysScrollableScrollPhysics(
                             parent: BouncingScrollPhysics(),
                           ),
                           onItemFocus: (int) {},

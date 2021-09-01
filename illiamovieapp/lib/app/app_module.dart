@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:illiamovieapp/app/core/const/api_const.dart';
 
 import 'app_controller.dart';
 import 'core/domain/usecases/get_connectivity_stream_usecase.dart';
@@ -25,7 +26,7 @@ class AppModule extends Module {
     Bind((i) => Dio()),
     Bind((i) => DioConfig(
           client: i(),
-          endpoint: 'https://api.themoviedb.org/3/',
+          endpoint: ApiConst.apiEndpoint,
         )),
   ];
 

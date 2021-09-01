@@ -48,31 +48,36 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                   return controller
                       .onNotificationSnapEffect(scrollNotification);
                 },
-                child: CustomScrollView(
-                  controller: controller.scrollController,
-                  physics: AlwaysScrollableScrollPhysics(
-                    parent: BouncingScrollPhysics(),
+                child: RefreshIndicator(
+                  onRefresh: controller.pipeline,
+                  child: CustomScrollView(
+                    controller: controller.scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(
+                      parent: BouncingScrollPhysics(),
+                    ),
+                    slivers: [
+                      SliverPersistentHeader(
+                        delegate: HomePersistentHeaderDelegate(),
+                        floating: false,
+                        pinned: true,
+                      ),
+                      SliverToBoxAdapter(
+                        child: Observer(
+                          builder: (_) {
+                            switch (controller.state) {
+                              case ControlState.start:
+                              case ControlState.loading:
+                              case ControlState.sucess:
+                                return HomePageSuccess();
+                              case ControlState.empty:
+                              case ControlState.failure:
+                                return HomePageFailure();
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  slivers: [
-                    SliverPersistentHeader(
-                      delegate: HomePersistentHeaderDelegate(),
-                      floating: false,
-                      pinned: true,
-                    ),
-                    SliverToBoxAdapter(
-                      child: Observer(builder: (_) {
-                        switch (controller.state) {
-                          case ControlState.start:
-                          case ControlState.loading:
-                          case ControlState.sucess:
-                            return HomePageSuccess();
-                          case ControlState.empty:
-                          case ControlState.failure:
-                            return HomePageFailure();
-                        }
-                      }),
-                    ),
-                  ],
                 ),
               ),
             ),

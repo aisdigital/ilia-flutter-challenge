@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -26,6 +27,7 @@ class _HomePageSuccessState
           color: theme.colorScheme.background,
           padding: EdgeInsets.symmetric(horizontal: 24.scale),
           child: ListView.builder(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             itemCount: controller.movies.length,
             controller: controller.scrollController,
             shrinkWrap: true,
