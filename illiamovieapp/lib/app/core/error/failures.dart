@@ -32,3 +32,9 @@ class InternalFailure extends IFailure {
     String message = 'Falha Interna',
   }) : super(message: message);
 }
+
+class ServerFailure extends IFailure {
+  const ServerFailure({
+    String message = 'Houve um erro no servidor',
+  }) : super(message: message);
+}
