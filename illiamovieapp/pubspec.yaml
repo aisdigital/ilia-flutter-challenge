@@ -40,6 +40,7 @@ dependencies:
 
   # UI
   scroll_snap_list: ^0.8.2
+  url_launcher: ^6.0.9
 
   flutter:
     sdk: flutter

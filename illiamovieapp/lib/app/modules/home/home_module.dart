@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../movie_details/movie_details_module.dart';
 import 'data/datasources/i_movies_remote_datasource.dart';
 import 'data/datasources/movies_dio_datasource.dart';
 import 'data/repositories/movies_repository.dart';
@@ -10,6 +11,8 @@ import 'presentation/pages/home_page.dart';
 
 class HomeModule extends Module {
   static String get routeName => '/home';
+  static String get routeToDetails =>
+      '$routeName${MovieDetailsModule.routeName}';
   @override
   final List<Bind> binds = [
     // --------------------- CONTROLLERS ----------------------
@@ -32,6 +35,10 @@ class HomeModule extends Module {
     ChildRoute(
       Modular.initialRoute,
       child: (_, args) => HomePage(),
+    ),
+    ModuleRoute(
+      MovieDetailsModule.routeName,
+      module: MovieDetailsModule(),
     ),
   ];
 }

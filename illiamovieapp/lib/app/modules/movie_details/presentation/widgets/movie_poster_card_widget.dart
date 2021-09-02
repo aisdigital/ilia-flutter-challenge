@@ -3,11 +3,11 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../core/const/api_const.dart';
 import '../../../../core/utils/extensions/screen_extension.dart';
-import '../../domain/entities/movie_entity.dart';
-import '../controller/home_controller.dart';
+import '../../domain/entities/movie_similar_entity.dart';
+import '../controller/movie_details_controller.dart';
 
 class MoviePosterCard extends StatefulWidget {
-  final Movie movie;
+  final MovieSimilar movie;
 
   MoviePosterCard({
     Key? key,
@@ -19,7 +19,7 @@ class MoviePosterCard extends StatefulWidget {
 }
 
 class _MoviePosterCardState
-    extends ModularState<MoviePosterCard, HomeController> {
+    extends ModularState<MoviePosterCard, MovieDetailsController> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -49,7 +49,7 @@ class _MoviePosterCardState
                 ),
                 child: Center(
                   child: Text(
-                    '${widget.movie.rating}',
+                    widget.movie.rating.toStringAsFixed(1),
                     style: TextStyle(
                       color: theme.colorScheme.onSecondary,
                       fontSize: 18.scale,

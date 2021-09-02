@@ -1,4 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import '../../home_module.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../core/domain/enums/control_state_enum.dart';
@@ -71,7 +73,12 @@ abstract class _HomeControllerBase with Store {
   void setIsVisibleKeyboard(bool value) => _isVisibleKeyboard = value;
 
   @action
-  void handleTapMovie({required int movieId}) {}
+  void handleTapMovie({required int movieId}) {
+    Modular.to.pushNamed(
+      HomeModule.routeToDetails,
+      arguments: {'movieId': '$movieId'},
+    );
+  }
 
   @action
   void setSearchText(String value) {

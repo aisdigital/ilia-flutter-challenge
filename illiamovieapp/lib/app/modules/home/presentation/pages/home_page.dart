@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:illiamovieapp/app/modules/home/presentation/widgets/home_page/home_page_failure_widget.dart';
-import 'package:illiamovieapp/app/modules/home/presentation/widgets/home_page/home_page_success_widget.dart';
+import '../widgets/home_page/home_page_failure_widget.dart';
+import '../widgets/home_page/home_page_success_widget.dart';
 
 import '../../../../core/domain/enums/control_state_enum.dart';
 import '../../../../core/utils/extensions/brightness_extension.dart';

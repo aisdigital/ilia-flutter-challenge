@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../controller/home_controller.dart';
+
 import '../../../../../core/utils/extensions/screen_extension.dart';
+import '../../controller/home_controller.dart';
 
 class HomePageFailure extends StatefulWidget {
   const HomePageFailure({Key? key}) : super(key: key);

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:illiamovieapp/app/core/const/api_const.dart';
 
 import 'app_controller.dart';
+import 'core/const/api_const.dart';
 import 'core/domain/usecases/get_connectivity_stream_usecase.dart';
 import 'core/network/dio_config.dart';
 import 'core/network/network_info.dart';

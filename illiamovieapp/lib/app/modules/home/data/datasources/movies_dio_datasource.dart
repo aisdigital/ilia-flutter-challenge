@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
+
 import '../../../../core/const/api_const.dart';
 import '../../../../core/error/exceptions.dart';
-import 'i_movies_remote_datasource.dart';
 import '../models/movie_model.dart';
+import 'i_movies_remote_datasource.dart';
 
 class MoviesDioDatasource implements IMoviesRemoteDatasource {
   final Dio _client;
