@@ -18,6 +18,8 @@ In the end, a pull request must be created in the Github repo. As soon as you fi
 
 We are available to answer any questions.
 
+***
+
 **Português**
 ##### Antes de começar ⚠️
 **Por favor, crie um fork desse repositório**
