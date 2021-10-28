@@ -35,7 +35,7 @@ void main() {
     expect(response.statusCode, 200);
   });
 
-  ///get moview details by id
+  ///get movie details by id
   test("getMovieDetailsByID", () async {
     var query = "movie/5";
     var response =
@@ -43,9 +43,33 @@ void main() {
     expect(response.statusCode, 200);
   });
 
+  ///search moview with querySearch
+  test("searchMovieWithQuery", () async {
+    var query = "search/movie";
+    var querySearch = "frozen";
+    var response = await Dio().get(
+        '$baseUrl/$apiVersion/$query?api_key=$apiKey&query=$querySearch&page=$page&language=$language');
+    expect(response.statusCode, 200);
+  });
+
+  ///get list of videos by movie id
+  ///inside result, can get the youtube key, to use to get video on youtu.be/watch?=$key
+  ///
+  ///like:
+  ///key = S_Pd2pGkq54
+  ///usage: youtu.be/watch?v=S_Pd2pGkq54
+  test("getVideosByMovieId", () async {
+    var query = "movie/5/videos";
+    var response =
+        await Dio().get('$baseUrl/$apiVersion/$query?api_key=$apiKey');
+    expect(response.statusCode, 200);
+  });
+
+  //--------------------- themoviedb image api -----------------------------
+
   ///This have any configuration, i go use a standard configuration
   ///get image cover movie
-  test("getCover", () async {
+  test("getCoverByPath", () async {
     var query = "/t/p/w500";
     var backDropPath = "ujWOI68vGkfLOgEDmcrjIS6il7B.jpg";
     var response = await Dio().get('$backDropUrl/$query/$backDropPath');
@@ -54,7 +78,7 @@ void main() {
 
   ///This have any configuration, i go use a standard configuration
   ///get the image Poster movie
-  test("getPoster", () async {
+  test("getPosterByPath", () async {
     var query = "/t/p/w500";
     var posterPath = "ujWOI68vGkfLOgEDmcrjIS6il7B.jpg";
     var response = await Dio().get('$backDropUrl/$query/$posterPath');
