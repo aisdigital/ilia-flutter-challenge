@@ -1,0 +1,4 @@
+The model folder.
+
+The contents of this folder must contain model to any data on app
+Like an internal User or a Model for an API response

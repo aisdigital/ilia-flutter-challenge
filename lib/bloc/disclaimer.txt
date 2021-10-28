@@ -1,0 +1,4 @@
+The bloc folder.
+
+The contents of this folder must contain data manipulation logic.
+How, manipulate a string, stream a date or notify a change button color

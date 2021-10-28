@@ -1,0 +1,3 @@
+The widget folder.
+
+This folder will contain all widgets used in the App, using Atomic Design Pattern

@@ -1,0 +1,4 @@
+The provider folder.
+
+The contents of this folder will contain mainly the connection of our system to the data provider
+Here you can find classes to connect to the local database, firebase, sharedPreferences, or the api
