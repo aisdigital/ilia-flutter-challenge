@@ -4,7 +4,7 @@ import 'package:ilia_challenge/interface/image_interface.dart';
 class ProviderImage implements InterfaceImage {
   var backDropUrl = "https://image.tmdb.org";
   var coverConfig = "/t/p/w1280/";
-  var posterConfig = "/t/p/w780/";
+  var posterConfig = "/t/p/w500/";
 
   @override
   Future<String?> getMovieUrlCover(String coverPath) async {

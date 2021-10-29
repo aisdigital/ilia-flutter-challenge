@@ -30,20 +30,32 @@ class _BuildCardMovieState extends State<BuildCardMovie>
           borderRadius: BorderRadius.circular(15.0),
           child: FutureBuilder<String?>(
             builder: (context, snapshot) {
-              return Ink(
-                child: CachedNetworkImage(
-                  cacheKey: snapshot.data,
-                  imageUrl: snapshot.data ??
-                      "https://www.blogson.com.br/wp-content/uploads/2017/10/584b607f5c2ff075429dc0e7b8d142ef.gif",
-                  fit: BoxFit.cover,
-                ),
-              );
+              if (snapshot.data == null) {
+                return Center(
+                  child: Container(
+                    child: Icon(
+                      Icons.error,
+                      color: Colors.red,
+                    ),
+                  ),
+                );
+              } else {
+                return Ink(
+                  child: CachedNetworkImage(
+                    cacheKey: snapshot.data,
+                    imageUrl: snapshot.data!,
+                    fit: BoxFit.cover,
+                  ),
+                );
+              }
             },
-            future: streamImage.getMovieUrlCover(widget.result.posterPath),
+            future:
+                streamImage.getMovieUrlCover(widget.result.posterPath ?? ""),
           ),
         ));
   }
 
+  ///true it`s not ok with more 100 itens, but stay here for a improvement
   @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive => false;
 }

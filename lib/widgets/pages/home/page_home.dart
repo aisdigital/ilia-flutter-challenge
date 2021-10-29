@@ -101,6 +101,8 @@ class _HomePageState extends State<HomePage> {
                     }),
                 StreamBuilder<MoviesModel?>(
                     stream: streamMovie.behaviorSubjectMoviesOnTheater,
+                    initialData:
+                        streamMovie.behaviorSubjectMoviesOnTheater.value,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState != ConnectionState.waiting) {
                         if (snapshot.data != null) {
