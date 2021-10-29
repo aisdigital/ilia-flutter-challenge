@@ -1,4 +1,0 @@
-The repository folder.
-
-The contents of this folder will become responsible for deciding
-whether the data comes from a local cache, the api or another location

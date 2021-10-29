@@ -1,4 +1,0 @@
-The interface folder.
-
-The contents of this folder should contain abstractions for generating contracts between the bloc, repository and provider.
-In order to maintain a good coding standard
