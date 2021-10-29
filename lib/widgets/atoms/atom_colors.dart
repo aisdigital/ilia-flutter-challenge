@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Map<int, Color> primaryTmdbColor = {
+Map<int, Color> primaryTheMovieDbColor = {
   50: Color.fromRGBO(13, 36, 63, .1),
   100: Color.fromRGBO(13, 36, 63, .2),
   200: Color.fromRGBO(13, 36, 63, .3),
@@ -26,5 +26,5 @@ Map<int, Color> whiteMaterial = {
   900: Color.fromRGBO(255, 255, 255, 1),
 };
 
-MaterialColor primaryColor = MaterialColor(0xff133663, primaryTmdbColor);
+MaterialColor primaryColor = MaterialColor(0xff133663, primaryTheMovieDbColor);
 MaterialColor materialWhite = MaterialColor(0xffffffff, whiteMaterial);

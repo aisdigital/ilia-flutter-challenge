@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ilia_challenge/bloc/movie_stream.dart';
 import 'package:rxdart/rxdart.dart';
 
 final controllerPage = PageController();
 
 class PageController {
   var gridViewController = ScrollController();
+  var currentPage = 1;
 
   ///make this private and create setters and getters
   BehaviorSubject<bool> visibleSearch = BehaviorSubject.seeded(false);
@@ -13,13 +15,10 @@ class PageController {
     gridViewController.addListener(() {
       if (gridViewController.position.atEdge) {
         if (gridViewController.position.pixels == 0) {
-          /// add pull to refresh?
+          /// add pull to refresh? no time
         } else {
-          print("load more");
-
-          ///start animation load
-          ///load more
-          ///stop animation load
+          currentPage++;
+          streamMovie.listMovieCurrentTheater(nextPage: currentPage);
         }
       }
     });
@@ -31,5 +30,7 @@ class PageController {
 
   void dispose() {
     visibleSearch.close();
+    gridViewController.dispose();
+    currentPage = 0;
   }
 }

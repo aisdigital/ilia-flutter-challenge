@@ -31,10 +31,10 @@ class ProviderMovie implements InterfaceMovie {
   }
 
   @override
-  Future<Response?> listMovieCurrentTheater() async {
+  Future<Response?> listMovieCurrentTheater({int? nextPage}) async {
     var query = "movie/now_playing";
     return await Dio().get(
-        '$baseUrl/$apiVersion/$query?api_key=$apiKey&page=$page&language=$language',
+        '$baseUrl/$apiVersion/$query?api_key=$apiKey&page=${nextPage ?? page}&language=$language',
         options: buildCacheOptions(Duration(seconds: 5)));
   }
 

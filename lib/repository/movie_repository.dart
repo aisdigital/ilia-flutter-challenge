@@ -16,8 +16,8 @@ class RepositoryMovie implements InterfaceMovie {
   }
 
   @override
-  Future<Response?> listMovieCurrentTheater() async {
-    return _providerMovie.listMovieCurrentTheater();
+  Future<Response?> listMovieCurrentTheater({int? nextPage}) async {
+    return _providerMovie.listMovieCurrentTheater(nextPage: nextPage);
   }
 
   @override

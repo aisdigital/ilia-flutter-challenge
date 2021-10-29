@@ -1,13 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ilia_challenge/bloc/image_stream.dart';
 import 'package:ilia_challenge/bloc/movie_stream.dart';
 import 'package:ilia_challenge/model/movies_model.dart';
+import 'package:ilia_challenge/util/util_route.dart';
 import 'package:ilia_challenge/widgets/atoms/atom_colors.dart';
+import 'package:ilia_challenge/widgets/molecules/molecule_appbar.dart';
+import 'package:ilia_challenge/widgets/molecules/molecule_card.dart';
+import 'package:ilia_challenge/widgets/pages/detail/page_details.dart';
 import 'package:ilia_challenge/widgets/pages/home/page_controller.dart';
-import 'package:ilia_challenge/widgets/pages/search/page_search.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({
@@ -30,47 +30,14 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     controllerPage.init();
+    streamMovie.listMovieCurrentTheater();
   }
 
   @override
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
-        appBar: AppBar(
-          brightness: Brightness.dark,
-          title: Text("TheMovieDB"),
-          centerTitle: true,
-          elevation: 0,
-          shadowColor: Colors.black,
-          foregroundColor: primaryColor,
-          leading: IconButton(
-              onPressed: () {
-                controllerPage.changeStatus();
-              },
-              icon: StreamBuilder<bool>(
-                  stream: controllerPage.visibleSearch,
-                  initialData: controllerPage.visibleSearch.value,
-                  builder: (context, snapshot) {
-                    return Icon(
-                        snapshot.data! ? Icons.close : Icons.filter_alt);
-                  })),
-          backgroundColor: primaryColor,
-          actions: [
-            IconButton(
-                onPressed: () => {
-                      showSearch(
-                        context: context,
-                        delegate: SearchPage(),
-                      )
-                    },
-                icon: StreamBuilder<bool>(
-                    stream: controllerPage.visibleSearch.stream,
-                    initialData: controllerPage.visibleSearch.value,
-                    builder: (context, snapshot) {
-                      return Icon(snapshot.data! ? Icons.close : Icons.search);
-                    })),
-          ],
-        ),
+        appBar: buildAppBar(context),
         body: Container(
             color: Colors.white,
             child: Column(
@@ -82,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                       return AnimatedOpacity(
                         opacity: snapshot.data! ? 1 : 0,
                         duration: Duration(milliseconds: 600),
-                        curve: Curves.ease,
+                        curve: Curves.easeIn,
                         child: AnimatedContainer(
                           decoration: BoxDecoration(
                               color: primaryColor,
@@ -100,38 +67,31 @@ class _HomePageState extends State<HomePage> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ActionChip(
-                                      backgroundColor: Colors.white,
+                                      backgroundColor: Colors.grey,
                                       labelStyle:
-                                          TextStyle(color: Colors.black),
-                                      label: const Text('Tendecy'),
-                                      onPressed: () {
-                                        print(
-                                            'If you stand for nothing, Burr, what’ll you fall for?');
-                                      }),
+                                          TextStyle(color: Colors.white60),
+                                      label: const Text('Tendency'),
+                                      onPressed: () {}),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ActionChip(
                                       backgroundColor: Colors.white,
+                                      shadowColor: Colors.deepOrange,
+                                      elevation: 8,
                                       labelStyle:
                                           TextStyle(color: Colors.black),
-                                      label: const Text('Current'),
-                                      onPressed: () {
-                                        print(
-                                            'If you stand for nothing, Burr, what’ll you fall for?');
-                                      }),
+                                      label: const Text('On Theater'),
+                                      onPressed: () {}),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ActionChip(
-                                      backgroundColor: Colors.white,
+                                      backgroundColor: Colors.grey,
                                       labelStyle:
-                                          TextStyle(color: Colors.black),
+                                          TextStyle(color: Colors.white60),
                                       label: const Text('Upcoming'),
-                                      onPressed: () {
-                                        print(
-                                            'If you stand for nothing, Burr, what’ll you fall for?');
-                                      }),
+                                      onPressed: () {}),
                                 ),
                               ],
                             ),
@@ -139,146 +99,154 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     }),
-                FutureBuilder<Response?>(
-                    future: streamMovie.listMovieUpcomingTheater(),
+                StreamBuilder<MoviesModel?>(
+                    stream: streamMovie.behaviorSubjectMoviesOnTheater,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState != ConnectionState.waiting) {
-                        var movieList =
-                            MoviesModel.fromJson(snapshot.data!.data);
+                        if (snapshot.data != null) {
+                          return Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 8.0, right: 8, top: 8),
+                              child: GridView.builder(
+                                  controller: controllerPage.gridViewController,
 
-                        return Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, top: 8),
-                            child: GridView.builder(
-                                controller: controllerPage.gridViewController,
-
-                                ///without magic numbers, 8 / 12 is the poster proportion inside TheMovieDB.
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        childAspectRatio: 8 / 12),
-                                itemCount: movieList.results!.length,
-                                physics: BouncingScrollPhysics(),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Stack(
-                                    children: [
-                                      Positioned.fill(
-                                        child: Card(
-                                            elevation: 2,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
+                                  ///without magic numbers, 8 / 12 is the poster proportion inside TheMovieDB.
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          childAspectRatio: 8 / 12),
+                                  itemCount: snapshot.data!.results!.length,
+                                  physics: BouncingScrollPhysics(),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Stack(
+                                      children: [
+                                        Positioned.fill(
+                                          child: BuildCardMovie(
+                                              snapshot.data!.results![index]),
+                                        ),
+                                        Positioned(
+                                          left: 8,
+                                          bottom: 8,
+                                          child: Container(
+                                            width: 48,
+                                            height: 48,
+                                            decoration: new BoxDecoration(
+                                              color: Colors.black87,
+                                              shape: BoxShape.circle,
                                             ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
-                                              child: FutureBuilder<String?>(
-                                                builder: (context, snapshot) {
-                                                  return Ink(
-                                                    child: CachedNetworkImage(
-                                                      cacheKey: snapshot.data,
-                                                      imageUrl: snapshot.data ??
-                                                          "https://www.blogson.com.br/wp-content/uploads/2017/10/584b607f5c2ff075429dc0e7b8d142ef.gif",
-                                                      fit: BoxFit.cover,
+                                            child: Stack(
+                                              children: [
+                                                Positioned.fill(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      value: double.parse(
+                                                              snapshot
+                                                                  .data!
+                                                                  .results![
+                                                                      index]
+                                                                  .voteAverage
+                                                                  .toString()) /
+                                                          10,
                                                     ),
-                                                  );
-                                                },
-                                                future: streamImage
-                                                    .getMovieUrlCover(movieList
-                                                        .results![index]
-                                                        .posterPath),
-                                              ),
-                                            )),
-                                      ),
-                                      Positioned(
-                                        left: 8,
-                                        bottom: 8,
-                                        child: Container(
-                                          width: 48,
-                                          height: 48,
-                                          decoration: new BoxDecoration(
-                                            color: Colors.black87,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Stack(
-                                            children: [
-                                              Positioned.fill(
-                                                child: Padding(
+                                                  ),
+                                                ),
+                                                Padding(
                                                   padding:
-                                                      const EdgeInsets.all(4.0),
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    value: double.parse(
-                                                            movieList
-                                                                .results![index]
-                                                                .voteAverage
-                                                                .toString()) /
-                                                        10,
-                                                  ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Center(
-                                                  child: Text(
-                                                    movieList.results![index]
-                                                                .voteAverage
-                                                                .toString()
-                                                                .length <
-                                                            3
-                                                        ? movieList
-                                                                .results![index]
-                                                                .voteAverage
-                                                                .toString() +
-                                                            ".0"
-                                                        : movieList
-                                                            .results![index]
-                                                            .voteAverage
-                                                            .toString(),
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned.fill(
-                                        child: Material(
-                                          color: Colors.white10,
-                                          child: InkWell(
-                                            borderRadius:
-                                                BorderRadius.circular(16.0),
-                                            splashColor: Colors.white12,
-                                            onLongPress: () {
-                                              showCupertinoDialog(
-                                                context: context,
-                                                builder: (context) =>
-                                                    CupertinoAlertDialog(
-                                                  title: Text(movieList
-                                                      .results![index].title),
-                                                  content: Text(
-                                                      "Data de lançamento \n" +
-                                                          movieList
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Center(
+                                                    child: Text(
+                                                      snapshot
+                                                                  .data!
+                                                                  .results![
+                                                                      index]
+                                                                  .voteAverage
+                                                                  .toString()
+                                                                  .length <
+                                                              3
+                                                          ? snapshot
+                                                                  .data!
+                                                                  .results![
+                                                                      index]
+                                                                  .voteAverage
+                                                                  .toString() +
+                                                              ".0"
+                                                          : snapshot
+                                                              .data!
                                                               .results![index]
-                                                              .releaseDate),
+                                                              .voteAverage
+                                                              .toString(),
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
                                                 ),
-                                              );
-                                            },
-                                            onTap: () {},
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      )
-                                    ],
-                                  );
-                                }),
+                                        Positioned.fill(
+                                          child: Material(
+                                            color: Colors.white10,
+                                            child: InkWell(
+                                              borderRadius:
+                                                  BorderRadius.circular(16.0),
+                                              splashColor: Colors.white12,
+                                              onLongPress: () {
+                                                showCupertinoDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      CupertinoAlertDialog(
+                                                    title: Text(snapshot.data!
+                                                        .results![index].title),
+                                                    content: Text(
+                                                        "Data de lançamento \n" +
+                                                            snapshot
+                                                                .data!
+                                                                .results![index]
+                                                                .releaseDate),
+                                                  ),
+                                                );
+                                              },
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    CustomRoute(
+                                                        settings: RouteSettings(
+                                                            name: "/details"),
+                                                        builder: (_) {
+                                                          return PageDetail(
+                                                              snapshot.data!
+                                                                      .results![
+                                                                  index]);
+                                                        }));
+                                              },
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    );
+                                  }),
+                            ),
+                          );
+                        } else {
+                          return Center(
+                            child: Container(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+                      } else {
+                        return Center(
+                          child: Container(
+                            child: CircularProgressIndicator(),
                           ),
                         );
-                      } else {
-                        return CircularProgressIndicator();
                       }
                     }),
               ],
