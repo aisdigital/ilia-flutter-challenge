@@ -3,16 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ilia_challenge/bloc/movie_stream.dart';
 
 void main() {
-  test("listMovieUpcomingTheater()", () async {
-    Response? response = await streamMovie.listMovieUpcomingTheater();
-    expect(response!.statusCode, 200);
-  });
-
   test("loadMoreMovieCurrentTheater()", () async {
     await streamMovie.listMovieCurrentTheater(nextPage: 2);
     await streamMovie.listMovieCurrentTheater(nextPage: 3);
-    expect(
-        streamMovie.behaviorSubjectMoviesOnTheater.value!.results!.length, 40);
+    expect(streamMovie.movies.value!.results!.length, 40);
   });
 
   test("listMovieCurrentTheater()", () async {

@@ -5,7 +5,7 @@ import 'package:ilia_challenge/model/movies_model.dart';
 
 ///Movie card molecule
 class BuildCardMovie extends StatefulWidget {
-  final Results result;
+  final MoviesResults result;
 
   BuildCardMovie(
     this.result, {
@@ -50,7 +50,7 @@ class _BuildCardMovieState extends State<BuildCardMovie>
               }
             },
             future:
-                streamImage.getMovieUrlCover(widget.result.posterPath ?? ""),
+                streamImage.getMovieUrlPoster(widget.result.posterPath ?? ""),
           ),
         ));
   }

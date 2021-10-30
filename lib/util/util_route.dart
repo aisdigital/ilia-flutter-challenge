@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+///this class is util :)
+///to set analytics routes
 class CustomRoute<T> extends MaterialPageRoute<T> {
   CustomRoute({required WidgetBuilder builder, RouteSettings? settings})
       : super(builder: builder, settings: settings);

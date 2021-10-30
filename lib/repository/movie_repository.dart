@@ -1,4 +1,4 @@
-import 'package:dio/src/response.dart';
+import 'package:dio/dio.dart';
 import 'package:ilia_challenge/interface/movie_interface.dart';
 import 'package:ilia_challenge/provider/movie_provider.dart';
 
@@ -23,11 +23,6 @@ class RepositoryMovie implements InterfaceMovie {
   @override
   Future<Response?> listMovieTendency() {
     return _providerMovie.listMovieTendency();
-  }
-
-  @override
-  Future<Response?> listMovieUpcomingTheater() {
-    return _providerMovie.listMovieUpcomingTheater();
   }
 
   @override

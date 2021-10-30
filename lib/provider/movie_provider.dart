@@ -11,14 +11,15 @@ class ProviderMovie implements InterfaceMovie {
 
   var apiVersion = "3";
   var page = 1;
-  var language = "pt-BR";
+  var language = "en-ES";
 
   var cacheDurationInSeconds = 60 * 2;
 
   @override
   Future<Response?> getMovieDetailsById(sendData) async {
     var query = "movie/${sendData["movieId"]}";
-    return await Dio().get('$baseUrl/$apiVersion/$query?api_key=$apiKey',
+    return await Dio().get(
+        '$baseUrl/$apiVersion/$query?api_key=$apiKey&language=$language',
         options: buildCacheOptions(Duration(seconds: cacheDurationInSeconds)));
   }
 
@@ -47,17 +48,10 @@ class ProviderMovie implements InterfaceMovie {
   }
 
   @override
-  Future<Response?> listMovieUpcomingTheater() async {
-    var query = "movie/upcoming";
-    return await Dio().get(
-        '$baseUrl/$apiVersion/$query?api_key=$apiKey&page=$page&language=$language',
-        options: buildCacheOptions(Duration(seconds: 5)));
-  }
-
-  @override
   Future<Response?> getMovieVideosById(sendData) async {
     var query = "movie/${sendData["movieId"]}/videos";
-    return await Dio().get('$baseUrl/$apiVersion/$query?api_key=$apiKey',
+    return await Dio().get(
+        '$baseUrl/$apiVersion/$query?api_key=$apiKey&language=$language',
         options: buildCacheOptions(Duration(seconds: 5)));
   }
 }

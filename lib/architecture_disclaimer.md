@@ -44,5 +44,5 @@ such as inflation of a listview or gridview.
 - ### Pages
   Pages is a complete page screen composed with organism, molecules and atoms.
 
-- ### And Page controller
+- ### Page controller
   The page controller manipulate the layout behavior.

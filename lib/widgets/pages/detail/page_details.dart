@@ -1,12 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:ilia_challenge/bloc/image_stream.dart';
 import 'package:ilia_challenge/bloc/movie_stream.dart';
 import 'package:ilia_challenge/model/movies_model.dart';
 import 'package:ilia_challenge/widgets/atoms/atom_colors.dart';
+import 'package:ilia_challenge/widgets/organism/organism_detail.dart';
+import 'package:ilia_challenge/widgets/pages/detail/page_controller.dart';
 
 class PageDetail extends StatefulWidget {
-  final Results result;
+  final MoviesResults result;
 
   PageDetail(this.result);
 
@@ -16,53 +16,45 @@ class PageDetail extends StatefulWidget {
 
 class _DetailsState extends State<PageDetail> {
   @override
+  void dispose() {
+    // TODO: implement dispose
+    controllerDetailPage.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
-    streamMovie.getMovieDetailsById({"movieId": widget.result.id});
+    controllerDetailPage.init();
+    streamMovie
+        .getMovieDetailsById({"movieId": widget.result.id}).then((value) => {
+              Future.delayed(Duration(milliseconds: 300), () {
+                controllerDetailPage.ready();
+              })
+            });
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        //cover and video
-        Container(
-          color: primaryColor,
-          width: MediaQuery.of(context).size.width,
+    return Material(
+      color: primaryColor,
+      child: ListView(
+        padding: EdgeInsets.only(bottom: 64),
+        shrinkWrap: true,
+        children: [
+          Container(
+            color: primaryColor,
+            width: MediaQuery.of(context).size.width,
 
-          ///withou number magic, 9:16 is the cover proportion
-          height: (9 / 16) * MediaQuery.of(context).size.width,
-          child: FutureBuilder(
-              future: streamImage.getMovieUrlCover(widget.result.backdropPath),
-              builder: (context, AsyncSnapshot<String?> snapshot) {
-                if (snapshot.connectionState != ConnectionState.waiting) {
-                  return CachedNetworkImage(
-                    imageUrl: snapshot.data!,
-                    fit: BoxFit.fitWidth,
-                  );
-                } else {
-                  return Center(
-                    child: Container(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
-              }),
-        ),
+            ///withou number magic, 9:16 is the cover proportion
+            height: (9 / 16) * MediaQuery.of(context).size.width,
+            child: buildDetailCover(widget.result),
+          ),
+          buildDetailsBody(widget.result.id),
 
-        //description
-        Container(
-          // color: Colors.purple,
-          height: 200,
-          width: 200,
-        ),
-        //others informations
-        Container(
-          // color: Colors.deepOrange,
-          height: 200,
-          width: 200,
-        )
-      ],
+          //others informations
+        ],
+      ),
     );
   }
 }

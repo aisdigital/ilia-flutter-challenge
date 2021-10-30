@@ -1,7 +1,7 @@
 class MoviesModel {
   Dates? dates;
   dynamic page;
-  List<Results>? results;
+  List<MoviesResults>? results;
   dynamic totalPages;
   dynamic totalResults;
 
@@ -18,7 +18,7 @@ class MoviesModel {
     if (json['results'] != null) {
       results = [];
       json['results'].forEach((v) {
-        results!.add(new Results.fromJson(v));
+        results!.add(new MoviesResults.fromJson(v));
       });
     }
     totalPages = json['total_pages'];
@@ -38,7 +38,7 @@ class Dates {
   }
 }
 
-class Results {
+class MoviesResults {
   bool? adult;
   dynamic backdropPath;
   List<dynamic>? genreIds;
@@ -54,7 +54,7 @@ class Results {
   dynamic voteAverage;
   dynamic voteCount;
 
-  Results(
+  MoviesResults(
       {this.adult,
       this.backdropPath,
       this.genreIds,
@@ -70,7 +70,7 @@ class Results {
       this.voteAverage,
       this.voteCount});
 
-  Results.fromJson(Map<String, dynamic> json) {
+  MoviesResults.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
     genreIds = json['genre_ids'].cast<int>();

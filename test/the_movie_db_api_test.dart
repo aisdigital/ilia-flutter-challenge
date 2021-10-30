@@ -38,7 +38,7 @@ void main() {
 
   ///get movie details by id
   test("getMovieDetailsByID", () async {
-    var query = "movie/5";
+    var query = "movie/438631";
     var response =
         await Dio().get('$baseUrl/$apiVersion/$query?api_key=$apiKey');
     expect(response.statusCode, 200);
@@ -47,7 +47,7 @@ void main() {
   ///search moview with querySearch
   test("searchMovieWithQuery", () async {
     var query = "search/movie";
-    var querySearch = "frozen";
+    var querySearch = "007";
     var response = await Dio().get(
         '$baseUrl/$apiVersion/$query?api_key=$apiKey&query=$querySearch&page=$page&language=$language');
     expect(response.statusCode, 200);

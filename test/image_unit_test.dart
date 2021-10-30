@@ -6,7 +6,6 @@ void main() {
   test("getMovieUrlCover()", () async {
     String? coverUrl =
         await streamImage.getMovieUrlCover("bCXLsO2MJWzYYBJoavGOZN5iqGn.jpg");
-    print(coverUrl);
     expect(coverUrl!.isEmpty, false);
   });
 
@@ -14,7 +13,6 @@ void main() {
   test("getMovieUrlPoster()", () async {
     String? posterUrl =
         await streamImage.getMovieUrlPoster("ujWOI68vGkfLOgEDmcrjIS6il7B.jpg");
-    print(posterUrl);
     expect(posterUrl!.isEmpty, false);
   });
 }
