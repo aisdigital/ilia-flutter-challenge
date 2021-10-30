@@ -22,7 +22,13 @@ void main() {
   test("getMovieDetailsById()", () async {
     Response? response =
         await streamMovie.getMovieDetailsById({"movieId": "5"});
+
     expect(response!.statusCode, 200);
+  });
+
+  test("getMovieDetailsSetStream()", () async {
+    await streamMovie.getMovieDetailsById({"movieId": "5"});
+    expect(streamMovie.details.value, isNotNull);
   });
 
   test("getMovieSearchQuery()", () async {
@@ -34,5 +40,10 @@ void main() {
   test("getMovieVideosById()", () async {
     Response? response = await streamMovie.getMovieVideosById({"movieId": "5"});
     expect(response!.statusCode, 200);
+  });
+
+  test("getMovieCloseStream()", () async {
+    streamMovie.dispose();
+    expect(streamMovie.details.isClosed && streamMovie.details.isClosed, true);
   });
 }

@@ -55,15 +55,3 @@ class ProviderMovie implements InterfaceMovie {
         options: buildCacheOptions(Duration(seconds: 5)));
   }
 }
-
-Response? catchError(error) {
-  if (error is DioError) {
-    return error.response;
-  } else {
-    Response response = Response(
-        statusCode: -1,
-        data: error,
-        requestOptions: RequestOptions(path: "/internal"));
-    return response;
-  }
-}
