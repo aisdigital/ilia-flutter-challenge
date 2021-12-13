@@ -1,26 +1,44 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-part 'movie.freezed.dart';
-part 'movie.g.dart';
+class Movie {
+  final String? backdropPath;
+  final int? id;
+  final String? originalLanguage;
+  final String? overview;
+  final double? popularity;
+  final String? posterPath;
+  final String? releaseDate;
+  final String? title;
+  final bool? video;
+  final String? voteAverage;
 
-@freezed
-class Movie with _$Movie {
-  // ignore: invalid_annotation_target
-  @JsonSerializable(explicitToJson: true)
-  const factory Movie(
-    String backdropPath,
-    int id,
-    String originalLanguage,
-    String originalTitle,
-    String overview,
-    double popularity,
-    String posterPath,
-    String releaseDate,
-    String title,
-    bool video,
-    int voteCount,
-    String voteAverage,
-  ) = _Movie;
-  const Movie._();
+  String? error;
 
-  factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
+  Movie(
+      {this.backdropPath,
+      this.id,
+      this.originalLanguage,
+      this.overview,
+      this.popularity,
+      this.posterPath,
+      this.releaseDate,
+      this.title,
+      this.video,
+      this.voteAverage});
+
+  factory Movie.fromJson(dynamic json) {
+    if (json == null) {
+      return Movie();
+    }
+
+    return Movie(
+        backdropPath: json['backdrop_path'],
+        id: json['id'],
+        originalLanguage: json['original_language'],
+        overview: json['overview'],
+        popularity: json['popularity'],
+        posterPath: json['poster_path'],
+        releaseDate: json['release_date'],
+        title: json['title'],
+        video: json['video'],
+        voteAverage: json['vote_average'].toString());
+  }
 }

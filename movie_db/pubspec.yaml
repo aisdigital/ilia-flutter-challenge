@@ -43,11 +43,12 @@ dependencies:
   equatable: ^1.2.5
 
   carousel_slider: ^4.0.0
-
+  injectable: ^1.5.0
   freezed: ^1.0.2+1
   freezed_annotation: ^1.0.0
   build_runner: ^2.1.5
-  json_annotation: ^4.1.0
+  json_annotation: ^4.4.0
+  get_it: ^7.2.0
 
 dev_dependencies:
   json_serializable: ^6.1.1
