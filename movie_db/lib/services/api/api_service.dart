@@ -20,8 +20,20 @@ class ApiService implements IApiService {
       var moviesData = response.data['results'] as List;
       List<Movie> movieList =
           moviesData.map((movie) => Movie.fromJson(movie)).toList();
-      print(movieList);
       return movieList;
+    } catch (error, stacktrace) {
+      throw Exception(
+          'Exception accoured: $error with stacktrace: $stacktrace');
+    }
+  }
+
+  @override
+  Future<String> getTrailerVideoKey(int id) async {
+    try {
+      final response =
+          await _dio.get('$initialUrl/movie/$id/videos?api_key=$apiKey');
+      var key = response.data['results'][0]['key'];
+      return key;
     } catch (error, stacktrace) {
       throw Exception(
           'Exception accoured: $error with stacktrace: $stacktrace');
