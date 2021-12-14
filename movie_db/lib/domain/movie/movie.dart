@@ -9,6 +9,7 @@ class Movie {
   final String? title;
   final bool? video;
   final String? voteAverage;
+  final String? runTime;
 
   String? error;
 
@@ -22,7 +23,8 @@ class Movie {
       this.releaseDate,
       this.title,
       this.video,
-      this.voteAverage});
+      this.voteAverage,
+      this.runTime});
 
   factory Movie.fromJson(dynamic json) {
     if (json == null) {
@@ -39,6 +41,7 @@ class Movie {
         releaseDate: json['release_date'],
         title: json['title'],
         video: json['video'],
-        voteAverage: json['vote_average'].toString());
+        voteAverage: json['vote_average'].toString(),
+        runTime: json['runtime']);
   }
 }

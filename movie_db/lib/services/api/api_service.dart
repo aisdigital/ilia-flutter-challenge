@@ -13,9 +13,10 @@ class ApiService implements IApiService {
   final apiKey = '32183061a4649baa342364978166fe69';
 
   @override
-  Future<List<Movie>> getNowPlaying() async {
+  Future<List<Movie>> getNowPlayingOnPage(int page) async {
     try {
-      final url = '$initialUrl/movie/now_playing?api_key=$apiKey';
+      final url =
+          '$initialUrl/movie/now_playing?api_key=$apiKey&language=pt-BR&page=$page';
       final response = await _dio.get(url);
       var moviesData = response.data['results'] as List;
       List<Movie> movieList =

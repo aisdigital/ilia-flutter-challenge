@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movie_db/domain/movie/movie.dart';
@@ -9,25 +8,34 @@ class HomePageController extends GetxController {
   HomePageController();
 
   final _apiService = ApiService();
-  final scrollController = ScrollController();
 
-  final movies = Rxn<List<Movie>>();
-  final itemNumberLimit = RxInt(20);
+  final movieList = Rxn<List<Movie>>();
+  final loadCount = RxInt(1);
+  var isLoading = true.obs;
 
   @override
   void onInit() {
     super.onInit();
     getNowPlaying();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels >=
-          scrollController.position.maxScrollExtent) {
-        itemNumberLimit.value = itemNumberLimit.value + 10;
-        print(itemNumberLimit);
-      }
-    });
+  }
+
+  void loadMore() async {
+    try {
+      loadCount.value = loadCount.value + 1;
+      print('here: ' + loadCount.value.toString());
+      isLoading(true);
+      getNowPlaying();
+    } finally {
+      isLoading(false);
+    }
   }
 
   Future<void> getNowPlaying() async {
-    movies.value = await _apiService.getNowPlaying();
+    if (movieList.value != null) {
+      movieList.value!
+          .addAll(await _apiService.getNowPlayingOnPage(loadCount.value));
+    } else {
+      movieList.value = await _apiService.getNowPlayingOnPage(loadCount.value);
+    }
   }
 }

@@ -11,25 +11,30 @@ class VideoPage extends StatelessWidget {
     YoutubePlayerController youtubeController =
         YoutubePlayerController(initialVideoId: youtubeId);
 
-    return YoutubePlayerBuilder(
-      player: YoutubePlayer(
-        controller: youtubeController,
-        aspectRatio: 16 / 9,
-        showVideoProgressIndicator: true,
-        progressIndicatorColor: Colors.amber,
-        progressColors: const ProgressBarColors(
-          playedColor: Colors.amber,
-          handleColor: Colors.amberAccent,
+    return Container(
+      color: Colors.black,
+      child: Center(
+        child: YoutubePlayerBuilder(
+          player: YoutubePlayer(
+            controller: youtubeController,
+            aspectRatio: 16 / 9,
+            showVideoProgressIndicator: true,
+            progressIndicatorColor: Colors.redAccent,
+            progressColors: const ProgressBarColors(
+              playedColor: Colors.redAccent,
+              handleColor: Colors.redAccent,
+            ),
+          ),
+          //4
+          builder: (context, player) {
+            return Column(
+              children: [
+                player,
+              ],
+            );
+          },
         ),
       ),
-      //4
-      builder: (context, player) {
-        return Column(
-          children: [
-            player,
-          ],
-        );
-      },
     );
   }
 }
