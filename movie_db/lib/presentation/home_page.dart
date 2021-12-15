@@ -7,15 +7,32 @@ import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 import 'movie_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final _controller = Get.put(
+    HomePageController(),
+  );
+  ScrollController scrollController = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        _controller.loadMore();
+      }
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final _controller = Get.put(
-      HomePageController(),
-    );
-    ScrollController scrollController = ScrollController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black87,
@@ -34,80 +51,57 @@ class HomePage extends StatelessWidget {
         ),
       ),
       backgroundColor: Colors.black,
-      body: SingleChildScrollView(
-        child: Obx(
-          () => LazyLoadScrollView(
-            onEndOfPage: () => _controller.loadMore(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _controller.movieList.value != null
-                    ? GridView.builder(
-                        controller: scrollController,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          childAspectRatio: 1,
-                        ),
-                        shrinkWrap: true,
-                        itemCount: _controller.movieList.value != null
-                            ? _controller.movieList.value!.length
-                                .clamp(0, (_controller.loadCount.value * 20))
-                            : 0,
-                        itemBuilder: (context, index) {
-                          var movie = _controller.movieList.value![index];
-                          return GestureDetector(
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => MoviePage(
-                                  movie,
-                                ),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(3),
-                              child: ClipRRect(
-                                child: CachedNetworkImage(
-                                  imageUrl: movie.backdropPath != null
-                                      ? 'https://image.tmdb.org/t/p/original/${movie.backdropPath}'
-                                      : 'https://i0.wp.com/elfutbolito.mx/wp-content/uploads/2019/04/image-not-found.png?ssl=1',
-                                  height:
-                                      MediaQuery.of(context).size.height / 2,
-                                  width: MediaQuery.of(context).size.width / 2,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) =>
-                                      const CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) =>
-                                      Container(
-                                    decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/image_not_found.png'),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      )
-                    : const CircularProgressIndicator(),
-                Obx(() => _controller.isLoading.value
-                    ? const Center(
-                        child: SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: CircularProgressIndicator()),
-                      )
-                    : const SizedBox())
-              ],
-            ),
+      body: Obx(
+        () => GridView.builder(
+          controller: scrollController,
+          physics: const ScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 1,
           ),
+          shrinkWrap: true,
+          itemCount: _controller.movieList.value != null
+              ? _controller.movieList.value!.length
+                  .clamp(0, (_controller.loadCount.value * 20))
+              : 0,
+          itemBuilder: (context, index) {
+            var movie = _controller.movieList.value![index];
+            return GestureDetector(
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => MoviePage(
+                    movie,
+                  ),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(3),
+                child: ClipRRect(
+                  child: CachedNetworkImage(
+                    imageUrl: movie.backdropPath != null
+                        ? 'https://image.tmdb.org/t/p/original/${movie.backdropPath}'
+                        : 'https://i0.wp.com/elfutbolito.mx/wp-content/uploads/2019/04/image-not-found.png?ssl=1',
+                    height: MediaQuery.of(context).size.height / 2,
+                    width: MediaQuery.of(context).size.width / 2,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Container(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image:
+                              AssetImage('assets/images/image_not_found.png'),
+                        ),
+                      ),
+                    ),
+                  ),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

@@ -24,7 +24,7 @@ class HomePageController extends GetxController {
       loadCount.value = loadCount.value + 1;
       print('here: ' + loadCount.value.toString());
       isLoading(true);
-      getNowPlaying();
+      await getNowPlaying();
     } finally {
       isLoading(false);
     }
