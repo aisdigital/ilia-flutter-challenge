@@ -1,40 +1,40 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movie_db/domain/movie/movie.dart';
 import 'package:movie_db/services/api/api_service.dart';
 
 @injectable
-class HomePageController extends GetxController {
-  HomePageController();
+class SearchPageController extends GetxController {
+  SearchPageController();
 
   final _apiService = ApiService();
 
   final movieList = Rxn<List<Movie>>();
+  final searchTextEditingController = Rx(TextEditingController());
   final loadCount = RxInt(1);
   var isLoading = true.obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-    getNowPlaying();
-  }
+  final initialQuery = Rxn<String>();
 
   void loadMore() async {
     try {
       loadCount.value = loadCount.value + 1;
       isLoading(true);
-      await getNowPlaying();
+      if (initialQuery.value != null) {
+        await search(initialQuery.value!, loadCount.value);
+      }
     } finally {
       isLoading(false);
     }
   }
 
-  Future<void> getNowPlaying() async {
+  Future<void> search(String query, int page) async {
+    initialQuery.value = query;
     if (movieList.value != null) {
       movieList.value!
-          .addAll(await _apiService.getNowPlayingOnPage(loadCount.value));
+          .addAll(await _apiService.searchMovie(query, loadCount.value));
     } else {
-      movieList.value = await _apiService.getNowPlayingOnPage(loadCount.value);
+      movieList.value = await _apiService.searchMovie(query, loadCount.value);
     }
   }
 }

@@ -72,4 +72,20 @@ class ApiService implements IApiService {
           'Exception accoured: $error with stacktrace: $stacktrace');
     }
   }
+
+  @override
+  Future<List<Movie>> searchMovie(String query, int page) async {
+    try {
+      final url =
+          '$initialUrl/search/movie?api_key=$apiKey&query=$query&language=pt-BR&page=$page&include_adult=false';
+      final response = await _dio.get(url);
+      var moviesData = response.data['results'] as List;
+      List<Movie> movieList =
+          moviesData.map((movie) => Movie.fromJson(movie)).toList();
+      return movieList;
+    } catch (error, stacktrace) {
+      throw Exception(
+          'Exception accoured: $error with stacktrace: $stacktrace');
+    }
+  }
 }

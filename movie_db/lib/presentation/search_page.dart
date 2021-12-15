@@ -1,23 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:movie_db/application/home_page_controller.dart';
-import 'package:movie_db/presentation/app_drawer.dart';
-import 'package:movie_db/presentation/search_page.dart';
+import 'package:movie_db/application/search_page_controller.dart';
 
 import 'movie_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class SearchPage extends StatefulWidget {
+  const SearchPage({
+    Key? key,
+  }) : super(
+          key: key,
+        );
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _SearchPageState extends State<SearchPage> {
   final _controller = Get.put(
-    HomePageController(),
+    SearchPageController(),
   );
   ScrollController scrollController = ScrollController();
   @override
@@ -38,27 +39,36 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.black87,
         elevation: 2,
-        leading: const Icon(Icons.menu),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.redAccent[400],
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const SearchPage(),
-                ),
-              );
-            },
-          ),
-        ],
+        automaticallyImplyLeading: true,
         title: Center(
-          child: Text(
-            'Em Cartaz'.toUpperCase(),
-            style: GoogleFonts.baloo(
-              color: Colors.redAccent[400],
+          child: Container(
+            width: double.infinity,
+            height: 40,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(5)),
+            child: Center(
+              child: Obx(
+                () => TextFormField(
+                  controller: _controller.searchTextEditingController.value,
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.next,
+                  decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {},
+                      ),
+                      hintText: 'Pesquisar...',
+                      border: InputBorder.none),
+                  onFieldSubmitted: (query) {
+                    _controller.loadCount.value = 1;
+                    _controller.search(
+                      query,
+                      _controller.loadCount.value,
+                    );
+                  },
+                ),
+              ),
             ),
           ),
         ),

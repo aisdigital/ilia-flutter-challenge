@@ -5,4 +5,5 @@ abstract class IApiService {
   Future<String> getTrailerVideoKey(int id);
   Future<Movie> getMovieRunTime(Movie movie);
   Future<Movie> getMovieCast(Movie movie);
+  Future<List<Movie>> searchMovie(String query, int page);
 }
