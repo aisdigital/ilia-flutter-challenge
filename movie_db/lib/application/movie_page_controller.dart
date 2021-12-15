@@ -11,7 +11,6 @@ class MoviePageController extends GetxController {
 
   final Movie? movie;
 
-  //TODO: inject
   final _apiService = ApiService();
 
   final movieUpdated = Rxn<Movie>();

@@ -2,15 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movie_db/domain/interfaces/i_api_service.dart';
 import 'package:movie_db/domain/movie/movie.dart';
+import 'package:movie_db/services/api/constants.dart';
 
 @LazySingleton(as: IApiService)
 class ApiService implements IApiService {
-  //TODO: passar como uma interface
   final Dio _dio = Dio();
 
-  //TODO: reservar em constantes
-  final initialUrl = 'https://api.themoviedb.org/3';
-  final apiKey = '32183061a4649baa342364978166fe69';
+  final initialUrl = ApiConstants.initialUrl;
+  final apiKey = ApiConstants.apiKey;
 
   @override
   Future<List<Movie>> getNowPlayingOnPage(int page) async {
