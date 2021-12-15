@@ -56,15 +56,16 @@ class _SearchPageState extends State<SearchPage> {
                       prefixIcon: Icon(Icons.search),
                       hintText: 'Pesquisar...',
                       border: InputBorder.none),
-                  onFieldSubmitted: (query) {
+                  onFieldSubmitted: (query) async {
                     _controller.loadCount.value = 1;
                     if (_controller.movieList.value != null) {
                       _controller.movieList.value!.clear();
                     }
-                    _controller.search(
+                    await _controller.search(
                       query,
                       _controller.loadCount.value,
                     );
+                    setState(() {});
                   },
                 ),
               ),
