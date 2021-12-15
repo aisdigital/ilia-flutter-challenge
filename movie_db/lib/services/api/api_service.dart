@@ -29,6 +29,38 @@ class ApiService implements IApiService {
   }
 
   @override
+  Future<Movie> getMovieRunTime(Movie movie) async {
+    try {
+      final url =
+          '$initialUrl/movie/${movie.id}?api_key=$apiKey&language=pt-BR';
+      final response = await _dio.get(url);
+      return movie.copyWith(runTime: response.data['runtime'].toString());
+    } catch (error, stacktrace) {
+      throw Exception(
+          'Exception accoured: $error with stacktrace: $stacktrace');
+    }
+  }
+
+  @override
+  Future<Movie> getMovieCast(Movie movie) async {
+    try {
+      final url =
+          '$initialUrl/movie/${movie.id}/credits?api_key=$apiKey&language=pt-BR';
+      final List<String?> castList = [];
+      final response = await _dio.get(url);
+      final castDetailList = response.data['cast'] as List;
+      for (var details in castDetailList) {
+        final name = details['name'];
+        castList.add(name);
+      }
+      return movie.copyWith(cast: castList);
+    } catch (error, stacktrace) {
+      throw Exception(
+          'Exception accoured: $error with stacktrace: $stacktrace');
+    }
+  }
+
+  @override
   Future<String> getTrailerVideoKey(int id) async {
     try {
       final response =

@@ -14,7 +14,9 @@ class MoviePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _controller = Get.put(
-      MoviePageController(),
+      MoviePageController(
+        movie: movie,
+      ),
     );
 
     return Scaffold(
@@ -179,12 +181,18 @@ class MoviePage extends StatelessWidget {
                             const SizedBox(
                               width: 5,
                             ),
-                            Text(
-                              movie.runTime != null
-                                  ? 'Duração: ${movie.runTime}'
-                                  : 'Duração: Indisponível',
-                              style: const TextStyle(
-                                color: Colors.white,
+                            Obx(
+                              () => Text(
+                                _controller.movieUpdated.value != null
+                                    ? (_controller
+                                                .movieUpdated.value!.runTime !=
+                                            null
+                                        ? 'Duração: ${_controller.movieUpdated.value!.runTime} minutos'
+                                        : 'Duração: Indisponível')
+                                    : 'Duração: Carregando...',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ],
@@ -290,23 +298,32 @@ class MoviePage extends StatelessWidget {
                           children: [
                             const SizedBox(width: 20),
                             Flexible(
-                              child: Text(
-                                movie.runTime != null
-                                    //TODO: put cast here
-                                    ? '${movie.title}'
-                                    : 'Indisponível',
-                                style: GoogleFonts.montserrat(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.normal,
-                                  shadows: [
-                                    const Shadow(
-                                      color: Colors.white,
-                                      blurRadius: 0.1,
-                                    )
-                                  ],
+                              child: Obx(
+                                () => Text(
+                                  _controller.movieUpdated.value != null
+                                      ? (_controller.movieUpdated.value!.cast !=
+                                              null
+                                          ? 'Elenco: ' +
+                                              _controller
+                                                  .movieUpdated.value!.cast
+                                                  .toString()
+                                                  .replaceAll('[', '')
+                                                  .replaceAll(']', '')
+                                          : 'Elenco: Indisponível')
+                                      : 'Elenco: Carregando...',
+                                  style: GoogleFonts.montserrat(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.normal,
+                                    shadows: [
+                                      const Shadow(
+                                        color: Colors.white,
+                                        blurRadius: 0.1,
+                                      )
+                                    ],
+                                  ),
+                                  overflow: TextOverflow.visible,
                                 ),
-                                overflow: TextOverflow.visible,
                               ),
                             ),
                           ],
