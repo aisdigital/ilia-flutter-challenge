@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_db/application/home_page_controller.dart';
-import 'package:movie_db/presentation/app_drawer.dart';
 import 'package:movie_db/presentation/search_page.dart';
 
 import 'movie_page.dart';
