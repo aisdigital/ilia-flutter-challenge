@@ -16,7 +16,7 @@ class SearchPageController extends GetxController {
   var isLoading = true.obs;
   final initialQuery = Rxn<String>();
 
-  void loadMore() async {
+  Future<void> loadMore() async {
     try {
       loadCount.value = loadCount.value + 1;
       isLoading(true);

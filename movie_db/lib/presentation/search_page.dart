@@ -52,16 +52,15 @@ class _SearchPageState extends State<SearchPage> {
                   controller: _controller.searchTextEditingController.value,
                   textCapitalization: TextCapitalization.sentences,
                   textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search),
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {},
-                      ),
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.search),
                       hintText: 'Pesquisar...',
                       border: InputBorder.none),
                   onFieldSubmitted: (query) {
                     _controller.loadCount.value = 1;
+                    if (_controller.movieList.value != null) {
+                      _controller.movieList.value!.clear();
+                    }
                     _controller.search(
                       query,
                       _controller.loadCount.value,
@@ -88,45 +87,55 @@ class _SearchPageState extends State<SearchPage> {
                   .clamp(0, (_controller.loadCount.value * 20))
               : 0,
           itemBuilder: (context, index) {
-            var movie = _controller.movieList.value![index];
-            return GestureDetector(
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => MoviePage(
-                    movie,
+            if (_controller.movieList.value!.isNotEmpty) {
+              var movie = _controller.movieList.value![index];
+              return GestureDetector(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => MoviePage(
+                      movie,
+                    ),
                   ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(3),
-                child: ClipRRect(
-                  child: CachedNetworkImage(
-                    imageUrl: movie.backdropPath != null
-                        ? 'https://image.tmdb.org/t/p/original/${movie.backdropPath}'
-                        : 'https://i0.wp.com/elfutbolito.mx/wp-content/uploads/2019/04/image-not-found.png?ssl=1',
-                    height: MediaQuery.of(context).size.height / 2,
-                    width: MediaQuery.of(context).size.width / 2,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => Container(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image:
-                              AssetImage('assets/images/image_not_found.png'),
+                child: Padding(
+                  padding: const EdgeInsets.all(3),
+                  child: ClipRRect(
+                    child: CachedNetworkImage(
+                      imageUrl: movie.backdropPath != null
+                          ? 'https://image.tmdb.org/t/p/original/${movie.backdropPath}'
+                          : 'https://i0.wp.com/elfutbolito.mx/wp-content/uploads/2019/04/image-not-found.png?ssl=1',
+                      height: MediaQuery.of(context).size.height / 2,
+                      width: MediaQuery.of(context).size.width / 2,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image:
+                                AssetImage('assets/images/image_not_found.png'),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(10),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
                   ),
                 ),
-              ),
-            );
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
           },
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    Get.delete<SearchPageController>();
+    super.dispose();
   }
 }

@@ -37,7 +37,10 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.black87,
         elevation: 2,
-        leading: const Icon(Icons.menu),
+        leading: const Icon(
+          Icons.menu,
+          color: Colors.redAccent,
+        ),
         actions: [
           IconButton(
             icon: Icon(

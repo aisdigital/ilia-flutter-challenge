@@ -6,16 +6,21 @@ import 'package:movie_db/application/movie_page_controller.dart';
 import 'package:movie_db/domain/movie/movie.dart';
 import 'package:movie_db/presentation/video_page.dart';
 
-class MoviePage extends StatelessWidget {
+class MoviePage extends StatefulWidget {
   const MoviePage(this.movie, {Key? key}) : super(key: key);
 
   final Movie movie;
 
   @override
+  State<MoviePage> createState() => _MoviePageState();
+}
+
+class _MoviePageState extends State<MoviePage> {
+  @override
   Widget build(BuildContext context) {
     final _controller = Get.put(
       MoviePageController(
-        movie: movie,
+        movie: widget.movie,
       ),
     );
 
@@ -26,8 +31,8 @@ class MoviePage extends StatelessWidget {
         automaticallyImplyLeading: true,
         title: Center(
           child: Text(
-            movie.title != null
-                ? movie.title!.toUpperCase()
+            widget.movie.title != null
+                ? widget.movie.title!.toUpperCase()
                 : 'Em Cartaz'.toUpperCase(),
             style: GoogleFonts.baloo(
               color: Colors.redAccent[400],
@@ -39,8 +44,8 @@ class MoviePage extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           CachedNetworkImage(
-            imageUrl: movie.backdropPath != null
-                ? 'https://image.tmdb.org/t/p/original/${movie.backdropPath}'
+            imageUrl: widget.movie.backdropPath != null
+                ? 'https://image.tmdb.org/t/p/original/${widget.movie.backdropPath}'
                 : 'https://i0.wp.com/elfutbolito.mx/wp-content/uploads/2019/04/image-not-found.png?ssl=1',
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -90,7 +95,9 @@ class MoviePage extends StatelessWidget {
                           padding:
                               const EdgeInsets.fromLTRB(24.0, 8.0, 0.0, 0.0),
                           child: Text(
-                            movie.title != null ? movie.title! : '',
+                            widget.movie.title != null
+                                ? widget.movie.title!
+                                : '',
                             style: GoogleFonts.montserrat(
                               color: Colors.white,
                               fontSize: 32,
@@ -105,23 +112,29 @@ class MoviePage extends StatelessWidget {
                             overflow: TextOverflow.clip,
                           ),
                         ),
-                        CachedNetworkImage(
-                          imageUrl: movie.backdropPath != null
-                              ? 'https://image.tmdb.org/t/p/w500/${movie.backdropPath}'
-                              : 'https://i0.wp.com/elfutbolito.mx/wp-content/uploads/2019/04/image-not-found.png?ssl=1',
-                          height: 200,
-                          width: 500,
-                          fit: BoxFit.fitHeight,
-                          placeholder: (context, url) => Container(
-                            color: Colors.black,
-                            height: 200,
-                            width: 500,
-                          ),
-                          errorWidget: (context, url, error) => Container(
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/images/image_not_found.png'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: CachedNetworkImage(
+                              imageUrl: widget.movie.backdropPath != null
+                                  ? 'https://image.tmdb.org/t/p/w500/${widget.movie.backdropPath}'
+                                  : 'https://i0.wp.com/elfutbolito.mx/wp-content/uploads/2019/04/image-not-found.png?ssl=1',
+                              height: 200,
+                              width: MediaQuery.of(context).size.width / 1.10,
+                              fit: BoxFit.fitHeight,
+                              placeholder: (context, url) => Container(
+                                color: Colors.black,
+                                height: 200,
+                                width: MediaQuery.of(context).size.width / 1.10,
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/image_not_found.png'),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -140,7 +153,7 @@ class MoviePage extends StatelessWidget {
                               width: 5,
                             ),
                             Text(
-                              'Estréia: ${movie.releaseDate}',
+                              'Estréia: ${widget.movie.releaseDate}',
                               style: const TextStyle(
                                 color: Colors.white,
                               ),
@@ -161,7 +174,7 @@ class MoviePage extends StatelessWidget {
                               width: 5,
                             ),
                             Text(
-                              'Nota: ${movie.voteAverage}',
+                              'Nota: ${widget.movie.voteAverage}',
                               style: const TextStyle(
                                 color: Colors.white,
                               ),
@@ -200,8 +213,8 @@ class MoviePage extends StatelessWidget {
                         const SizedBox(height: 10),
                         OutlinedButton(
                           onPressed: () async {
-                            final trailerVideoKey =
-                                await _controller.getTrailerVideoKey(movie.id!);
+                            final trailerVideoKey = await _controller
+                                .getTrailerVideoKey(widget.movie.id!);
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => VideoPage(
@@ -253,8 +266,8 @@ class MoviePage extends StatelessWidget {
                             const SizedBox(width: 20),
                             Flexible(
                               child: Text(
-                                movie.overview != null
-                                    ? '${movie.overview}'
+                                widget.movie.overview != null
+                                    ? '${widget.movie.overview}'
                                     : 'Indisponível',
                                 style: GoogleFonts.montserrat(
                                   color: Colors.white,
@@ -338,5 +351,11 @@ class MoviePage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    Get.delete<MoviePageController>();
+    super.dispose();
   }
 }
