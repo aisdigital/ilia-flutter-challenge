@@ -36,6 +36,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   auto_size_text: ^2.1.0
   dio: ^4.0.1
+  flutter_bloc: ^8.0.1
+  flutter_modular: ^4.3.1
+  dartz: ^0.10.1
   url_launcher: ^6.0.12
   carousel_slider: ^4.0.0
   youtube_player_flutter: ^8.0.0
