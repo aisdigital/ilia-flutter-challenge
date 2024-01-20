@@ -57,7 +57,7 @@ class IliaflixMovieCard extends StatelessWidget {
                     child: Text(
                       movieTitle,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w700,
                       ),
                       textAlign: TextAlign.justify,
@@ -74,16 +74,15 @@ class IliaflixMovieCard extends StatelessWidget {
                       Text(
                         movieVoteAverage.toString(),
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
                   Text(
-                    'Released on: $movieReleaseDate',
-                    style: const TextStyle(fontSize: 14),
+                    'Lançado em: $movieReleaseDate',
+                    style: const TextStyle(fontSize: 12),
                   )
                 ],
               ),

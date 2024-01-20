@@ -32,26 +32,37 @@ class FailureHomeState extends HomeStateIliaflix {
   List<Object?> get props => [];
 }
 
+class SuccessSearchMovieHomeState extends HomeStateIliaflix {
+  const SuccessSearchMovieHomeState();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class HomeState extends Equatable {
   final HomeStateIliaflix state;
   final NowPlayingMoviesSearchResult nowPlayingMovies;
   final String pageNumber;
+  final dynamic findMovie;
 
   const HomeState({
     this.state = const InitialHomeState(),
     this.nowPlayingMovies = const NowPlayingMoviesSearchResult.empty(),
     this.pageNumber = '1',
+    this.findMovie,
   });
 
   HomeState copyWith({
     HomeStateIliaflix? state,
     NowPlayingMoviesSearchResult? nowPlayingMovies,
     String? pageNumber,
+    dynamic findMovie,
   }) {
     return HomeState(
       state: state ?? this.state,
       nowPlayingMovies: nowPlayingMovies ?? this.nowPlayingMovies,
       pageNumber: pageNumber ?? this.pageNumber,
+      findMovie: findMovie ?? this.findMovie,
     );
   }
 
@@ -60,5 +71,6 @@ class HomeState extends Equatable {
         state,
         nowPlayingMovies,
         pageNumber,
+        findMovie,
       ];
 }

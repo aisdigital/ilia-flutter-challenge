@@ -15,6 +15,7 @@ class NowPlayingMoviesDatasourceImpl implements NowPlayingMoviesDatasource {
       'api.themoviedb.org',
       '/3/movie/now_playing',
       {
+        'language': 'pt-BR',
         'page': pageNumber,
         'api_key': credentials.apiKey,
       },

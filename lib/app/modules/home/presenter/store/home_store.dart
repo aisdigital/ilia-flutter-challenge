@@ -11,9 +11,7 @@ class HomeStore extends Cubit<HomeState> {
   final FetchNowPlayingMoviesUsecase fetchNowPlayingMoviesUsecase;
 
   Future<void> fetchNowPlayingMovies() async {
-    emit(
-      state.copyWith(state: const LoadingHomeState()),
-    );
+    emit(state.copyWith(state: const LoadingHomeState()));
 
     final response = await fetchNowPlayingMoviesUsecase(state.pageNumber);
 
@@ -41,5 +39,54 @@ class HomeStore extends Cubit<HomeState> {
     );
 
     fetchNowPlayingMovies();
+  }
+
+  void searchMovies(String movieName) async {
+    int currentPageNumber = 1;
+    bool wasFind = false;
+    dynamic findMovie;
+
+    emit(state.copyWith(state: const LoadingHomeState()));
+
+    while (!wasFind) {
+      if (currentPageNumber <= state.nowPlayingMovies.totalPages) {
+        final response =
+            await fetchNowPlayingMoviesUsecase(currentPageNumber.toString());
+
+        response.fold(
+          (success) {
+            for (var movie in success.results) {
+              if (movie["title"].toLowerCase().contains(movieName)) {
+                findMovie = movie;
+                wasFind = true;
+
+                emit(
+                  state.copyWith(
+                    state: const SuccessSearchMovieHomeState(),
+                    findMovie: findMovie,
+                    pageNumber: '1',
+                  ),
+                );
+              }
+            }
+          },
+          (failure) => emit(
+            state.copyWith(
+              state: const FailureHomeState(),
+            ),
+          ),
+        );
+
+        currentPageNumber++;
+      } else {
+        emit(
+          state.copyWith(
+            state: const FailureHomeState(),
+            pageNumber: '1',
+          ),
+        );
+        break;
+      }
+    }
   }
 }
