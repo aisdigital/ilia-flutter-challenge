@@ -44,7 +44,12 @@ class HomeStore extends Cubit<HomeState> {
   Future<void> searchMovies(String movieName) async {
     List<dynamic> findMoviesList = [];
 
-    emit(state.copyWith(state: const LoadingSearchMovieHomeState()));
+    emit(
+      state.copyWith(
+        state: const LoadingSearchMovieHomeState(),
+        pageCounterIsActive: false,
+      ),
+    );
 
     while (state.currentSearchPage <= state.nowPlayingMovies.totalPages) {
       final response = await fetchNowPlayingMoviesUsecase(
@@ -62,6 +67,7 @@ class HomeStore extends Cubit<HomeState> {
         (failure) => emit(
           state.copyWith(
             state: const FailureHomeState(),
+            pageCounterIsActive: true,
           ),
         ),
       );
@@ -75,6 +81,7 @@ class HomeStore extends Cubit<HomeState> {
           state: const FailureHomeState(),
           pageNumber: '1',
           currentSearchPage: 1,
+          pageCounterIsActive: true,
         ),
       );
     } else {
@@ -84,6 +91,7 @@ class HomeStore extends Cubit<HomeState> {
           findMoviesList: findMoviesList,
           pageNumber: '1',
           currentSearchPage: 1,
+          pageCounterIsActive: true,
         ),
       );
     }

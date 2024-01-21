@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ilia_flutter_challenge/app/modules/home/presenter/store/home_store.dart';
 import 'package:ilia_flutter_challenge/app/modules/home/presenter/widgets/iliaflix_movies_list.dart';
 import 'package:ilia_flutter_challenge/utils/widgets/iliaflix_appbar.dart';
-import 'package:ilia_flutter_challenge/utils/widgets/iliaflix_circular_progress_indicator.dart';
+import 'package:ilia_flutter_challenge/app/modules/home/presenter/widgets/iliaflix_loading_home_element.dart.dart';
 import 'package:ilia_flutter_challenge/app/modules/home/presenter/widgets/iliaflix_movie_not_found.dart';
 import 'package:ilia_flutter_challenge/app/modules/home/presenter/widgets/iliaflix_pages_counter.dart';
 import 'package:ilia_flutter_challenge/app/modules/home/presenter/widgets/iliaflix_search_textfield.dart';
@@ -69,12 +69,10 @@ class _HomePageState extends State<HomePage> {
 
                 switch (state.state) {
                   case LoadingHomeState():
-                    return const IliaflixCircularProgressIndicator(
-                      isSearch: false,
-                    );
+                    return const IliaflixLoadingHomeElement();
 
                   case LoadingSearchMovieHomeState():
-                    return IliaflixCircularProgressIndicator(
+                    return IliaflixLoadingHomeElement(
                       isSearch: true,
                       currentSearchPage: state.currentSearchPage.toString(),
                       totalPages: state.nowPlayingMovies.totalPages.toString(),
@@ -91,7 +89,14 @@ class _HomePageState extends State<HomePage> {
                 }
               },
             ),
-            IliaflixPagesCounter(store: store),
+            BlocBuilder<HomeStore, HomeState>(
+              bloc: store,
+              builder: (context, state) {
+                return state.pageCounterIsActive
+                    ? IliaflixPagesCounter(store: store)
+                    : const SliverToBoxAdapter();
+              },
+            )
           ],
         ),
       ),

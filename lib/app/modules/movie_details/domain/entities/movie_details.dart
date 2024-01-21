@@ -52,4 +52,31 @@ class MovieDetails {
     this.voteAverage,
     this.voteCount,
   });
+
+  const MovieDetails.empty()
+      : adult = false,
+        backdropPath = '',
+        belongsToCollection = const {},
+        budget = 0,
+        genres = const [],
+        homePage = '',
+        id = 0,
+        imdbId = '',
+        originalLanguage = '',
+        originalTitle = '',
+        overview = '',
+        popularity = 0.0,
+        posterPath = '',
+        productionCompanies = const [],
+        productionCountries = const [],
+        releaseDate = '',
+        revenue = 0,
+        runtime = 0,
+        spokenLanguages = const [],
+        status = '',
+        tagline = '',
+        title = '',
+        video = false,
+        voteAverage = 0.0,
+        voteCount = 0;
 }

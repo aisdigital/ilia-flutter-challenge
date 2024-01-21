@@ -51,6 +51,7 @@ class HomeState extends Equatable {
   final NowPlayingMoviesSearchResult nowPlayingMovies;
   final String pageNumber;
   final int currentSearchPage;
+  final bool pageCounterIsActive;
   final List<dynamic> findMoviesList;
 
   const HomeState({
@@ -58,6 +59,7 @@ class HomeState extends Equatable {
     this.nowPlayingMovies = const NowPlayingMoviesSearchResult.empty(),
     this.pageNumber = '1',
     this.currentSearchPage = 1,
+    this.pageCounterIsActive = true,
     this.findMoviesList = const [],
   });
 
@@ -66,6 +68,7 @@ class HomeState extends Equatable {
     NowPlayingMoviesSearchResult? nowPlayingMovies,
     String? pageNumber,
     int? currentSearchPage,
+    bool? pageCounterIsActive,
     List<dynamic>? findMoviesList,
   }) {
     return HomeState(
@@ -73,6 +76,7 @@ class HomeState extends Equatable {
       nowPlayingMovies: nowPlayingMovies ?? this.nowPlayingMovies,
       pageNumber: pageNumber ?? this.pageNumber,
       currentSearchPage: currentSearchPage ?? this.currentSearchPage,
+      pageCounterIsActive: pageCounterIsActive ?? this.pageCounterIsActive,
       findMoviesList: findMoviesList ?? this.findMoviesList,
     );
   }
@@ -83,6 +87,7 @@ class HomeState extends Equatable {
         nowPlayingMovies,
         pageNumber,
         currentSearchPage,
+        pageCounterIsActive,
         findMoviesList,
       ];
 }

@@ -30,19 +30,17 @@ class IliaflixMovieCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            SizedBox(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  bottomLeft: Radius.circular(30),
-                ),
-                child: SizedBox(
-                  width: 120,
-                  height: MediaQuery.of(context).size.height,
-                  child: Image.network(
-                    imageUrl,
-                    fit: BoxFit.cover,
-                  ),
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(30),
+                bottomLeft: Radius.circular(30),
+              ),
+              child: SizedBox(
+                width: 120,
+                height: MediaQuery.of(context).size.height,
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
