@@ -8,36 +8,36 @@ class IliaflixSearchTextField extends StatelessWidget {
   final HomeStore store;
   final TextEditingController controller = TextEditingController();
 
-  void handleSubmitFunction(String filter) {
-    store.searchMovies(filter);
+  Future<void> handleSubmitFunction(String filter) async {
+    await store.searchMovies(filter);
     controller.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: AppColors.darkGrey,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 15),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.vividRed),
-        ),
-        hintText: 'Insira o título de um filme',
-        hintStyle: TextStyle(
-          color: AppColors.lightGrey,
-          fontWeight: FontWeight.w300,
-        ),
-        suffixIcon: IconButton(
+    return Padding(
+      padding: const EdgeInsets.only(top: 15, bottom: 15),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: AppColors.darkGrey,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: AppColors.vividRed),
+          ),
+          hintText: 'Insira o título de um filme',
+          hintStyle: TextStyle(
+            color: AppColors.lightGrey,
+            fontWeight: FontWeight.w300,
+          ),
           icon: const Icon(Icons.search),
-          onPressed: () => handleSubmitFunction(controller.text),
         ),
+        onSubmitted: (filter) => handleSubmitFunction(filter),
       ),
-      onSubmitted: (filter) => handleSubmitFunction(filter),
     );
   }
 }

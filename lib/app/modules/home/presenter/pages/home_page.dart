@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ilia_flutter_challenge/app/modules/home/presenter/store/home_store.dart';
-import 'package:ilia_flutter_challenge/app/modules/home/presenter/widgets/iliaflix_appbar.dart';
-import 'package:ilia_flutter_challenge/app/modules/home/presenter/widgets/iliaflix_movie_card.dart';
+import 'package:ilia_flutter_challenge/app/modules/home/presenter/widgets/iliaflix_movies_list.dart';
+import 'package:ilia_flutter_challenge/utils/widgets/iliaflix_appbar.dart';
+import 'package:ilia_flutter_challenge/utils/widgets/iliaflix_circular_progress_indicator.dart';
 import 'package:ilia_flutter_challenge/app/modules/home/presenter/widgets/iliaflix_movie_not_found.dart';
 import 'package:ilia_flutter_challenge/app/modules/home/presenter/widgets/iliaflix_pages_counter.dart';
 import 'package:ilia_flutter_challenge/app/modules/home/presenter/widgets/iliaflix_search_textfield.dart';
 import 'package:ilia_flutter_challenge/utils/app_colors.dart';
-import 'package:ilia_flutter_challenge/utils/app_urls.dart';
-import 'package:ilia_flutter_challenge/utils/date_converter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.store});
@@ -21,7 +20,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   HomeStore get store => widget.store;
-  final DateConverter dateConverter = DateConverter();
 
   @override
   void initState() {
@@ -50,9 +48,7 @@ class _HomePageState extends State<HomePage> {
             SliverToBoxAdapter(
               child: Column(
                 children: [
-                  const SizedBox(height: 15),
                   IliaflixSearchTextField(store: store),
-                  const SizedBox(height: 15),
                   Row(
                     children: [
                       Icon(Icons.theaters, color: AppColors.lightGrey),
@@ -69,49 +65,26 @@ class _HomePageState extends State<HomePage> {
               bloc: store,
               builder: (context, state) {
                 final List<dynamic> moviesList = state.nowPlayingMovies.results;
-                final dynamic findMovie = state.findMovie;
+                final List<dynamic> findMoviesList = state.findMoviesList;
 
                 switch (state.state) {
                   case LoadingHomeState():
-                    return SliverToBoxAdapter(
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: CircularProgressIndicator(
-                            color: AppColors.vividRed,
-                          ),
-                        ),
-                      ),
+                    return const IliaflixCircularProgressIndicator(
+                      isSearch: false,
+                    );
+
+                  case LoadingSearchMovieHomeState():
+                    return IliaflixCircularProgressIndicator(
+                      isSearch: true,
+                      currentSearchPage: state.currentSearchPage.toString(),
+                      totalPages: state.nowPlayingMovies.totalPages.toString(),
                     );
 
                   case SuccessHomeState():
-                    return SliverList.builder(
-                      itemCount: moviesList.length,
-                      itemBuilder: (context, index) => IliaflixMovieCard(
-                        imageUrl: moviesList[index]['poster_path'] == null
-                            ? AppUrls.nullPosterMoviesImage
-                            : '${AppUrls.posterMoviesBaseUrl}${moviesList[index]['poster_path']}',
-                        movieTitle: moviesList[index]['title'],
-                        movieVoteAverage: moviesList[index]['vote_average'],
-                        movieReleaseDate: dateConverter
-                            .convertionDate(moviesList[index]['release_date']),
-                        onTapFunction: () {},
-                      ),
-                    );
+                    return IliaflixMoviesList(listItems: moviesList);
 
                   case SuccessSearchMovieHomeState():
-                    return SliverToBoxAdapter(
-                      child: IliaflixMovieCard(
-                        imageUrl: findMovie['poster_path'] == null
-                            ? AppUrls.nullPosterMoviesImage
-                            : '${AppUrls.posterMoviesBaseUrl}${findMovie['poster_path']}',
-                        movieTitle: findMovie['title'],
-                        movieVoteAverage: findMovie['vote_average'],
-                        movieReleaseDate: dateConverter
-                            .convertionDate(findMovie['release_date']),
-                        onTapFunction: () {},
-                      ),
-                    );
+                    return IliaflixMoviesList(listItems: findMoviesList);
 
                   default:
                     return const IliaflixMovieNotFound();

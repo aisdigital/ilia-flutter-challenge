@@ -32,7 +32,7 @@ class NowPlayingMoviesDatasourceImpl implements NowPlayingMoviesDatasource {
         throw Exception('Failed to load the now playing movies on theatres!');
       }
     } catch (error) {
-      throw Exception(error.toString());
+      throw Exception(error);
     }
   }
 }

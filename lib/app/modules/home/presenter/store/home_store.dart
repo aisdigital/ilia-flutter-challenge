@@ -41,52 +41,51 @@ class HomeStore extends Cubit<HomeState> {
     fetchNowPlayingMovies();
   }
 
-  void searchMovies(String movieName) async {
-    int currentPageNumber = 1;
-    bool wasFind = false;
-    dynamic findMovie;
+  Future<void> searchMovies(String movieName) async {
+    List<dynamic> findMoviesList = [];
 
-    emit(state.copyWith(state: const LoadingHomeState()));
+    emit(state.copyWith(state: const LoadingSearchMovieHomeState()));
 
-    while (!wasFind) {
-      if (currentPageNumber <= state.nowPlayingMovies.totalPages) {
-        final response =
-            await fetchNowPlayingMoviesUsecase(currentPageNumber.toString());
+    while (state.currentSearchPage <= state.nowPlayingMovies.totalPages) {
+      final response = await fetchNowPlayingMoviesUsecase(
+        state.currentSearchPage.toString(),
+      );
 
-        response.fold(
-          (success) {
-            for (var movie in success.results) {
-              if (movie["title"].toLowerCase().contains(movieName)) {
-                findMovie = movie;
-                wasFind = true;
-
-                emit(
-                  state.copyWith(
-                    state: const SuccessSearchMovieHomeState(),
-                    findMovie: findMovie,
-                    pageNumber: '1',
-                  ),
-                );
-              }
+      response.fold(
+        (success) {
+          for (var movie in success.results) {
+            if (movie["title"].toLowerCase().contains(movieName)) {
+              findMoviesList.add(movie);
             }
-          },
-          (failure) => emit(
-            state.copyWith(
-              state: const FailureHomeState(),
-            ),
-          ),
-        );
-
-        currentPageNumber++;
-      } else {
-        emit(
+          }
+        },
+        (failure) => emit(
           state.copyWith(
             state: const FailureHomeState(),
-            pageNumber: '1',
           ),
-        );
-        break;
-      }
+        ),
+      );
+
+      emit(state.copyWith(currentSearchPage: state.currentSearchPage + 1));
+    }
+
+    if (findMoviesList.isEmpty) {
+      emit(
+        state.copyWith(
+          state: const FailureHomeState(),
+          pageNumber: '1',
+          currentSearchPage: 1,
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          state: const SuccessSearchMovieHomeState(),
+          findMoviesList: findMoviesList,
+          pageNumber: '1',
+          currentSearchPage: 1,
+        ),
+      );
     }
   }
 }
