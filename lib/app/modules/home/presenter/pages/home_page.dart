@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                       Icon(Icons.theaters, color: AppColors.lightGrey),
                       const SizedBox(width: 10),
                       const Text(
-                        'Filmes que estão em exibição nos cinemas',
+                        'Filmes em exibição',
                       )
                     ],
                   )
