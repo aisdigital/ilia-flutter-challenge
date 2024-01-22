@@ -1,10 +1,16 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ilia_flutter_challenge/app/modules/movie_details/domain/repositories/movie_details_repository.dart';
-import 'package:ilia_flutter_challenge/app/modules/movie_details/domain/usecases/fetch_movie_details_usecase.dart';
-import 'package:ilia_flutter_challenge/app/modules/movie_details/domain/usecases/fetch_movie_details_usecase_impl.dart';
+import 'package:ilia_flutter_challenge/app/modules/movie_details/domain/repositories/movie_videos_repository.dart';
+import 'package:ilia_flutter_challenge/app/modules/movie_details/domain/usecases/fetch_movie_details/fetch_movie_details_usecase.dart';
+import 'package:ilia_flutter_challenge/app/modules/movie_details/domain/usecases/fetch_movie_details/fetch_movie_details_usecase_impl.dart';
+import 'package:ilia_flutter_challenge/app/modules/movie_details/domain/usecases/fetch_movie_videos/fetch_movie_videos_usecase.dart';
+import 'package:ilia_flutter_challenge/app/modules/movie_details/domain/usecases/fetch_movie_videos/fetch_movie_videos_usecase_impl.dart';
 import 'package:ilia_flutter_challenge/app/modules/movie_details/external/datasources/movie_details_datasource_impl.dart';
+import 'package:ilia_flutter_challenge/app/modules/movie_details/external/datasources/movie_videos_datasources_impl.dart';
 import 'package:ilia_flutter_challenge/app/modules/movie_details/infra/datasources/movie_details_datasource.dart';
+import 'package:ilia_flutter_challenge/app/modules/movie_details/infra/datasources/movie_videos_datasource.dart';
 import 'package:ilia_flutter_challenge/app/modules/movie_details/infra/repositories/movie_details_repository_impl.dart';
+import 'package:ilia_flutter_challenge/app/modules/movie_details/infra/repositories/movie_videos_repository_impl.dart';
 import 'package:ilia_flutter_challenge/app/modules/movie_details/presenter/pages/movies_details_page.dart';
 import 'package:ilia_flutter_challenge/app/modules/movie_details/presenter/store/movie_details_store.dart';
 import 'package:ilia_flutter_challenge/utils/app_routes.dart';
@@ -15,6 +21,11 @@ class MoviesDetailsModule extends Module {
     i.add<MovieDetailsDatasource>(MovieDetailsDatasourceImpl.new);
     i.add<MovieDetailsRepository>(MovieDetailsRepositoryImpl.new);
     i.add<FetchMovieDetailsUsecase>(FetchMovieDetailsUsecaseImpl.new);
+
+    i.add<MovieVideosDatasource>(MovieVideosDatasourceImpl.new);
+    i.add<MovieVideosRepository>(MovieVideosRepositoryImpl.new);
+    i.add<FetchMovieVideosUsecase>(FetchMovieVideosUsecaseImpl.new);
+
     i.add(MovieDetailsStore.new);
   }
 

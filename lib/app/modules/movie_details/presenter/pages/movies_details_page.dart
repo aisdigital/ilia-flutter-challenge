@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ilia_flutter_challenge/app/modules/movie_details/domain/entities/movie_details.dart';
 import 'package:ilia_flutter_challenge/app/modules/movie_details/presenter/store/movie_details_store.dart';
 import 'package:ilia_flutter_challenge/app/modules/movie_details/presenter/widgets/iliaflix_movie_details_component.dart';
 import 'package:ilia_flutter_challenge/utils/widgets/iliaflix_appbar.dart';
@@ -33,6 +32,7 @@ class _MoviesDetailsPageState extends State<MoviesDetailsPage> {
 
   Future<void> inicializationPage(int movieId) async {
     await store.fetchMovieDetails(movieId);
+    await store.fetchMovieVideos(movieId);
   }
 
   @override
@@ -44,8 +44,6 @@ class _MoviesDetailsPageState extends State<MoviesDetailsPage> {
         child: BlocBuilder<MovieDetailsStore, MovieDetailsState>(
           bloc: store,
           builder: (context, state) {
-            final MovieDetails movieDetails = state.movieDetails;
-
             switch (state.state) {
               case LoadingMovieDetailsState():
                 return SizedBox(
@@ -57,12 +55,7 @@ class _MoviesDetailsPageState extends State<MoviesDetailsPage> {
 
               case SuccessMovieDetailsState():
                 return IliaflixMovieDetailsComponent(
-                  posterPath: movieDetails.posterPath!,
-                  title: movieDetails.title!,
-                  voteAverage: movieDetails.voteAverage!.toString(),
-                  voteCount: movieDetails.voteCount!.toString(),
-                  overview: movieDetails.overview!,
-                  genres: movieDetails.genres!,
+                  store: store,
                 );
 
               default:
