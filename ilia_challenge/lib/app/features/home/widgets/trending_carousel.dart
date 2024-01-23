@@ -9,7 +9,7 @@ class TrendingSlider extends StatelessWidget {
   });
 
   final AsyncSnapshot snapshot;
-
+  //teste 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -40,7 +40,7 @@ class TrendingSlider extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: SizedBox(
-                height: 300,
+                height: 299,
                 width: 200,
                 child: Image.network(
                   filterQuality: FilterQuality.high,
