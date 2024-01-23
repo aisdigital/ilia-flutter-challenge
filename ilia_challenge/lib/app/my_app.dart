@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ilia_challenge/app/constants/colors.dart';
-import 'package:ilia_challenge/app/constants/constants.dart';
 import 'package:ilia_challenge/app/features/home/screens/home_screen.dart';
-import 'package:ilia_challenge/app/utils/routes.dart';
+import 'package:ilia_challenge/app/utils/app_routes.dart';
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
