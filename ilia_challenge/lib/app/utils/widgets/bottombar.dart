@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ilia_challenge/app/features/home/screens/home_screen.dart';
-import 'package:ilia_challenge/app/features/search/screens/home_page.dart';
+import 'package:ilia_challenge/app/features/search/screens/search_screen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class BottomNavScreen extends StatefulWidget {

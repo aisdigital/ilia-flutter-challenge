@@ -8,3 +8,4 @@ class DetailsLoadMovieEvent extends DetailsEvent {
   DetailsLoadMovieEvent({required this.clickedMovie});
 }
 
+

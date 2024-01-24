@@ -15,3 +15,5 @@ class DetailsLoadedSuccessState extends DetailsState {
   final Movie movie;
   DetailsLoadedSuccessState({required this.movie});
 }
+
+

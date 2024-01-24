@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
+import 'package:ilia_challenge/app/service/nowplaying_service.dart';
+import 'package:ilia_challenge/app/service/popular_service.dart';
+import 'package:ilia_challenge/app/service/trending_movies_service.dart';
 import '../../../models/movie.dart';
-import '../../../service/movies_service.dart';
 part 'home_event.dart';
 part 'home_state.dart';
+
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeInitial()) {
@@ -16,9 +20,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(HomeLoadingState());
 
     try {
-      final trendingMovies = await Services().getTrendingMovies();
-      final nowplayingMovies = await Services().getnowPlayingMovies();
-      final popularMovies = await Services().getPopularMovies();
+      final trendingMovies = await TrendingService().getTrendingMovies();
+      final nowplayingMovies = await NowPlayingServoce().getnowPlayingMovies();
+      final popularMovies = await PopularService().getPopularMovies();
 
       emit(HomeLoadedSuccessState(
         trendingMovies: trendingMovies,

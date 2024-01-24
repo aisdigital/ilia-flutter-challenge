@@ -35,6 +35,13 @@ class MoviesSlider extends StatelessWidget {
                   height: 200,
                   width: 150,
                   child: Image.network(
+                                      loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    );
+                
+                  },
                     filterQuality: FilterQuality.high,
                     fit: BoxFit.cover,
                     '${Constants.imagePath}${movies[itemIndex].posterPath}',

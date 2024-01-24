@@ -41,6 +41,13 @@ class TrendingSlider extends StatelessWidget {
                 height: 299,
                 width: 200,
                 child: Image.network(
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    );
+                
+                  },
                   filterQuality: FilterQuality.high,
                   fit: BoxFit.cover,
                   '${Constants.imagePath}${movies[itemIndex].posterPath}',
