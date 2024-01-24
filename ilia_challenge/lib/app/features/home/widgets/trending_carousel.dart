@@ -1,21 +1,25 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:ilia_challenge/app/constants/constants.dart';
+import '../../../constants/constants.dart';
+import '../../../models/movie.dart';
+import '../bloc/home_bloc.dart';
 
 class TrendingSlider extends StatelessWidget {
   const TrendingSlider({
-    super.key,
-    required this.snapshot,
-  });
+    Key? key,
+    required this.movies,
+    required this.homeBloc,
+  }) : super(key: key);
 
-  final AsyncSnapshot snapshot;
-  //teste 
+  final HomeBloc homeBloc;
+  final List<Movie> movies;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: CarouselSlider.builder(
-        itemCount: snapshot.data!.length,
+        itemCount: movies.length,
         options: CarouselOptions(
           height: 300,
           autoPlay: true,
@@ -28,14 +32,8 @@ class TrendingSlider extends StatelessWidget {
         itemBuilder: (context, itemIndex, pageViewIndex) {
           return GestureDetector(
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => DetailsScreen(
-              //       movie: snapshot.data[itemIndex],
-              //     ),
-              //   ),
-              // );
+              homeBloc.add(
+                  HomeNavigateToDetailsEvent(clickedMovie: movies[itemIndex]));
             },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
@@ -45,8 +43,7 @@ class TrendingSlider extends StatelessWidget {
                 child: Image.network(
                   filterQuality: FilterQuality.high,
                   fit: BoxFit.cover,
-                  '${Constants.imagePath}${snapshot.data[itemIndex].posterPath}',
-                
+                  '${Constants.imagePath}${movies[itemIndex].posterPath}',
                 ),
               ),
             ),

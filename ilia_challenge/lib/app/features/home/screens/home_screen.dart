@@ -1,11 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:ilia_challenge/app/utils/widgets/appbar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ilia_challenge/app/features/details/screens/details_screen.dart';
+import 'package:ilia_challenge/app/features/home/bloc/home_bloc.dart';
 import 'package:ilia_challenge/app/features/home/widgets/movies_slider.dart';
+import 'package:ilia_challenge/app/utils/widgets/appbar.dart';
 import 'package:ilia_challenge/app/features/home/widgets/trending_carousel.dart';
-import 'package:ilia_challenge/app/models/movie.dart';
-import 'package:ilia_challenge/app/service/movies_service.dart';
+import 'package:lottie/lottie.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/';
@@ -15,129 +15,101 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-late Future<List<Movie>> trendingMovies;
-late Future<List<Movie>> nowplayingMovies;
-late Future<List<Movie>> popularMovies;
-
 class _HomeScreenState extends State<HomeScreen> {
+  late HomeBloc homeBloc = HomeBloc();
+
   @override
   void initState() {
     super.initState();
-    trendingMovies = Services().getTrendingMovies();
-    nowplayingMovies = Services().getnowPlayingMovies();
-    popularMovies = Services().getPopularMovies();
+    homeBloc = HomeBloc()..add(HomeInitialEvent());
+  }
+
+  @override
+  void dispose() {
+    homeBloc.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-      appBar: const DefaultAppBar(
-        showBackButton: false,
-        showHeartButton: true,
-      ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Em Alta",
-                style: Theme.of(context).textTheme.bodyLarge,
+    return BlocProvider(
+      create: (context) => homeBloc,
+      child: BlocConsumer<HomeBloc, HomeState>(
+        listenWhen: (previous, current) => current is HomeActionState,
+        buildWhen: (previous, current) => current is! HomeActionState,
+        listener: (context, state) {
+          if (state is HomeNavigatetoDetailsState) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailsScreen(
+                  movie: (state as HomeNavigatetoDetailsState).clickedMovie,
+                ),
               ),
-              const SizedBox(
-                height: 10,
+            );
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            appBar: const DefaultAppBar(),
+            body: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: _buildBody(state),
               ),
-              SizedBox(
-                child: FutureBuilder(
-                    future: trendingMovies,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text("Erro ao carregar os filmes"),
-                        );
-                      } else if (snapshot.hasData) {
-                        return TrendingSlider(
-                          snapshot: snapshot,
-                        );
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    }),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                "Favoritos do público",
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                child: FutureBuilder(
-                    future: popularMovies,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text("Erro ao carregar os filmes"),
-                        );
-                      } else if (snapshot.hasData) {
-                        return MoviesSlider(
-                          screenHeight: screenHeight,
-                          screenWidth: screenWidth,
-                          snapshot: snapshot,
-                        );
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    }),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                "Em Cartaz",
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                child: FutureBuilder(
-                    future: nowplayingMovies,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text("Erro ao carregar os filmes"),
-                        );
-                      } else if (snapshot.hasData) {
-                        return MoviesSlider(
-                          screenHeight: screenHeight,
-                          screenWidth: screenWidth,
-                          snapshot: snapshot,
-                        );
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    }),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
+  }
+
+  Widget _buildBody(HomeState state) {
+    if (state is HomeLoadingState) {
+      return Center(child: Lottie.asset('assets/lottie.json'));
+    } else if (state is HomeLoadedSuccessState) {
+      final successState = state;
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Trending",
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.start,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          TrendingSlider(
+              movies: successState.trendingMovies, homeBloc: homeBloc),
+          Text(
+            "Favorites",
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.start,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          MoviesSlider(movies: successState.popularMovies, homeBloc: homeBloc),
+          Text(
+            "Now Playing",
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.start,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          MoviesSlider(
+              homeBloc: homeBloc, movies: successState.nowplayingMovies)
+        ],
+      );
+    } else if (state is HomeErrorState) {
+      return const Center(
+        child: Text('Erro ao carregar os filmes.'),
+      );
+    }
+    return Container();
   }
 }

@@ -5,6 +5,7 @@ import 'package:ilia_challenge/app/constants/constants.dart';
 import 'package:ilia_challenge/app/models/movie.dart';
 
 class Services {
+  static get baseUrl => 'https://api.themoviedb.org/3/';
   static const _trendingUrl =
       'https://api.themoviedb.org/3/trending/movie/day?api_key=${Constants.apiKey}';
   static const _nowPlaying =
@@ -22,6 +23,8 @@ class Services {
       throw Exception('Something happened');
     }
   }
+
+
 
   Future<List<Movie>> getPopularMovies() async {
     final response = await http.get(Uri.parse(_popular));
@@ -45,3 +48,8 @@ class Services {
     }
   }
 }
+
+
+
+  
+

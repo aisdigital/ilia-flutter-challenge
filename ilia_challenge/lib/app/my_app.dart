@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ilia_challenge/app/constants/colors.dart';
-import 'package:ilia_challenge/app/features/home/screens/home_screen.dart';
 import 'package:ilia_challenge/app/utils/app_routes.dart';
-
+import 'package:ilia_challenge/app/utils/widgets/bottombar.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -18,20 +17,20 @@ class MyApp extends StatelessWidget {
             iconTheme: IconThemeData(color: Colors.black),
             centerTitle: true,
           ),
-          textTheme: TextTheme(
+          textTheme: const TextTheme(
             bodySmall: TextStyle(color: Colors.black),
             bodyLarge: TextStyle(
-                color: Colors.black,
-                fontSize: 26,
-                fontWeight: FontWeight.w500), // Para textos normais
-            bodyMedium:
-                TextStyle(color: Colors.black87), // Para textos secundários
-            // Adicione mais estilos conforme necessário
+                color: Colors.black, fontSize: 26, fontWeight: FontWeight.w500),
+            bodyMedium: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black
+            ),
           ),
           iconTheme: const IconThemeData(color: Colors.black),
         ),
         debugShowCheckedModeBanner: false,
         onGenerateRoute: ((settings) => generateRoute(settings)),
-        home: const HomeScreen());
+        home: const BottomNavScreen());
   }
 }
