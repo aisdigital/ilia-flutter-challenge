@@ -1,94 +1,41 @@
 import 'dart:convert';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ilia_challenge/app/constants/constants.dart';
+import 'package:ilia_challenge/app/features/search/bloc/search_bloc.dart';
 import 'package:ilia_challenge/app/models/movie.dart';
 import 'package:ilia_challenge/app/utils/widgets/appbar.dart';
+import 'package:lottie/lottie.dart';
 import '../widgets/custom_list_card_widget.dart';
 
-
-// class MovieSearch {
-//   final String title;
-//   final String posterPath;
-
-//   MovieSearch({
-//     required this.title,
-//     required this.posterPath,
-//   });
-
-//   factory MovieSearch.fromJson(Map<String, dynamic> json) {
-//     return MovieSearch(
-//       title: json['title'],
-//       posterPath: json['poster_path'],
-//     );
-//   }
-// }
-
-class HomePage extends StatefulWidget {
+class SearchScreen extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _SearchScreenState createState() => _SearchScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _SearchScreenState extends State<SearchScreen> {
   late Future<List<Movie>> movies;
   TextEditingController searchController = TextEditingController();
   List<Movie> allMovies = [];
   int currentPage = 1;
   final ScrollController _scrollController = ScrollController();
-
-
+  late SearchBloc searchBloc = SearchBloc();
 
   @override
   void initState() {
     super.initState();
-    movies = fetchAllMovies(currentPage);
-
-    // Adicione um listener ao controlador de rolagem
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        // Se estiver no final da lista, carregue a próxima página
-        currentPage++;
-        loadNextPage();
-      }
-    });
+    searchBloc = SearchBloc()..add(SearchInitialEvent());
   }
 
-    // Adicione este método para carregar a próxima página
-  void loadNextPage() async {
-    List<Movie> nextPage = await fetchAllMovies(currentPage);
-    setState(() {
-  movies = Future.value(allMovies);
-    });
+  @override
+  void dispose() {
+    searchBloc.close();
+    super.dispose();
   }
 
-Future<List<Movie>> fetchAllMovies(int page) async {
-    final response = await http.get(
-      Uri.parse('https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&page=$page'),
-    );
-
-    if (response.statusCode == 200) {
-      final decodedData = json.decode(response.body)['results'] as List;
-      final moviesOnPage = decodedData.map((movie) => Movie.fromJson(movie)).toList();
-
-      // Se estiver na primeira página, atualize a lista completa
-if (page == 1) {
-  // Não substitua a lista existente, apenas adicione à lista
-  allMovies.addAll(moviesOnPage);
-} else {
-  // Adicione à lista existente
-  allMovies.addAll(moviesOnPage);
-}
-
-      return allMovies;
-    } else {
-      throw Exception('Failed to load movies');
-    }
-  }
-
-
-
-  List<Movie> filterMovies(String query) {
+  List<Movie> filterMovies(String query, List<Movie> allMovies) {
     return allMovies
         .where(
             (movie) => movie.title.toLowerCase().contains(query.toLowerCase()))
@@ -97,14 +44,32 @@ if (page == 1) {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: DefaultAppBar(),
-      body: Column(
+    return BlocConsumer<SearchBloc, SearchState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      bloc: searchBloc,
+      listenWhen: (previous, current) => current is SearchActionState,
+      buildWhen: (previous, current) => current is! SearchActionState,
+      builder: (context, state) {
+        return Scaffold(appBar: const DefaultAppBar(), body: _buildBody(state));
+      },
+    );
+  }
+
+  Widget _buildBody(SearchState state) {
+    if (state is SearchLoadingState) {
+      return Center(child: Lottie.asset('assets/lottie.json'));
+    } else if (state is SearchLoadedSuccessState) {
+      final successState = state;
+      final filteredMovies = filterMovies(searchController.text, successState.movies);
+
+      return Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              height: 40, 
+              height: 40,
               decoration: BoxDecoration(
                 color: Colors.black87,
                 borderRadius: BorderRadius.circular(8),
@@ -112,13 +77,11 @@ if (page == 1) {
               child: TextField(
                 controller: searchController,
                 onChanged: (query) {
-                  setState(() {
-                    movies = Future.value(filterMovies(query));
-                  });
+                  searchBloc.add(SearchMovieEvent(query));                  
                 },
-                style: TextStyle(color: Colors.white), // Cor do texto
+                style: const TextStyle(color: Colors.white), // Cor do texto
                 cursorColor: Colors.white, // Cor do cursor
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Search by title',
                   hintStyle: TextStyle(color: Colors.grey),
@@ -128,45 +91,63 @@ if (page == 1) {
             ),
           ),
           Expanded(
-            child: FutureBuilder<List<Movie>>(
-              future: movies,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
-                  );
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(
-                    child: Text('No movies available.'),
-                  );
-                } else {
-                  return GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, 
-                      crossAxisSpacing:
-                          0.0, 
-                      mainAxisSpacing:
-                          0.0, 
-                    ),
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      final movie = snapshot.data![index];
-                      return CustomListCardWidget(
-                        movie: movie,
-                      );
-                    },
-                  );
-                }
-              },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CustomListCardWidget(
+                movie: successState.movies,
+                searchBloc: searchBloc,
+              ),
             ),
           ),
         ],
-      ),
-    );
+      );
+    } else if (state is SearchedMovieState) {
+      final successState = state;
+
+      return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.black87,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: TextField(
+                controller: searchController,
+                onChanged: (query) {
+                  searchBloc.add(SearchMovieEvent(query));                  
+                },
+                style: const TextStyle(color: Colors.white), // Cor do texto
+                cursorColor: Colors.white, // Cor do cursor
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Search by title',
+                  hintStyle: TextStyle(color: Colors.grey),
+                  prefixIcon: Icon(Icons.search, color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CustomListCardWidget(
+                movie: state.movies,
+                searchBloc: searchBloc,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+    
+    else if (state is SearchErrorState) {
+      return const Center(
+        child: Text('Erro ao carregar os filmes.'),
+      );
+    }
+    return Container();
   }
 }
-

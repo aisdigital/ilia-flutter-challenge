@@ -18,7 +18,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _getScreensUsers() {
-      return [const HomeScreen(), HomePage()];
+      return [const HomeScreen(), SearchScreen()];
     }
 
     List<SalomonBottomBarItem> itensUsers = [
