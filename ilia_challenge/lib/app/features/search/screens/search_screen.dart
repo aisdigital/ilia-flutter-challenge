@@ -102,46 +102,52 @@ class _SearchScreenState extends State<SearchScreen> {
         ],
       );
     } else if (state is SearchedMovieState) {
-      final successState = state;
+  final successState = state;
+  final filteredMovies = filterMovies(searchController.text, successState.movies);
 
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.black87,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: TextField(
-                controller: searchController,
-                onChanged: (query) {
-                  searchBloc.add(SearchMovieEvent(query));                  
-                },
-                style: const TextStyle(color: Colors.white), // Cor do texto
-                cursorColor: Colors.white, // Cor do cursor
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Search by title',
-                  hintStyle: TextStyle(color: Colors.grey),
-                  prefixIcon: Icon(Icons.search, color: Colors.white),
-                ),
-              ),
+  return Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          height: 40,
+          decoration: BoxDecoration(
+            color: Colors.black87,
+            borderRadius: BorderRadius.circular(8),
+            
+          ),
+          
+          child: TextField(
+            controller: searchController,
+            onChanged: (query) {
+              searchBloc.add(SearchMovieEvent(query));                  
+            },
+            
+            style: const TextStyle(color: Colors.white),
+            cursorColor: Colors.white,
+            decoration: const InputDecoration(
+              
+              border: InputBorder.none,
+              hintText: 'Search by title',
+              hintStyle: TextStyle(color: Colors.grey),
+              prefixIcon: Icon(Icons.search, color: Colors.white),
             ),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CustomListCardWidget(
-                movie: state.movies,
-                searchBloc: searchBloc,
-              ),
-            ),
+        ),
+      ),
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CustomListCardWidget(
+            movie: filteredMovies,  // Use a lista filtrada aqui
+            searchBloc: searchBloc,
           ),
-        ],
-      );
-    }
+        ),
+      ),
+    ],
+  );
+}
+
     
     else if (state is SearchErrorState) {
       return const Center(
