@@ -14,7 +14,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         settings: routeSettings,
         builder: (context) => const Scaffold(
           body: Center(
-            child: Text('Page não encontrada.'),
+            child: Text('Page not found.'),
           ),
         ),
       );

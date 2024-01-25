@@ -10,3 +10,5 @@ class SearchMovieEvent extends SearchEvent {
 
   SearchMovieEvent(this.query);
 }
+
+class SearchMoreMoviesEvent extends SearchEvent {}

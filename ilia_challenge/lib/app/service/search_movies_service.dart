@@ -9,10 +9,16 @@ class SearchMoviesService {
         'https://api.themoviedb.org/3/search/movie?api_key=${Constants.apiKey}&query=$query';
 
     final response = await http.get(Uri.parse(url));
+
     if (response.statusCode == 200) {
-      final decodedData = json.decode(response.body)['results'] as List;
-      print(decodedData);
-      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+      final decodedData = json.decode(response.body);
+
+      if (decodedData['results'] != null) {
+        final List<dynamic> results = decodedData['results'];
+        return results.map((movie) => Movie.fromJson(movie)).toList();
+      } else {
+        return [];
+      }
     } else {
       throw Exception('Something happened');
     }

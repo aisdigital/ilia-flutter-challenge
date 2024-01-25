@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ilia_challenge/app/constants/constants.dart';
-import 'package:ilia_challenge/app/features/details/screens/details_screen.dart';
 import '../../../models/movie.dart';
 import '../bloc/home_bloc.dart';
 
@@ -15,7 +14,7 @@ class MoviesSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
+      height: 220,
       width: double.infinity,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -35,13 +34,12 @@ class MoviesSlider extends StatelessWidget {
                   height: 200,
                   width: 150,
                   child: Image.network(
-                                      loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return const Center(
-                      child: CircularProgressIndicator.adaptive(),
-                    );
-                
-                  },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      );
+                    },
                     filterQuality: FilterQuality.high,
                     fit: BoxFit.cover,
                     '${Constants.imagePath}${movies[itemIndex].posterPath}',

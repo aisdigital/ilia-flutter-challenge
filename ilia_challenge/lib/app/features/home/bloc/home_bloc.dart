@@ -8,7 +8,6 @@ import '../../../models/movie.dart';
 part 'home_event.dart';
 part 'home_state.dart';
 
-
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeInitial()) {
     on<HomeInitialEvent>(homeInitialEvent);
@@ -18,7 +17,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> homeInitialEvent(
       HomeInitialEvent event, Emitter<HomeState> emit) async {
     emit(HomeLoadingState());
-        await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     try {
       final trendingMovies = await TrendingService().getTrendingMovies();
       final nowplayingMovies = await NowPlayingServoce().getnowPlayingMovies();

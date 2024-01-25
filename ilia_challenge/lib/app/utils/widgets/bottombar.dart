@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilia_challenge/app/constants/colors.dart';
 import 'package:ilia_challenge/app/features/home/screens/home_screen.dart';
 import 'package:ilia_challenge/app/features/search/screens/search_screen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -17,29 +18,35 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _getScreensUsers() {
-      return [const HomeScreen(), SearchScreen()];
+    List<Widget> getScreensUsers() {
+      return [const HomeScreen(), const SearchScreen()];
     }
 
     List<SalomonBottomBarItem> itensUsers = [
       SalomonBottomBarItem(
         icon: const Icon(Icons.home_outlined),
         title: const Text("Home"),
-        selectedColor: Colors.white,
-        activeIcon: const Icon(Icons.home, color: Colors.white),
+        selectedColor: Colours.secondaryColor,
+        activeIcon: const Icon(
+          Icons.home,
+          color: Colours.secondaryColor,
+        ),
       ),
       SalomonBottomBarItem(
         icon: const Icon(Icons.search_outlined),
         title: const Text("Search"),
-        selectedColor: Colors.white,
-        activeIcon: const Icon(Icons.search, color: Colors.white),
+        selectedColor: Colours.secondaryColor,
+        activeIcon: const Icon(
+          Icons.search,
+          color: Colours.secondaryColor,
+        ),
       ),
     ];
 
-    List<Widget> _screensUsers = _getScreensUsers();
+    List<Widget> screensUsers = getScreensUsers();
 
     return Scaffold(
-      body: _screensUsers[_currentIndex],
+      body: screensUsers[_currentIndex],
       bottomNavigationBar: SalomonBottomBar(
         backgroundColor: Colors.black87,
         margin: const EdgeInsets.all(12.0),
@@ -51,7 +58,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
             setState(() => _currentIndex = index);
           }
         },
-        selectedItemColor: Colors.white,
+        selectedItemColor: Colours.secondaryColor,
         unselectedItemColor: Colors.white,
         items: [
           ...itensUsers,

@@ -21,7 +21,7 @@ class TrendingSlider extends StatelessWidget {
       child: CarouselSlider.builder(
         itemCount: movies.length,
         options: CarouselOptions(
-          height: 300,
+          height: 280,
           autoPlay: true,
           viewportFraction: 0.55,
           enlargeCenterPage: true,
@@ -46,7 +46,6 @@ class TrendingSlider extends StatelessWidget {
                     return const Center(
                       child: CircularProgressIndicator.adaptive(),
                     );
-                
                   },
                   filterQuality: FilterQuality.high,
                   fit: BoxFit.cover,

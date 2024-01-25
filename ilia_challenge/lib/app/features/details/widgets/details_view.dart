@@ -1,13 +1,8 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ilia_challenge/app/features/details/bloc/details_bloc.dart';
 import 'package:ilia_challenge/app/service/trailer_movies.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:http/http.dart' as http;
 import '../../../constants/colors.dart';
 import '../../../constants/constants.dart';
 import '../../../models/movie.dart';
@@ -34,20 +29,16 @@ class _DetailsWidgetState extends State<DetailsWidget> {
     _loadMovieTrailer();
   }
 
-  Future<void> _loadMovieTrailer() async {
+  _loadMovieTrailer() async {
     try {
       trailerYouTubeID = await TrailerMovies().getMovieTrailer(
         movieTrailer,
-        trailerYouTubeID,
         widget.movie.id.toString(),
       );
       setState(() {
         trailerYouTubeID = trailerYouTubeID;
       });
-    } catch (error) {
-      print('Error loading movie trailer: $error');
-      // Trate o erro conforme necessário
-    }
+    } catch (error) {}
   }
 
   @override
@@ -57,7 +48,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
         SliverAppBar(
           leading: const BackBtn(),
           backgroundColor: Colours.backgroundColor,
-          expandedHeight: 300,
+          expandedHeight: 500,
           pinned: true,
           floating: true,
           flexibleSpace: FlexibleSpaceBar(
@@ -67,13 +58,12 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                 bottomRight: Radius.circular(24),
               ),
               child: Image.network(
-                                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return const Center(
-                      child: CircularProgressIndicator.adaptive(),
-                    );
-                
-                  },
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  );
+                },
                 '${Constants.imagePath}${widget.movie.posterPath}',
                 filterQuality: FilterQuality.high,
                 fit: BoxFit.cover,
@@ -91,8 +81,8 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                   width: double.infinity,
                   child: Text(
                     widget.movie.title,
-                    style: const TextStyle(
-                      fontSize: 20,
+                    style: GoogleFonts.robotoCondensed(
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
@@ -102,9 +92,11 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                   onPressed: () async {
                     if (trailerYouTubeID == '') {
                       const snackBar = SnackBar(
-                        content: Text('Movie trailer not available'),
-                        backgroundColor: CupertinoColors.systemOrange,
-                      );
+                          content: Text(
+                            'Movie trailer not available',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Colours.secondaryColor);
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     } else {
                       showMovieTrailerDialog(context);
@@ -112,12 +104,10 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 5,
-                    backgroundColor: Colors.transparent,
+                    backgroundColor: Colours.secondaryColor,
                     shadowColor: Colors.transparent.withOpacity(0.1),
                     side: const BorderSide(
-                      width: 2,
-                      color: CupertinoColors.systemOrange,
-                    ),
+                        width: 2, color: Colours.secondaryColor),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -125,23 +115,23 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                   child: const Text(
                     'Watch Trailer',
                     style: TextStyle(
-                        color: CupertinoColors.systemOrange,
-                        fontWeight: FontWeight.w300),
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Text(
-                  'Overview',
-                  style: TextStyle(
-                    fontSize: 18,
+                Text(
+                  'Sipnosis',
+                  style: GoogleFonts.robotoCondensed(
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 12),
                 Text(
                   widget.movie.overview,
-                  style: const TextStyle(
+                  style: GoogleFonts.robotoCondensed(
                     fontSize: 16,
+                    fontWeight: FontWeight.w300,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -165,7 +155,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
   }
 
   void showMovieTrailerDialog(BuildContext context) {
-    var videoUrl = "https://www.youtube.com/watch?v=${trailerYouTubeID}";
+    var videoUrl = "https://www.youtube.com/watch?v=$trailerYouTubeID";
     final videoID = YoutubePlayer.convertUrlToId(videoUrl);
     _controller = YoutubePlayerController(
       initialVideoId: videoID!,
@@ -218,9 +208,10 @@ class _DetailsWidgetState extends State<DetailsWidget> {
 
 Widget _buildInfoContainer(String label, String value) {
   return Container(
-    padding: const EdgeInsets.all(12),
+    margin: const EdgeInsets.only(top: 10),
+    padding: const EdgeInsets.all(13),
     decoration: BoxDecoration(
-      color: Colors.white,
+      color: Colours.secondaryColor,
       boxShadow: const [
         BoxShadow(
           color: Colors.black12,
@@ -236,7 +227,7 @@ Widget _buildInfoContainer(String label, String value) {
         Text(
           label,
           style: const TextStyle(
-            color: Colors.grey,
+            color: Colors.white,
             fontSize: 14,
             fontWeight: FontWeight.bold,
           ),
@@ -245,8 +236,9 @@ Widget _buildInfoContainer(String label, String value) {
         Text(
           value,
           style: const TextStyle(
+            color: Colors.white,
             fontSize: 16,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ],

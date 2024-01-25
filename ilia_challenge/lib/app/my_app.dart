@@ -22,10 +22,7 @@ class MyApp extends StatelessWidget {
             bodyLarge: TextStyle(
                 color: Colors.black, fontSize: 26, fontWeight: FontWeight.w500),
             bodyMedium: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black
-            ),
+                fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
           ),
           iconTheme: const IconThemeData(color: Colors.black),
         ),

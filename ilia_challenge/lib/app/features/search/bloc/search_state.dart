@@ -25,4 +25,12 @@ class SearchedMovieState extends SearchState {
   });
 }
 
+class SearchLoadedMoreMoviesSuccessState extends SearchState {
+  final List<Movie> movies;
+
+  SearchLoadedMoreMoviesSuccessState({
+    required this.movies,
+  });
+}
+
 class SearchErrorState extends SearchState {}

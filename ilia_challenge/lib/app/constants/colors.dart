@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Colours{
-  // COLORS
+class Colours {
   static const appBarGradient = LinearGradient(
     colors: [
       Color.fromARGB(255, 29, 201, 192),
@@ -10,7 +9,6 @@ class Colours{
     stops: [0.5, 1.0],
   );
 
-  static const secondaryColor = Color.fromRGBO(24, 47, 92, 0.31);
-  static const backgroundColor = Color.fromARGB(255, 215, 221, 231);
-
+  static const secondaryColor = Color.fromRGBO(59, 200, 243, 1);
+  static const backgroundColor = Color.fromARGB(255, 236, 238, 241);
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ilia_challenge/app/features/details/screens/details_screen.dart';
 import 'package:ilia_challenge/app/features/home/bloc/home_bloc.dart';
 import 'package:ilia_challenge/app/features/home/widgets/movies_slider.dart';
@@ -43,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => DetailsScreen(
-                  movie: (state as HomeNavigatetoDetailsState).clickedMovie,
+                  movie: (state).clickedMovie,
                 ),
               ),
             );
@@ -76,7 +77,10 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Text(
             "Trending",
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: GoogleFonts.robotoCondensed(
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+            ),
             textAlign: TextAlign.start,
           ),
           const SizedBox(
@@ -86,7 +90,10 @@ class _HomeScreenState extends State<HomeScreen> {
               movies: successState.trendingMovies, homeBloc: homeBloc),
           Text(
             "Favorites",
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: GoogleFonts.robotoCondensed(
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+            ),
             textAlign: TextAlign.start,
           ),
           const SizedBox(
@@ -95,7 +102,10 @@ class _HomeScreenState extends State<HomeScreen> {
           MoviesSlider(movies: successState.popularMovies, homeBloc: homeBloc),
           Text(
             "Now Playing",
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: GoogleFonts.robotoCondensed(
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+            ),
             textAlign: TextAlign.start,
           ),
           const SizedBox(
