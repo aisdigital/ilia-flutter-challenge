@@ -1,8 +1,3 @@
-# ília - Code Challenge Flutter
-**English**
-##### Before we start ⚠️
-**Please create a fork from this repository**
-
 ## The Challenge:
 Using the API from [TheMovieDB](https://developers.themoviedb.org/3/getting-started/introduction), You must create an app that shows the featured movies in the Theaters, in a list.
 
@@ -16,28 +11,16 @@ When the user touches in a movie, the app must show in a detail screen detailed 
 
 In the end, a pull request must be created in the Github repo. As soon as you finish, please let us know.
 
-We are available to answer any questions.
 
-***
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-**Português**
-##### Antes de começar ⚠️
-**Por favor, crie um fork desse repositório**
+# ilia_challenge
 
-## The Challenge:
-Utilizando a API do [TheMovieDB](https://developers.themoviedb.org/3/getting-started/introduction), Criar um app que mostre os filmes que estão em cartaz nos cinemas, em forma de lista.
+A new Flutter project.
 
-Ao tocar em um filme, mostrar em uma nova tela, informações detalhadas sobre ele, você pode escolher quais informações acha interessante mostrar.
+## Getting Started
 
-## Extras:
+flutter run --dart-define-from-file=dev.env
 
-- Na tela de listagem dos filmes, ir carregando as próximas páginas ao dar scroll até o final da página atual
-- Na tela de detalhe, criar uma opçāo para tocar o vídeo do trailer do filme.
-- Na tela inicial, possibilitar a busca por título do filme
+After clonning this repository use the Flutter SDK to build your app
 
-
-No final, um pull request deve ser criado no repositório do Github. Assim que terminar, por favor nos avise.
-
-Estamos à disposição, para tirar dúvidas.
-
-Happy coding! 🤓
