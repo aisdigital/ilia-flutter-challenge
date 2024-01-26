@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ilia_challenge/core/domain/core_repository.dart';
@@ -27,12 +29,18 @@ class _MyHomePageState extends State<MyHomePage> {
         child: BlocBuilder<HomeBloc, HomeState>(
             bloc: bloc..add(const HomeEvent.started()),
             builder: (context, state) {
-              return const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('ApiKey: ${Config.apiKey}'),
-                  Text('Bearer ${Config.bearerToken}'),
-                ],
+              return ListView.builder(
+                itemCount: state.moovies.length,
+                itemBuilder: (context, index) {
+                  final movie = state.moovies[index];
+
+                  return Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(json.encode(movie)),
+                    ),
+                  );
+                },
               );
             }),
       ),

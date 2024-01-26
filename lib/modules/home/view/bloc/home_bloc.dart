@@ -22,7 +22,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   _homeStarted(_HomeStarted event, emit) async {
     print(' ===================== HomeStarted ===================== ');
-    final (error, response) = await repo.fetchMovies();
+
+    var (error, response) = await repo.discover();
+    if (response != null) {
+      emit(state.copyWith(moovies: List.from(response.data['results'])));
+    }
     print('error: ${error?.message} | response: ${response}');
   }
 
