@@ -1,11 +1,14 @@
-import 'package:ilia_challenge/modules/core/domain/services/ilia_http_service.dart';
+import 'package:ilia_challenge/core/domain/interfaces/int_error.dart';
+import 'package:ilia_challenge/core/domain/interfaces/int_http_service.dart';
+import 'package:ilia_challenge/core/domain/interfaces/int_response.dart';
+import 'package:ilia_challenge/main.dart';
 
 class HomeRepository {
-  final IliaHttpService client;
+  final IntHttpService client = injector.find<IntHttpService>();
 
-  HomeRepository({required this.client});
-
-  fetchMovies() {
-    return client.get(route: 'https://api.themoviedb.org/3/movie/11');
+  Future<(IntError?, IntResponse?)> fetchMovies() async {
+    final (IntError? error, IntResponse? response) =
+        await client.get(route: '/3/movie/11');
+    return (error, response);
   }
 }

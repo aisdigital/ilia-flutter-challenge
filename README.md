@@ -21,6 +21,7 @@ A new Flutter project.
 ## Getting Started
 
 flutter run --dart-define-from-file=dev.env
+dart run build_runner build --delete-conflicting-outputs
 
 After clonning this repository use the Flutter SDK to build your app
 
