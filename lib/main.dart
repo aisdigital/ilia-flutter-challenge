@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:ilia_challenge/core/config/config.dart';
-import 'package:ilia_challenge/core/services/core.dart';
+import 'package:ilia_challenge/modules/core/external/dependency_injector_adapter/auto_injector.dart';
+import 'package:ilia_challenge/modules/core/infra/config/config.dart';
+import 'package:ilia_challenge/modules/core/infra/interfaces/int_dep_injector.dart';
 
-late final Core core;
+late final IntDepInjector injector;
 
 void main() {
-  core = Core();
+  WidgetsFlutterBinding.ensureInitialized();
+  injector = AutoInjectorAdapter()..init();
   runApp(const MyApp());
 }
 
