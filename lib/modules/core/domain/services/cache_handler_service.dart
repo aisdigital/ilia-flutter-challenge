@@ -1,27 +1,32 @@
-import 'package:ilia_challenge/modules/core/external/cache_adapter/shared_preferences_adapter.dart';
+import 'package:ilia_challenge/modules/core/domain/interfaces/int_cache_service.dart';
+import 'package:ilia_challenge/modules/core/adapters/cache_adapter/shared_preferences_adapter.dart';
 import 'package:ilia_challenge/modules/core/infra/interfaces/int_cache.dart';
 import 'package:ilia_challenge/modules/core/infra/interfaces/int_cache_object.dart';
 
-class CacheHandlerService {
+class CacheHandlerService implements IntCacheHandlerService {
   final IntCache cache = SharedPreferencesAdapter();
-
-  put(IntCacheObject obj) async {
+  @override
+  Future put(IntCacheObject obj) async {
     await cache.put(obj);
   }
 
-  get(String key) async {
+  @override
+  Future get(String key) async {
     return await cache.get(key);
   }
 
-  update(IntCacheObject obj) async {
+  @override
+  Future update(IntCacheObject obj) async {
     await cache.update(obj);
   }
 
-  delete(String key) async {
+  @override
+  Future delete(String key) async {
     await cache.delete(key);
   }
 
-  clearCache() async {
+  @override
+  Future clear() async {
     await cache.clearCache();
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ilia_challenge/modules/core/external/dependency_injector_adapter/auto_injector.dart';
-import 'package:ilia_challenge/modules/core/infra/config/config.dart';
+import 'package:ilia_challenge/modules/core/adapters/dependency_injector_adapter/auto_injector.dart';
+import 'package:ilia_challenge/modules/core/infra/services/config/config.dart';
 import 'package:ilia_challenge/modules/core/infra/interfaces/int_dep_injector.dart';
 
 late final IntDepInjector injector;

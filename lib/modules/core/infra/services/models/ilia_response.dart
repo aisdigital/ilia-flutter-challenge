@@ -1,5 +1,5 @@
-import 'package:ilia_challenge/modules/core/domain/interfaces/int_error.dart';
-import 'package:ilia_challenge/modules/core/domain/interfaces/int_response.dart';
+import 'package:ilia_challenge/modules/core/infra/interfaces/int_error.dart';
+import 'package:ilia_challenge/modules/core/infra/interfaces/int_response.dart';
 
 class IliaResponse implements IntResponse {
   @override

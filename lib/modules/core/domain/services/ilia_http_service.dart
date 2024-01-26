@@ -1,21 +1,18 @@
-import 'package:ilia_challenge/modules/core/external/http_client_adapter.dart/dio.dart';
-import 'package:ilia_challenge/modules/core/domain/interfaces/int_request.dart';
-import 'package:ilia_challenge/modules/core/domain/interfaces/int_response.dart';
-import 'package:ilia_challenge/modules/core/infra/models/errors.dart';
-import 'package:ilia_challenge/modules/core/infra/models/ilia_response.dart';
+import 'package:ilia_challenge/modules/core/domain/interfaces/int_http_service.dart';
+import 'package:ilia_challenge/modules/core/adapters/http_client_adapter.dart/dio_client_adapter.dart';
+import 'package:ilia_challenge/modules/core/infra/interfaces/int_response.dart';
+import 'package:ilia_challenge/modules/core/infra/services/models/errors.dart';
+import 'package:ilia_challenge/modules/core/infra/services/models/ilia_response.dart';
 
-class IliaRequest implements IntRequest {
-  IliaRequest({required this.route});
-
-  @override
-  String route;
-
-  final datasource = DioClient();
+class IliaHttpService implements IntHttpService {
+  final datasource = DioClientAdapter();
 
   @override
-  Future<(ServerError?, IntResponse)> get() async {
+  Future<(ServerError?, IntResponse)> get({
+    required String route,
+  }) async {
     try {
-      final result = await datasource.get(route);
+      final result = await datasource.get(route: route);
 
       return (
         null,
@@ -33,7 +30,10 @@ class IliaRequest implements IntRequest {
   }
 
   @override
-  Future<(ServerError?, IntResponse)> post({required Map payload}) async {
+  Future<(ServerError?, IntResponse)> post({
+    required String route,
+    required Map payload,
+  }) async {
     try {
       final result = await datasource.post(
         route: route,
@@ -56,7 +56,10 @@ class IliaRequest implements IntRequest {
   }
 
   @override
-  Future<(ServerError?, IntResponse)> put({required Map payload}) async {
+  Future<(ServerError?, IntResponse)> put({
+    required String route,
+    required Map payload,
+  }) async {
     try {
       final result = await datasource.put(
         route: route,
@@ -79,9 +82,11 @@ class IliaRequest implements IntRequest {
   }
 
   @override
-  Future<(ServerError?, IntResponse)> delete() async {
+  Future<(ServerError?, IntResponse)> delete({
+    required String route,
+  }) async {
     try {
-      final result = await datasource.delete(route);
+      final result = await datasource.delete(route: route);
 
       return (
         null,

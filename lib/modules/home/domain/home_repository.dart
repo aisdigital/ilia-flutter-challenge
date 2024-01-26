@@ -1,7 +1,7 @@
-import 'package:ilia_challenge/modules/core/domain/services/http_handler_service.dart';
+import 'package:ilia_challenge/modules/core/domain/services/ilia_http_service.dart';
 
 class HomeRepository {
-  final HttpHandlerService client;
+  final IliaHttpService client;
 
   HomeRepository({required this.client});
 

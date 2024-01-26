@@ -1,10 +1,10 @@
 import 'package:auto_injector/auto_injector.dart';
+import 'package:ilia_challenge/modules/core/domain/services/ilia_http_service.dart';
 import 'package:ilia_challenge/modules/core/domain/services/cache_handler_service.dart';
-import 'package:ilia_challenge/modules/core/domain/services/http_handler_service.dart';
-import 'package:ilia_challenge/modules/core/infra/config/config.dart';
+import 'package:ilia_challenge/modules/core/infra/interfaces/int_http_client.dart';
+import 'package:ilia_challenge/modules/core/infra/services/config/config.dart';
 import 'package:ilia_challenge/modules/core/infra/interfaces/int_cache.dart';
 import 'package:ilia_challenge/modules/core/infra/interfaces/int_dep_injector.dart';
-import 'package:ilia_challenge/modules/core/infra/interfaces/int_http_client.dart';
 
 class AutoInjectorAdapter implements IntDepInjector {
   static final _injector = AutoInjector();
@@ -16,7 +16,7 @@ class AutoInjectorAdapter implements IntDepInjector {
     instance
       ..addSingleton(Config.new)
       ..addSingleton(CacheHandlerService.new)
-      ..addSingleton(HttpHandlerService.new)
+      ..addSingleton(IliaHttpService.new)
       ..commit();
   }
 
@@ -28,7 +28,7 @@ class AutoInjectorAdapter implements IntDepInjector {
       case IntCache:
         return instance<CacheHandlerService>();
       case IntHttpClient:
-        return instance<HttpHandlerService>();
+        return instance<IliaHttpService>();
 
       default:
         return null;

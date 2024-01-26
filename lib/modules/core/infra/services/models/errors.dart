@@ -1,4 +1,4 @@
-import 'package:ilia_challenge/modules/core/domain/interfaces/int_error.dart';
+import 'package:ilia_challenge/modules/core/infra/interfaces/int_error.dart';
 
 class ServerError implements IntError {
   @override
