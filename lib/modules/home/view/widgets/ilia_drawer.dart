@@ -34,12 +34,65 @@ class _IliaDrawerState extends State<IliaDrawer> {
                 // routes.service.push(SystemRoutes.customers);
               },
               child: Container(
-                  color: Theme.of(context).colorScheme.surface,
                   height: _layout.height * .1,
                   alignment: Alignment.center,
-                  child: const Text('Filtros')),
+                  child: Text(
+                    'Categorias',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  )),
             ),
-            SizedBox(height: _layout.height * .42),
+            InkWell(
+              onTap: () {
+                // routes.service.push(SystemRoutes.customers);
+              },
+              child: Container(
+                  height: _layout.height * .1,
+                  alignment: Alignment.center,
+                  color: Theme.of(context).colorScheme.surface,
+                  child: Text(
+                    'Em Cartaz',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  )),
+            ),
+            InkWell(
+              onTap: () {
+                // routes.service.push(SystemRoutes.customers);
+              },
+              child: Container(
+                  height: _layout.height * .1,
+                  alignment: Alignment.center,
+                  color: Theme.of(context).colorScheme.surface,
+                  child: Text(
+                    'Em Breve',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  )),
+            ),
+            InkWell(
+              onTap: () {
+                // routes.service.push(SystemRoutes.customers);
+              },
+              child: Container(
+                  height: _layout.height * .1,
+                  alignment: Alignment.center,
+                  color: Theme.of(context).colorScheme.surface,
+                  child: Text(
+                    'Tendências',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  )),
+            ),
+            InkWell(
+              onTap: () {
+                // routes.service.push(SystemRoutes.customers);
+              },
+              child: Container(
+                  height: _layout.height * .1,
+                  alignment: Alignment.center,
+                  color: Theme.of(context).colorScheme.surface,
+                  child: Text(
+                    'Populares',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  )),
+            ),
             Container(
               height: _layout.height * .08,
               alignment: Alignment.center,
@@ -47,34 +100,36 @@ class _IliaDrawerState extends State<IliaDrawer> {
                   valueListenable: core,
                   builder: (context, state, child) {
                     return ListTile(
-                      title: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            height:
-                                state.language == 'language=en-US' ? 26 : 20,
-                            width: state.language == 'language=en-US' ? 39 : 30,
-                            child: Image.asset(
-                              'assets/images/us_flag.png',
-                              fit: BoxFit.cover,
+                      title: const Text('Idioma'),
+                      trailing: Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: InkWell(
+                          onTap: () {
+                            core.switchLanguage();
+                          },
+                          child: AnimatedCrossFade(
+                            duration: Durations.medium3,
+                            crossFadeState: state.language == 'language=en-US'
+                                ? CrossFadeState.showFirst
+                                : CrossFadeState.showSecond,
+                            firstChild: SizedBox(
+                              height: 30,
+                              width: 45,
+                              child: Image.asset(
+                                'assets/images/us_flag.png',
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                            secondChild: SizedBox(
+                              height: 30,
+                              width: 45,
+                              child: Image.asset(
+                                'assets/images/br_flag.png',
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           ),
-                          SizedBox(
-                            height:
-                                state.language == 'language=pt-BR' ? 25 : 20,
-                            width: state.language == 'language=pt-BR' ? 39 : 30,
-                            child: Image.asset(
-                              'assets/images/br_flag.png',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ],
-                      ),
-                      trailing: Switch(
-                        value: state.language == 'language=pt-BR',
-                        onChanged: (value) {
-                          core.switchLanguage();
-                        },
+                        ),
                       ),
                     );
                   }),
@@ -97,7 +152,7 @@ class _IliaDrawerState extends State<IliaDrawer> {
               ),
             ),
             Container(
-                height: _layout.height * .1,
+                height: _layout.height * .07,
                 alignment: Alignment.center,
                 child: TextButton(
                     onPressed: () async {

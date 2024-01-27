@@ -5,8 +5,9 @@ class HomeState with _$HomeState {
   factory HomeState({
     @Default(false) bool pinSearchBar,
     @Default({}) Map filters,
-    @Default([]) List movies,
-    @Default({}) Map<MovieSection, UriBuilderService> sections,
-    MovieSection? currentSection,
+    @Default({}) Map<MovieSection, List> movies,
+    @Default({}) Map<MovieSection, MoviesUriBuilderService> sections,
+    @Default(MovieSection.nowPlaying) MovieSection currentSection,
+    @Default({}) Map<String, bool> loaders,
   }) = _HomeState;
 }

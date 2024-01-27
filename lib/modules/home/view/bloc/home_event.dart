@@ -10,6 +10,7 @@ class HomeEvent with _$HomeEvent {
 
   const factory HomeEvent.loadMovies({
     required MovieSection section,
+    required Completer<Map<MovieSection, List<dynamic>>> result,
   }) = _LoadMovies;
 
   const factory HomeEvent.nextPageRequested({

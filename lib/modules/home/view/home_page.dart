@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:ilia_challenge/core/cubit/challenge_core.dart';
 import 'package:ilia_challenge/modules/home/view/bloc/home_bloc.dart';
 import 'package:ilia_challenge/modules/home/view/widgets/ilia_drawer.dart';
 import 'package:ilia_challenge/modules/home/view/widgets/ilia_fullscreen_loader.dart';
+import 'package:ilia_challenge/modules/home/view/widgets/pull_to_refresh_infitine_list.dart';
 
 class HomePage extends StatefulWidget {
   static String get route => '/home';
@@ -45,11 +47,12 @@ class _HomePageState extends State<HomePage> {
               child: BlocBuilder<HomeBloc, HomeState>(
                   bloc: bloc,
                   builder: (context, state) {
-                    return ListView.builder(
-                      itemCount: state.movies.length,
+                    return PullToRefreshInfiniteList(
+                      itemCount:
+                          state.movies[state.currentSection]?.length ?? 0,
                       itemBuilder: (context, index) {
-                        final movie = state.movies[index];
-
+                        final movie =
+                            state.movies[state.currentSection]?[index];
                         return Card(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -57,19 +60,28 @@ class _HomePageState extends State<HomePage> {
                           ),
                         );
                       },
+                      loadNext: () async {
+                        final success = Completer<bool>();
+
+                        bloc.add(HomeEvent.nextPageRequested(
+                            section: state.currentSection,
+                            success: () {
+                              success.complete(true);
+                            }));
+
+                        return await success.future;
+                      },
+                      onRefresh: () async {
+                        bloc.add(const HomeEvent.started());
+                      },
                     );
                   }),
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {},
-              tooltip: 'Increment',
-              child: const Icon(Icons.add),
             ),
           ),
           ValueListenableBuilder(
               valueListenable: core,
               builder: (context, store, _) {
-                return IliaFullscreenLoader(
+                return const IliaFullscreenLoader(
                   loading: false,
                   color: Colors.white,
                 );

@@ -11,29 +11,4 @@ class HomeRepository {
         await client.get(route: route);
     return (error, response);
   }
-
-  Future<(IntError?, IntResponse?)> nowPlaying({required String route}) async {
-    final (IntError? error, IntResponse? response) =
-        await client.get(route: '/movie/now_playing?language=pt-BR&page=1');
-    return (error, response);
-  }
-
-  Future<(IntError?, IntResponse?)> upcoming({required String route}) async {
-    final (IntError? error, IntResponse? response) =
-        await client.get(route: '/movie/upcoming?language=pt-BR&page=1');
-    return (error, response);
-  }
-
-  Future<(IntError?, IntResponse?)> discover({required String route}) async {
-    final (IntError? error, IntResponse? response) =
-        await client.get(route: '/discover/movie?language=pt-BR&page=1');
-
-    return (error, response);
-  }
-
-  Future<(IntError?, IntResponse?)> popular({required String route}) async {
-    final (IntError? error, IntResponse? response) =
-        await client.get(route: '/movie/popular?language=pt-BR&page=1');
-    return (error, response);
-  }
 }
