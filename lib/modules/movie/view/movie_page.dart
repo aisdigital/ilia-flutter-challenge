@@ -5,6 +5,7 @@ import 'package:ilia_challenge/modules/movie/view/cubit/movie_cubit.dart';
 
 class MoviePage extends StatefulWidget {
   const MoviePage({super.key, required this.movie});
+  static String get route => '/movie';
 
   final Map movie;
 

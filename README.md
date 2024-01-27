@@ -20,6 +20,7 @@ A new Flutter project.
 
 ## Getting Started
 
+flutter test --dart-define-from-file=dev.env
 flutter run --dart-define-from-file=dev.env
 dart run build_runner build --delete-conflicting-outputs
 
