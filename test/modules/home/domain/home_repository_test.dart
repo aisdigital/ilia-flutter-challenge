@@ -72,7 +72,7 @@ void main() {
     test('Testing ${MovieSection.upcoming} ...', () async {
       // PAGES LOADED AFTER LAST PAGE COMES WITH EMPTY RESULT
       // MoviesUriBuilderService sets uri to null after last page
-      upcoming.handleLastPage(lastPage: 38);
+      upcoming.handleLastPage(last: 38);
       for (var i = 0; i < 38; i++) {
         print('index: ${upcoming.uri}');
         upcoming.nextPage();

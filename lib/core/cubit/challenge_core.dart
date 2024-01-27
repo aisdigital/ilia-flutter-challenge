@@ -9,17 +9,21 @@ class ChallengeCore extends ValueNotifier<CoreState> {
   static const String english = 'en-US';
 
   switchLanguage() {
-    String language = value.language;
+    const Locale port = Locale('pt', 'BR');
+    const Locale eng = Locale('en', 'US');
 
-    switch (language) {
-      case 'language=$portuguese':
-        language = 'language=$english';
+    Locale locale = value.locale;
+
+    switch (locale) {
+      case port:
+        locale = eng;
         break;
       default:
-        language = 'language=$portuguese';
+        locale = port;
         break;
     }
-    value = value.copyWith(language: language);
+
+    value = value.copyWith(locale: locale);
     notifyListeners();
   }
 
@@ -36,5 +40,25 @@ class ChallengeCore extends ValueNotifier<CoreState> {
     }
     value = value.copyWith(themeMode: themeMode);
     notifyListeners();
+  }
+}
+
+enum Language {
+  english,
+  portuguese;
+
+  // 'language=pt-BR'
+  Locale get locale {
+    return switch (this) {
+      Language.english => const Locale('en', 'US'),
+      Language.portuguese => const Locale('pt', 'BR'),
+    };
+  }
+
+  String get apiParam {
+    return switch (this) {
+      Language.english => 'language=en-US',
+      Language.portuguese => 'language=pt-BR',
+    };
   }
 }

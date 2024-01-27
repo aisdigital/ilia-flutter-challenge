@@ -5,6 +5,7 @@ import 'package:ilia_challenge/core/infra/interfaces/int_dep_injector.dart';
 import 'package:ilia_challenge/core/infra/services/theme/dark_theme.dart';
 import 'package:ilia_challenge/core/infra/services/theme/light_theme.dart';
 import 'package:ilia_challenge/modules/home/view/home_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 late final IntDepInjector injector;
 
@@ -28,7 +29,13 @@ class IliaApp extends StatelessWidget {
             themeMode: state.themeMode,
             darkTheme: DarkTheme(context).themeData(),
             theme: LightTheme(context).themeData(),
-            home: const HomePage(title: 'Ília Challenge'),
+            home: Builder(builder: (context) {
+              return HomePage(
+                  title: AppLocalizations.of(context)?.iliaChallenge ?? '');
+            }),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: core.value.locale,
           );
         });
   }

@@ -1,20 +1,20 @@
 part of 'challenge_core.dart';
 
 class CoreState {
-  String language;
+  Locale locale;
   ThemeMode themeMode;
 
   CoreState({
-    this.language = 'language=pt-BR',
+    this.locale = const Locale('pt', 'BR'),
     this.themeMode = ThemeMode.dark,
   });
 
   CoreState copyWith({
-    String? language,
+    Locale? locale,
     ThemeMode? themeMode,
   }) {
     return CoreState(
-      language: language ?? this.language,
+      locale: locale ?? this.locale,
       themeMode: themeMode ?? this.themeMode,
     );
   }

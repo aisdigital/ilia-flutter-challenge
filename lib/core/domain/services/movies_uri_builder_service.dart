@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:ilia_challenge/core/cubit/challenge_core.dart';
 import 'package:ilia_challenge/core/infra/services/config/config.dart';
 import 'package:ilia_challenge/main.dart';
@@ -23,7 +24,21 @@ class MoviesUriBuilderService {
   }
 
   String setLanguage() {
-    return '${core.value.language}&';
+    const Locale port = Locale('pt', 'BR');
+    // const Locale eng = Locale('en', 'US');
+
+    Locale locale = core.value.locale;
+    String language = 'language=pt-BR';
+
+    switch (locale) {
+      case port:
+        language = 'language=en-US';
+        break;
+      default:
+        language = 'language=pt-BR';
+        break;
+    }
+    return language;
   }
 
   String setPage({int? jumpToPage}) {
