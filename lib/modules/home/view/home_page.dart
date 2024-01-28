@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ilia_challenge/core/infra/services/models/movie_model.dart';
 import 'package:ilia_challenge/core/infra/services/router_service.dart';
 import 'package:ilia_challenge/core/infra/services/tools/ilia_layout.dart';
 
@@ -37,6 +39,7 @@ class _HomePageState extends State<HomePage>
 
   bool showMenu = false;
   bool showSearchBar = false;
+  bool loadDetails = false;
 
   @override
   void initState() {
@@ -73,6 +76,7 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      bottom: Platform.isIOS ? false : true,
       child: PopScope(
         canPop: false,
         child: Stack(
@@ -115,12 +119,29 @@ class _HomePageState extends State<HomePage>
                           final movie =
                               state.movies[state.currentSection]?[index];
                           return InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                MoviePage.route,
-                                arguments: {"name": "Movie!!!!!"},
-                              );
+                            onTap: () async {
+                              setState(() => loadDetails = true);
+                              try {
+                                void printWrapped(String text) {
+                                  final pattern = RegExp(
+                                      '.{1,800}'); // 800 is the size of each chunk
+                                  pattern.allMatches(text).forEach(
+                                      (match) => print(match.group(0)));
+                                }
+
+                                Completer success = Completer();
+                                bloc.add(HomeEvent.loadMovieDetails(
+                                    success: success, movieId: movie['id']));
+                                await success.future.then((value) {
+                                  final movie = Movie.fromJson(value);
+                                  Navigator.pushNamed(
+                                    context,
+                                    MoviePage.route,
+                                    arguments: movie,
+                                  );
+                                });
+                              } finally {}
+                              setState(() => loadDetails = false);
                             },
                             child: Card(
                               child: Padding(
@@ -201,14 +222,10 @@ class _HomePageState extends State<HomePage>
                 ),
               ),
             ),
-            ValueListenableBuilder(
-                valueListenable: core,
-                builder: (context, store, _) {
-                  return const IliaFullscreenLoader(
-                    loading: false,
-                    color: Colors.white,
-                  );
-                }),
+            IliaFullscreenLoader(
+              loading: loadDetails,
+              color: Colors.white,
+            ),
           ],
         ),
       ),

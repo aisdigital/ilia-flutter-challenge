@@ -21,7 +21,7 @@ class IliaDrawerTile extends StatelessWidget {
         InkWell(
           onTap: ontap,
           child: Container(
-              height: layout.height * .1,
+              height: layout.height * .09,
               alignment: Alignment.center,
               color: tileColor,
               child: Text(

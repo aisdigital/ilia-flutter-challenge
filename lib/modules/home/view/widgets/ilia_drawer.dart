@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ilia_challenge/core/cubit/challenge_core.dart';
@@ -26,11 +28,12 @@ class _IliaDrawerState extends State<IliaDrawer> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      bottom: Platform.isIOS ? false : true,
       child: Drawer(
         backgroundColor: backgroung,
         child: SizedBox(
           height: _layout.height * .95,
-          child: Column(
+          child: ListView(
             children: <Widget>[
               Container(
                 height: _layout.height * .13,
@@ -42,7 +45,7 @@ class _IliaDrawerState extends State<IliaDrawer> {
                 ),
               ),
               Container(
-                  height: _layout.height * .1,
+                  height: _layout.height * .09,
                   alignment: Alignment.center,
                   child: Text(
                     AppLocalizations.of(context)?.categories ?? '',

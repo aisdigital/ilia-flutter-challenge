@@ -16,57 +16,65 @@ void main() {
     injector = AutoInjectorAdapter()..init();
     final repo = HomeRepository(); // MockHomeRepository(); //
 
-    final discover = MoviesUriBuilderService(path: MovieSection.discover.path);
-    final nowPlaying =
-        MoviesUriBuilderService(path: MovieSection.nowPlaying.path);
-    final popular = MoviesUriBuilderService(path: MovieSection.popular.path);
-    final upcoming = MoviesUriBuilderService(path: MovieSection.upcoming.path);
+    final discover = MoviesUriBuilderService()
+      ..setPath(path: MovieSection.discover.path);
+    final nowPlaying = MoviesUriBuilderService()
+      ..setPath(path: MovieSection.nowPlaying.path);
+    final popular = MoviesUriBuilderService()
+      ..setPath(path: MovieSection.popular.path);
+    final upcoming = MoviesUriBuilderService()
+      ..setPath(path: MovieSection.upcoming.path);
 
-    // when(() => repo.loadMovies(route: discover.uri)).thenAnswer(
+    // when(() => repo.loadMovies(route: discover.uriMovies)).thenAnswer(
     //     (_) => Future.value((null, IntResponse(data: discoverMock))));
-    // when(() => repo.loadMovies(route: nowPlaying.uri)).thenAnswer(
+    // when(() => repo.loadMovies(route: nowPlaying.uriMovies)).thenAnswer(
     //     (_) => Future.value((null, IntResponse(data: nowPlayingMock))));
-    // when(() => repo.loadMovies(route: popular.uri)).thenAnswer(
+    // when(() => repo.loadMovies(route: popular.uriMovies)).thenAnswer(
     //     (_) => Future.value((null, IntResponse(data: popularMock))));
-    // when(() => repo.loadMovies(route: upcoming.uri)).thenAnswer(
+    // when(() => repo.loadMovies(route: upcoming.uriMovies)).thenAnswer(
     //     (_) => Future.value((null, IntResponse(data: upcomingMock))));
 
     test('Testing ${MovieSection.nowPlaying} ...', () async {
-      if (nowPlaying.uri == null) return;
-      final (error, response) = await repo.loadMovies(route: nowPlaying.uri!);
+      if (nowPlaying.uriMovies == null) return;
+      final (error, response) =
+          await repo.loadMovies(route: nowPlaying.uriMovies!);
 
       if (error != null) {
         expect(error, null);
         print(
-            'an error occour at (${nowPlaying.path} message: ${error.message}');
+            'an error occour at (${nowPlaying.uriMovies} message: ${error.message}');
       } else {
         final Map result = response?.data ?? {};
         print(
-            'success! result: ${result['total_pages'] ?? 'ops... no'} pages found at (${nowPlaying.path}) !!!');
+            'success! result: ${result['total_pages'] ?? 'ops... no'} pages found at (${nowPlaying.uriMovies}) !!!');
       }
     });
     test('Testing ${MovieSection.discover} ...', () async {
-      if (discover.uri == null) return;
-      final (error, response) = await repo.loadMovies(route: discover.uri!);
+      if (discover.uriMovies == null) return;
+      final (error, response) =
+          await repo.loadMovies(route: discover.uriMovies!);
       if (error != null) {
         expect(error, null);
-        print('an error occour at (${discover.path} message: ${error.message}');
+        print(
+            'an error occour at (${discover.uriMovies} message: ${error.message}');
       } else {
         final Map result = response?.data ?? {};
         print(
-            'success! result: ${result['total_pages'] ?? 'ops... no'}  pages found at (${discover.path}) !!!');
+            'success! result: ${result['total_pages'] ?? 'ops... no'}  pages found at (${discover.uriMovies}) !!!');
       }
     });
     test('Testing ${MovieSection.popular} ...', () async {
-      if (popular.uri == null) return;
-      final (error, response) = await repo.loadMovies(route: popular.uri!);
+      if (popular.uriMovies == null) return;
+      final (error, response) =
+          await repo.loadMovies(route: popular.uriMovies!);
       if (error != null) {
         expect(error, null);
-        print('an error occour at (${popular.path} message: ${error.message}');
+        print(
+            'an error occour at (${popular.uriMovies} message: ${error.message}');
       } else {
         final Map result = response?.data ?? {};
         print(
-            'success! result:  ${result['total_pages'] ?? 'ops... no'}  pages found at (${popular.path}) !!!');
+            'success! result:  ${result['total_pages'] ?? 'ops... no'}  pages found at (${popular.uriMovies}) !!!');
       }
     });
     test('Testing ${MovieSection.upcoming} ...', () async {
@@ -74,26 +82,28 @@ void main() {
       // MoviesUriBuilderService sets uri to null after last page
       upcoming.handleLastPage(last: 38);
       for (var i = 0; i < 38; i++) {
-        print('index: ${upcoming.uri}');
+        print('index: ${upcoming.uriMovies}');
         upcoming.nextPage();
       }
-      print(upcoming.uri);
-      if (upcoming.uri == null) return;
+      print(upcoming.uriMovies);
+      if (upcoming.uriMovies == null) return;
 
-      final (error, response) = await repo.loadMovies(route: upcoming.uri!);
+      final (error, response) =
+          await repo.loadMovies(route: upcoming.uriMovies!);
       if (error != null) {
         expect(error, null);
-        print('an error occour at (${upcoming.path} message: ${error.message}');
+        print(
+            'an error occour at (${upcoming.uriMovies} message: ${error.message}');
       } else {
         final Map result = response?.data ?? {};
         print(
-            'success! result: ${result['total_pages'] ?? 'ops... no'} pages found at (${upcoming.path}) !!!');
+            'success! result: ${result['total_pages'] ?? 'ops... no'} pages found at (${upcoming.uriMovies}) !!!');
         // print('upcoming rerult $result');
       }
     });
     // test('Testing ${MovieSection.nowPlaying} ...', () async {
     //   final nowPlaying = UriBuilderService(path: MovieSection.nowPlaying.path);
-    //   final (error, response) = await repo.loadMovies(route: nowPlaying.uri);
+    //   final (error, response) = await repo.loadMovies(route: nowPlaying.uriMovies);
     //   if (error != null) {
     //     expect(error, null);
     //     print(

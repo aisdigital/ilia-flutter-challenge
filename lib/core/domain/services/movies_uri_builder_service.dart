@@ -6,18 +6,23 @@ import 'package:ilia_challenge/main.dart';
 class MoviesUriBuilderService {
   ChallengeCore get core => injector.find<ChallengeCore>();
 
-  MoviesUriBuilderService({required this.path});
+  MoviesUriBuilderService();
 
-  final String path;
+  /////////// URI BUILDER FOR MOVIES LISTS (HOME) /////////////
 
 // _page = 0 is set after last page in nextPage() validation;
-  String? get uri => _page > 0
-      ? Config.tmdbBaseUrl + path + _parameters + setLanguage() + setPage()
+  String? get uriMovies => _page > 0
+      ? Config.tmdbBaseUrl + _path + _parameters + setLanguage() + setPage()
       : null;
 
+  String _path = '';
   String _parameters = '';
   int lastPage = 0;
   int _page = 1;
+
+  void setPath({required String path}) {
+    _path = path;
+  }
 
   void addParameter({required String name, required String value}) {
     _parameters = '$_parameters$name=$value&';
@@ -60,5 +65,17 @@ class MoviesUriBuilderService {
       // prevents _page to run after _lastPage
       if (!handleLastPage()) _page = 0;
     }
+  }
+  ////////////////////////////////////////////////////////////////////////
+  /////////// URI BUILDER FOR MOVIEL DETAILS (MOVIE) /////////////
+
+  String get uriDetails =>
+      Config.tmdbBaseUrl + _path + setLanguage() + append();
+
+  String _append = '';
+
+  String append({List values = const []}) {
+    if (values.isNotEmpty) _append = '&append_to_response=${values.join(',')}';
+    return _append;
   }
 }

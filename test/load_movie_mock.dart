@@ -1383,3 +1383,79 @@ final upcomingMock = {
   "total_pages": 38,
   "total_results": 747
 };
+
+final movieDetail = {
+  'adult': false,
+  'backdrop_path': '/jXJxMcVoEuXzym3vFnjqDW4ifo6.jpg',
+  'belongs_to_collection': {
+    'id': 573693,
+    'name': 'Aquaman: Coleção',
+    'poster_path': '/xayLueljALkkB9mUo0OlJBTojyY.jpg',
+    'backdrop_path': '/5iidzov8DrsSyZdefeo7jBLDNUW.jpg'
+  },
+  'budget': 205000000,
+  'genres': [
+    {'id': 28, 'name': 'Ação'},
+    {'id': 12, 'name': 'Aventura'},
+    {'id': 14, 'name': 'Fantasia'}
+  ],
+  'homepage': '',
+  'id': 572802,
+  'imdb_id': 'tt9663764',
+  'original_language': 'en',
+  'original_title': 'Aquaman and the Lost Kingdom',
+  'overview':
+      'Agora mais temível do que nunca, Arraia Negra detém o poder do mítico Tridente Preto e sua ancestral força malévola. Para derrotá-lo, Aquaman recorrerá a seu irmão Orm, o ex-Rei da Atlântida, ainda na prisão, para forjar uma aliança improvável. Juntos, eles vão ter que deixar de lado suas diferenças para proteger seu reino, salvar a família de Aquaman e o mundo da irreversível destruição.',
+  'popularity': 5876.8,
+  'poster_path': '/84ispMxgLDRvQaA6zlM9i7sdAAI.jpg',
+  'production_companies': [
+    {
+      'id': 174,
+      'logo_path': '/zhD3hhtKB5qyv7ZeL4uLpNxgMVU.png',
+      'name': 'Warner Bros. Pictures',
+      'origin_country': 'US'
+    },
+    {
+      'id': '11565',
+      'logo_path': null,
+      'name': 'The Safran Company',
+      'origin_country': 'US'
+    },
+    {
+      'id': 76907,
+      'logo_path': '/ygMQtjsKX7BZkCQhQZY82lgnCUO.png',
+      'name': 'Atomic Monster',
+      'origin_country': 'US'
+    },
+    {
+      'id': 128064,
+      'logo_path': '/13F3Jf7EFAcREU0xzZqJnVnyGXu.png',
+      'name': 'DC Films',
+      'origin_country': 'US'
+    },
+    {
+      'id': 216687,
+      'logo_path': 'null',
+      'name': ' Domain Entertainment',
+      'origin_country': 'US'
+    }
+  ],
+  'production_countries': [
+    {'iso_3166_1': 'US', 'name': ' United States of America'}
+  ],
+  'release_date': ' 2023-12-20',
+  'revenue': 398442014,
+  'runtime': 124,
+  'spoken_languages': [
+    {'english_name': 'English', 'iso_639_1': 'en', 'name': 'English'},
+    {'english_name': 'German', 'iso_639_1': 'de', 'name': 'Deutsch'},
+    {'english_name': 'Hindi', 'iso_639_1': 'hi', 'name': 'हिन्दी'},
+    {'english_name': 'Hungarian', 'iso_639_1': 'hu', 'name': 'Magyar'}
+  ],
+  'status': 'Released',
+  'tagline': 'A maré está virando.',
+  'title': 'Aquaman 2: O Reino Perdido',
+  'video': 'false',
+  'vote_average': 6.906,
+  'vote_count': 923
+};

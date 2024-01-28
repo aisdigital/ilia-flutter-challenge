@@ -4,11 +4,9 @@ part of 'home_bloc.dart';
 class HomeEvent with _$HomeEvent {
   const factory HomeEvent.started() = _HomeStarted;
 
-
-
   const factory HomeEvent.loadMovies({
     required MovieSection section,
-    required Completer<Map<MovieSection, List<dynamic>>> result,
+    required Completer<Map<MovieSection, List<dynamic>>?> result,
   }) = _LoadMovies;
 
   const factory HomeEvent.nextPageRequested({
@@ -23,4 +21,9 @@ class HomeEvent with _$HomeEvent {
   const factory HomeEvent.searchMovies({
     required String query,
   }) = _SearchMovies;
+
+  const factory HomeEvent.loadMovieDetails({
+    required Completer success,
+    required int movieId,
+  }) = _LoadMovieDetails;
 }

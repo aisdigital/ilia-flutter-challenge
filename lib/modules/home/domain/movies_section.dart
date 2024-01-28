@@ -3,6 +3,7 @@ enum MovieSection {
   upcoming,
   discover,
   popular,
+  details,
   search;
 
   String get path {
@@ -11,6 +12,7 @@ enum MovieSection {
       MovieSection.upcoming => '/movie/upcoming?',
       MovieSection.discover => '/discover/movie?',
       MovieSection.popular => '/movie/popular?',
+      MovieSection.details => '/movie/:id?',
       MovieSection.search => '/search/movie?',
     };
   }
