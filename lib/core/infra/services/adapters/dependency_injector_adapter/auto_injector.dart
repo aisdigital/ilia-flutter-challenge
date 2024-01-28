@@ -6,6 +6,7 @@ import 'package:ilia_challenge/core/infra/services/http_handler_service.dart';
 import 'package:ilia_challenge/core/infra/services/cache_handler_service.dart';
 import 'package:ilia_challenge/core/infra/interfaces/int_dep_injector.dart';
 import 'package:ilia_challenge/core/infra/services/router_service.dart';
+import 'package:ilia_challenge/modules/auth/domain/auth_respository.dart';
 import 'package:ilia_challenge/modules/auth/view/state/auth_state.dart';
 import 'package:ilia_challenge/modules/auth/view/state/auth_store.dart';
 import 'package:ilia_challenge/modules/home/domain/home_repository.dart';
@@ -17,17 +18,18 @@ class AutoInjectorAdapter implements IntDepInjector {
   get instance => _injector ??= AutoInjector();
 
   @override
-  init() {
+  init() async {
     _injector ??= AutoInjector();
 
-    instance
+    await instance
+      ..addSingleton(HttpHandlerService.new)
+      ..addSingleton(AuthStore.new)
       ..addSingleton(ChallengeCore.new)
       ..addSingleton(CoreState.new)
       ..addSingleton(CacheHandlerService.new)
-      ..addSingleton(HttpHandlerService.new)
       ..addSingleton(IliaRouter.new)
-      ..addSingleton(AuthStore.new)
       ..addSingleton(AuthState.new)
+      ..add(SignInRepository.new)
       ..add(HomeRepository.new)
       ..add(MovieRepository.new)
       ..commit();
@@ -42,14 +44,17 @@ class AutoInjectorAdapter implements IntDepInjector {
         return instance<CacheHandlerService>();
       case IntHttpService:
         return instance<HttpHandlerService>();
-      case HomeRepository:
-        return instance<HomeRepository>();
+
       case AuthStore:
         return instance<AuthStore>();
       case AuthState:
         return instance<AuthState>();
       case IliaRouter:
         return instance<IliaRouter>();
+      case SignInRepository:
+        return instance<SignInRepository>();
+      case HomeRepository:
+        return instance<HomeRepository>();
       case MovieRepository:
         return instance<MovieRepository>();
       default:

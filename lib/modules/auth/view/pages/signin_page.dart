@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:ilia_challenge/core/infra/services/router_service.dart';
 import 'package:ilia_challenge/core/infra/services/tools/ilia_layout.dart';
 import 'package:ilia_challenge/main.dart';
-import 'package:ilia_challenge/modules/auth/contracts/interfaces/i_authentication.dart';
-import 'package:ilia_challenge/modules/auth/view/state/auth_state.dart';
 import 'package:ilia_challenge/modules/auth/view/state/auth_store.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -61,6 +59,8 @@ class _SignInPageState extends State<SignInPage> {
       if (index == 3) index = 0;
     });
   }
+
+  bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -124,24 +124,20 @@ class _SignInPageState extends State<SignInPage> {
                               ValueListenableBuilder(
                                   valueListenable: auth,
                                   builder: (context, state, _) {
-                                    bool loading =
-                                        state.data[AuthData.signin] ==
-                                            AuthStatus.authenticating;
                                     return SizedBox(
                                       height: 80,
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: Colors.black38),
-                                        child: !loading
-                                            ? Text(AppLocalizations.of(context)
+                                        child: _loading
+                                            ? const CircularProgressIndicator()
+                                            : Text(AppLocalizations.of(context)
                                                     ?.signin ??
-                                                '')
-                                            : const CircularProgressIndicator(),
+                                                ''),
                                         onPressed: () async {
-                                          if (loading) return;
-
-                                          Navigator.pushNamed(
-                                              context, HomePage.route);
+                                          setState(() => _loading = true);
+                                          await auth.getConfig();
+                                          setState(() => _loading = false);
                                         },
                                       ),
                                     );

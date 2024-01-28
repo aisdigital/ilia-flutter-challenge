@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ilia_challenge/core/infra/services/models/api_config.dart';
 import 'package:ilia_challenge/core/infra/services/router_service.dart';
-import 'package:ilia_challenge/main.dart';
 import 'package:ilia_challenge/modules/home/view/home_page.dart';
 
 part 'core_state.dart';
@@ -45,15 +45,10 @@ class ChallengeCore extends ValueNotifier<CoreState> {
     notifyListeners();
   }
 
-  boostrap() async {
-    IliaRouter routes = injector.find<IliaRouter>();
-    print(' routes.service.pushReplacement(SystemRoutes.signin)');
+  boostrap({required MediaConfig mediaConfig}) async {
     if (navigatorKey.currentContext != null) {
-      Navigator.pushNamed(
-        navigatorKey.currentContext!,
-        HomePage.route,
-        arguments: {"name": "Movie!!!!!"},
-      );
+      value = value.copyWith(mediaConfig: mediaConfig);
+      Navigator.pushNamed(navigatorKey.currentContext!, HomePage.route);
     }
   }
 }

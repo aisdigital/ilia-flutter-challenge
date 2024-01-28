@@ -78,4 +78,9 @@ class MoviesUriBuilderService {
     if (values.isNotEmpty) _append = '&append_to_response=${values.join(',')}';
     return _append;
   }
+
+  ////////////////////////////////////////////////////////////////////////
+  /////////// URI BUILDER FOR MOVIEL DETAILS (MOVIE) /////////////
+  ///
+  String get uriConfig => Config.tmdbBaseUrl + _path;
 }

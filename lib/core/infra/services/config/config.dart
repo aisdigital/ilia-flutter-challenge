@@ -1,4 +1,5 @@
 import 'package:ilia_challenge/core/infra/services/config/constants/const_config.dart';
+import 'package:ilia_challenge/core/infra/services/models/api_config.dart';
 
 class Config {
 //TODO: Adicionar links conforme disponibilidade
