@@ -51,9 +51,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     MoviesUriBuilderService uriService = state.sections[event.section]!;
 
     // uri is set to null when reaches last page
-    if (uriService.uriMovies == null) return;
+    if (uriService.uriMoviesList == null) return;
 
-    var (error, response) = await repo.loadMovies(route: uriService.uriMovies!);
+    var (error, response) =
+        await repo.loadMovies(route: uriService.uriMoviesList!);
 
     /// TODO: handle incoming errors instead of return only
     if (error != null) {
@@ -163,21 +164,39 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   _loadMovieDetails(_LoadMovieDetails event, emit) async {
-    final uriService = MoviesUriBuilderService()
+    final movieUri = MoviesUriBuilderService()
       ..setPath(
-          path:
-              MovieSection.details.path.replaceAll(':id?', '${event.movieId}?'))
-      ..append(values: ['videos', 'images']);
+          path: MovieSection.details.path
+              .replaceAll(':id?', '${event.movieId}?'));
 
-    final (error, response) =
-        await repo.loadMovies(route: uriService.uriDetails);
+    final videosUri = MoviesUriBuilderService()
+      ..setPath(
+          path: MovieSection.details.path
+              .replaceAll(':id?', '${event.movieId}/videos?'));
 
-    if (error != null) {
+    final imagesUri = MoviesUriBuilderService()
+      ..setPath(
+          path: MovieSection.details.path
+              .replaceAll(':id?', '${event.movieId}/images?'));
+
+    final (movieError, movie) =
+        await repo.loadMovies(route: movieUri.uriMovieDetails);
+    final (videoError, videos) =
+        await repo.loadMovies(route: videosUri.uriConfig);
+    final (imageError, images) =
+        await repo.loadMovies(route: imagesUri.uriConfig);
+
+    final Map<String, dynamic> data = {};
+
+    if (movieError != null) {
       event.success.complete(null);
     } else {
-      event.success.complete(response!.data);
+      if (videos != null) data['videos'] = videos.data['results'];
+      if (images != null) data['images'] = images.data;
+
+      data.addAll(movie?.data ?? {});
+
+      event.success.complete(data);
     }
-    print(
-        ' ===================== ${uriService.uriDetails} ===================== ');
   }
 }

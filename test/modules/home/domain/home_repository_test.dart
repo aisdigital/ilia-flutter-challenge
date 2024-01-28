@@ -25,56 +25,56 @@ void main() {
     final upcoming = MoviesUriBuilderService()
       ..setPath(path: MovieSection.upcoming.path);
 
-    // when(() => repo.loadMovies(route: discover.uriMovies)).thenAnswer(
+    // when(() => repo.loadMovies(route: discover.uriMoviesList)).thenAnswer(
     //     (_) => Future.value((null, IntResponse(data: discoverMock))));
-    // when(() => repo.loadMovies(route: nowPlaying.uriMovies)).thenAnswer(
+    // when(() => repo.loadMovies(route: nowPlaying.uriMoviesList)).thenAnswer(
     //     (_) => Future.value((null, IntResponse(data: nowPlayingMock))));
-    // when(() => repo.loadMovies(route: popular.uriMovies)).thenAnswer(
+    // when(() => repo.loadMovies(route: popular.uriMoviesList)).thenAnswer(
     //     (_) => Future.value((null, IntResponse(data: popularMock))));
-    // when(() => repo.loadMovies(route: upcoming.uriMovies)).thenAnswer(
+    // when(() => repo.loadMovies(route: upcoming.uriMoviesList)).thenAnswer(
     //     (_) => Future.value((null, IntResponse(data: upcomingMock))));
 
     test('Testing ${MovieSection.nowPlaying} ...', () async {
-      if (nowPlaying.uriMovies == null) return;
+      if (nowPlaying.uriMoviesList == null) return;
       final (error, response) =
-          await repo.loadMovies(route: nowPlaying.uriMovies!);
+          await repo.loadMovies(route: nowPlaying.uriMoviesList!);
 
       if (error != null) {
         expect(error, null);
         print(
-            'an error occour at (${nowPlaying.uriMovies} message: ${error.message}');
+            'an error occour at (${nowPlaying.uriMoviesList} message: ${error.message}');
       } else {
         final Map result = response?.data ?? {};
         print(
-            'success! result: ${result['total_pages'] ?? 'ops... no'} pages found at (${nowPlaying.uriMovies}) !!!');
+            'success! result: ${result['total_pages'] ?? 'ops... no'} pages found at (${nowPlaying.uriMoviesList}) !!!');
       }
     });
     test('Testing ${MovieSection.discover} ...', () async {
-      if (discover.uriMovies == null) return;
+      if (discover.uriMoviesList == null) return;
       final (error, response) =
-          await repo.loadMovies(route: discover.uriMovies!);
+          await repo.loadMovies(route: discover.uriMoviesList!);
       if (error != null) {
         expect(error, null);
         print(
-            'an error occour at (${discover.uriMovies} message: ${error.message}');
+            'an error occour at (${discover.uriMoviesList} message: ${error.message}');
       } else {
         final Map result = response?.data ?? {};
         print(
-            'success! result: ${result['total_pages'] ?? 'ops... no'}  pages found at (${discover.uriMovies}) !!!');
+            'success! result: ${result['total_pages'] ?? 'ops... no'}  pages found at (${discover.uriMoviesList}) !!!');
       }
     });
     test('Testing ${MovieSection.popular} ...', () async {
-      if (popular.uriMovies == null) return;
+      if (popular.uriMoviesList == null) return;
       final (error, response) =
-          await repo.loadMovies(route: popular.uriMovies!);
+          await repo.loadMovies(route: popular.uriMoviesList!);
       if (error != null) {
         expect(error, null);
         print(
-            'an error occour at (${popular.uriMovies} message: ${error.message}');
+            'an error occour at (${popular.uriMoviesList} message: ${error.message}');
       } else {
         final Map result = response?.data ?? {};
         print(
-            'success! result:  ${result['total_pages'] ?? 'ops... no'}  pages found at (${popular.uriMovies}) !!!');
+            'success! result:  ${result['total_pages'] ?? 'ops... no'}  pages found at (${popular.uriMoviesList}) !!!');
       }
     });
     test('Testing ${MovieSection.upcoming} ...', () async {
@@ -82,28 +82,28 @@ void main() {
       // MoviesUriBuilderService sets uri to null after last page
       upcoming.handleLastPage(last: 38);
       for (var i = 0; i < 38; i++) {
-        print('index: ${upcoming.uriMovies}');
+        print('index: ${upcoming.uriMoviesList}');
         upcoming.nextPage();
       }
-      print(upcoming.uriMovies);
-      if (upcoming.uriMovies == null) return;
+      print(upcoming.uriMoviesList);
+      if (upcoming.uriMoviesList == null) return;
 
       final (error, response) =
-          await repo.loadMovies(route: upcoming.uriMovies!);
+          await repo.loadMovies(route: upcoming.uriMoviesList!);
       if (error != null) {
         expect(error, null);
         print(
-            'an error occour at (${upcoming.uriMovies} message: ${error.message}');
+            'an error occour at (${upcoming.uriMoviesList} message: ${error.message}');
       } else {
         final Map result = response?.data ?? {};
         print(
-            'success! result: ${result['total_pages'] ?? 'ops... no'} pages found at (${upcoming.uriMovies}) !!!');
+            'success! result: ${result['total_pages'] ?? 'ops... no'} pages found at (${upcoming.uriMoviesList}) !!!');
         // print('upcoming rerult $result');
       }
     });
     // test('Testing ${MovieSection.nowPlaying} ...', () async {
     //   final nowPlaying = UriBuilderService(path: MovieSection.nowPlaying.path);
-    //   final (error, response) = await repo.loadMovies(route: nowPlaying.uriMovies);
+    //   final (error, response) = await repo.loadMovies(route: nowPlaying.uriMoviesList);
     //   if (error != null) {
     //     expect(error, null);
     //     print(

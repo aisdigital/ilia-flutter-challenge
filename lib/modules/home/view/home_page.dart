@@ -91,6 +91,7 @@ class _HomePageState extends State<HomePage>
                 toolbarHeight: 80,
                 backgroundColor: Theme.of(context).colorScheme.inversePrimary,
                 title: Text(_title ?? ''),
+                leading: const SizedBox.shrink(),
                 actions: [
                   IconButton(
                       onPressed: () async {
@@ -127,11 +128,13 @@ class _HomePageState extends State<HomePage>
                             onTap: () async {
                               setState(() => loadDetails = true);
                               try {
-                                Completer success = Completer();
+                                Completer<Map<String, dynamic>> success =
+                                    Completer();
                                 bloc.add(HomeEvent.loadMovieDetails(
                                     success: success, movieId: movie['id']));
                                 await success.future.then((value) {
                                   final movie = Movie.fromJson(value);
+
                                   Navigator.pushNamed(
                                     context,
                                     MoviePage.route,
@@ -182,10 +185,12 @@ class _HomePageState extends State<HomePage>
                 },
               ),
             ),
-            AnimatedOpacity(
-              opacity: showSearchBar ? 1 : 0,
+            AnimatedCrossFade(
+              crossFadeState: showSearchBar
+                  ? CrossFadeState.showFirst
+                  : CrossFadeState.showSecond,
               duration: Durations.medium1,
-              child: Align(
+              firstChild: Align(
                 alignment: Alignment.bottomCenter,
                 child: Material(
                   color: Colors.transparent,
@@ -215,6 +220,14 @@ class _HomePageState extends State<HomePage>
                     ),
                   ),
                 ),
+              ),
+              secondChild: Container(
+                height: 70,
+                width: layout.width * .8,
+                alignment: Alignment.centerLeft,
+                color: Colors.transparent,
+                margin: EdgeInsets.only(bottom: layout.viewInsets.bottom + 20),
+                padding: const EdgeInsets.fromLTRB(30, 15, 15, 5),
               ),
             ),
             IliaFullscreenLoader(

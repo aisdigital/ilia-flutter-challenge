@@ -8,7 +8,7 @@ class DarkTheme {
 
   TextScaler get textScaler => MediaQuery.textScalerOf(context);
 
-  static Color seed = const Color(0XFF003049);
+  static Color seed = Colors.black; // const Color(0XFF003049);
 
   ThemeData themeData() => ThemeData(
         useMaterial3: true,

@@ -11,7 +11,7 @@ class MoviesUriBuilderService {
   /////////// URI BUILDER FOR MOVIES LISTS (HOME) /////////////
 
 // _page = 0 is set after last page in nextPage() validation;
-  String? get uriMovies => _page > 0
+  String? get uriMoviesList => _page > 0
       ? Config.tmdbBaseUrl + _path + _parameters + setLanguage() + setPage()
       : null;
 
@@ -69,8 +69,7 @@ class MoviesUriBuilderService {
   ////////////////////////////////////////////////////////////////////////
   /////////// URI BUILDER FOR MOVIEL DETAILS (MOVIE) /////////////
 
-  String get uriDetails =>
-      Config.tmdbBaseUrl + _path + setLanguage() + append();
+  String get uriMovieDetails => Config.tmdbBaseUrl + _path + setLanguage();
 
   String _append = '';
 
@@ -80,7 +79,7 @@ class MoviesUriBuilderService {
   }
 
   ////////////////////////////////////////////////////////////////////////
-  /////////// URI BUILDER FOR MOVIEL DETAILS (MOVIE) /////////////
-  ///
+  /////////// URI BUILDER FOR MEDIA DETAILS (CONFIG) /////////////
+
   String get uriConfig => Config.tmdbBaseUrl + _path;
 }

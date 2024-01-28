@@ -95,7 +95,7 @@ class Movie {
 
     if (json['videos'] != null) {
       videos = <Video>[];
-      json['videos']['results'].forEach((v) {
+      json['videos'].forEach((v) {
         videos!.add(Video.fromJson(v));
       });
     }
@@ -104,7 +104,7 @@ class Movie {
       final logos = <Logos>[];
       final posters = <Posters>[];
 
-      json['images']['backdrop']?.forEach((v) {
+      json['images']['backdrops']?.forEach((v) {
         backdrops.add(Backdrops.fromJson(v));
       });
       json['images']['logos']?.forEach((v) {
