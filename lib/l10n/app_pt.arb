@@ -1,5 +1,6 @@
 {
   "iliaChallenge": "Desafio Ília",
+  "flutterChallenge": "Desafio Técnico Flutter",
   "signin": "Entrar",
   "categories": "Categorias",
   "nowPlaying": "Em Cartaz",
@@ -9,5 +10,7 @@
   "search": "Pesquisar",
   "language": "Idioma",
   "darkMode": "Modo Noturno",
-  "exit": "Sair"
+  "exit": "Sair",
+  "overview": "Sinopse"
+
 }

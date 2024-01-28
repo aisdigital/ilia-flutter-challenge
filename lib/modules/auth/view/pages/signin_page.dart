@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:ilia_challenge/core/cubit/challenge_core.dart';
 import 'package:ilia_challenge/core/infra/services/router_service.dart';
 import 'package:ilia_challenge/core/infra/services/tools/ilia_layout.dart';
 import 'package:ilia_challenge/main.dart';
 import 'package:ilia_challenge/modules/auth/view/state/auth_store.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:ilia_challenge/modules/home/view/home_page.dart';
 
 class SignInPage extends StatefulWidget {
   static const String route = '/signin';
@@ -20,7 +20,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  IliaLayout get layout => IliaLayout(context);
+  IliaLayout get _layout => IliaLayout(context);
+  ChallengeCore get core => injector.find<ChallengeCore>();
 
   final _loginKey = GlobalKey<FormState>();
 
@@ -74,8 +75,8 @@ class _SignInPageState extends State<SignInPage> {
               duration: const Duration(seconds: 2),
               child: SizedBox(
                 key: Key(index.toRadixString(2)),
-                height: layout.height,
-                width: layout.width,
+                height: _layout.height,
+                width: _layout.width,
                 child: Image.asset(
                   images[index],
                   fit: BoxFit.cover,
@@ -83,8 +84,8 @@ class _SignInPageState extends State<SignInPage> {
               ),
             ),
             Container(
-              height: layout.height,
-              width: layout.width,
+              height: _layout.height,
+              width: _layout.width,
               decoration: const BoxDecoration(
                   gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
@@ -108,24 +109,34 @@ class _SignInPageState extends State<SignInPage> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SizedBox(height: layout.height * .2),
+                              SizedBox(height: _layout.height * .2),
                               Center(
                                 child: Text(
-                                  AppLocalizations.of(context)?.iliaChallenge ??
-                                      '',
-                                  maxLines: 1,
+                                  'Ília',
                                   style:
                                       Theme.of(context).textTheme.headlineLarge,
                                 ),
                               ),
-                              SizedBox(height: layout.height * .3),
+                              SizedBox(height: _layout.height * .1),
+                              Center(
+                                child: Text(
+                                  AppLocalizations.of(context)
+                                          ?.flutterChallenge ??
+                                      '',
+                                  textAlign: TextAlign.center,
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                ),
+                              ),
+                              SizedBox(height: _layout.height * .2),
                               ValueListenableBuilder(
                                   valueListenable: auth,
                                   builder: (context, state, _) {
                                     return SizedBox(
                                       height: 80,
+                                      width: _layout.width * .7,
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: Colors.black38),
@@ -149,6 +160,42 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ],
                 ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Material(
+                child: ValueListenableBuilder(
+                    valueListenable: core,
+                    builder: (context, state, child) {
+                      return GestureDetector(
+                        onTap: () => core.switchLanguage(),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 15, right: 15),
+                          child: AnimatedCrossFade(
+                              duration: Durations.medium3,
+                              crossFadeState:
+                                  state.locale == const Locale('en', 'US')
+                                      ? CrossFadeState.showFirst
+                                      : CrossFadeState.showSecond,
+                              firstChild: SizedBox(
+                                height: 30,
+                                width: 45,
+                                child: Image.asset(
+                                  'assets/images/us_flag.png',
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              secondChild: SizedBox(
+                                  height: 30,
+                                  width: 45,
+                                  child: Image.asset(
+                                    'assets/images/br_flag.png',
+                                    fit: BoxFit.fill,
+                                  ))),
+                        ),
+                      );
+                    }),
               ),
             ),
           ],

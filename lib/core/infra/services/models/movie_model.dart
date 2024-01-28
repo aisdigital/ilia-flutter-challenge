@@ -1,6 +1,5 @@
 class Movie {
   String? backdropPath;
-  BelongsToCollection? belongsToCollection;
   int? budget;
   List<Genres>? genres;
   String? homepage;
@@ -22,37 +21,41 @@ class Movie {
   bool? video;
   double? voteAverage;
   int? voteCount;
+  Videos? videos;
+  Images? images;
+  Backdrops? backdrops;
 
-  Movie(
-      {this.backdropPath,
-      this.belongsToCollection,
-      this.budget,
-      this.genres,
-      this.homepage,
-      this.id,
-      this.imdbId,
-      this.originalLanguage,
-      this.originalTitle,
-      this.overview,
-      this.popularity,
-      this.posterPath,
-      this.productionCompanies,
-      this.releaseDate,
-      this.revenue,
-      this.runtime,
-      this.spokenLanguages,
-      this.status,
-      this.tagline,
-      this.title,
-      this.video,
-      this.voteAverage,
-      this.voteCount});
+  Movie({
+    this.backdropPath,
+    this.budget,
+    this.genres,
+    this.homepage,
+    this.id,
+    this.imdbId,
+    this.originalLanguage,
+    this.originalTitle,
+    this.overview,
+    this.popularity,
+    this.posterPath,
+    this.productionCompanies,
+    this.releaseDate,
+    this.revenue,
+    this.runtime,
+    this.spokenLanguages,
+    this.status,
+    this.tagline,
+    this.title,
+    this.video,
+    this.voteAverage,
+    this.voteCount,
+    this.videos,
+    this.images,
+    this.backdrops,
+  });
 
   Movie.fromJson(Map<String, dynamic> json) {
     backdropPath = json['backdrop_path'];
-    belongsToCollection = json['belongs_to_collection'] != null
-        ? BelongsToCollection.fromJson(json['belongs_to_collection'])
-        : null;
+
     budget = json['budget'];
     if (json['genres'] != null) {
       genres = <Genres>[];
@@ -87,74 +90,31 @@ class Movie {
     status = json['status'];
     tagline = json['tagline'];
     title = json['title'];
-    video = json['video'];
     voteAverage = json['vote_average'];
     voteCount = json['vote_count'];
-  }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-
-    data['backdrop_path'] = backdropPath;
-    if (belongsToCollection != null) {
-      data['belongs_to_collection'] = belongsToCollection!.toJson();
+    if (json['videos'] != null) {
+      videos = <Video>[];
+      json['videos']['results'].forEach((v) {
+        videos!.add(Video.fromJson(v));
+      });
     }
-    data['budget'] = budget;
-    if (genres != null) {
-      data['genres'] = genres!.map((v) => v.toJson()).toList();
+    if (json['images'] != null) {
+      final backdrops = <Backdrops>[];
+      final logos = <Logos>[];
+      final posters = <Posters>[];
+
+      json['images']['backdrop']?.forEach((v) {
+        backdrops.add(Backdrops.fromJson(v));
+      });
+      json['images']['logos']?.forEach((v) {
+        logos.add(Logos.fromJson(v));
+      });
+      json['images']['posters']?.forEach((v) {
+        posters.add(Posters.fromJson(v));
+      });
+      images = Images(backdrops: backdrops, logos: logos, posters: posters);
     }
-    data['homepage'] = homepage;
-    data['id'] = id;
-    data['imdb_id'] = imdbId;
-    data['original_language'] = originalLanguage;
-    data['original_title'] = originalTitle;
-    data['overview'] = overview;
-    data['popularity'] = popularity;
-    data['poster_path'] = posterPath;
-    if (productionCompanies != null) {
-      data['production_companies'] =
-          productionCompanies!.map((v) => v.toJson()).toList();
-    }
-
-    data['release_date'] = releaseDate;
-    data['revenue'] = revenue;
-    data['runtime'] = runtime;
-    if (spokenLanguages != null) {
-      data['spoken_languages'] =
-          spokenLanguages!.map((v) => v.toJson()).toList();
-    }
-    data['status'] = status;
-    data['tagline'] = tagline;
-    data['title'] = title;
-    data['video'] = video;
-    data['vote_average'] = voteAverage;
-    data['vote_count'] = voteCount;
-    return data;
-  }
-}
-
-class BelongsToCollection {
-  int? id;
-  String? name;
-  String? posterPath;
-  String? backdropPath;
-
-  BelongsToCollection({this.id, this.name, this.posterPath, this.backdropPath});
-
-  BelongsToCollection.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    posterPath = json['poster_path'];
-    backdropPath = json['backdrop_path'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['poster_path'] = posterPath;
-    data['backdrop_path'] = backdropPath;
-    return data;
   }
 }
 
@@ -199,22 +159,6 @@ class ProductionCompanies {
   }
 }
 
-class ProductionCountries {
-  String? name;
-
-  ProductionCountries({this.name});
-
-  ProductionCountries.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['name'] = name;
-    return data;
-  }
-}
-
 class SpokenLanguages {
   String? name;
 
@@ -231,32 +175,9 @@ class SpokenLanguages {
   }
 }
 
-class Videos {
-  List<Results>? results;
+typedef Videos = List<Video>?;
 
-  Videos({this.results});
-
-  Videos.fromJson(Map<String, dynamic> json) {
-    if (json['results'] != null) {
-      results = <Results>[];
-      json['results'].forEach((v) {
-        results!.add(Results.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (results != null) {
-      data['results'] = results!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Results {
-  String? iso6391;
-  String? iso31661;
+class Video {
   String? name;
   String? key;
   String? site;
@@ -266,10 +187,8 @@ class Results {
   String? publishedAt;
   String? id;
 
-  Results(
-      {this.iso6391,
-      this.iso31661,
-      this.name,
+  Video(
+      {this.name,
       this.key,
       this.site,
       this.size,
@@ -278,9 +197,7 @@ class Results {
       this.publishedAt,
       this.id});
 
-  Results.fromJson(Map<String, dynamic> json) {
-    iso6391 = json['iso_639_1'];
-    iso31661 = json['iso_3166_1'];
+  Video.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     key = json['key'];
     site = json['site'];
@@ -293,8 +210,6 @@ class Results {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['iso_639_1'] = iso6391;
-    data['iso_3166_1'] = iso31661;
     data['name'] = name;
     data['key'] = key;
     data['site'] = site;

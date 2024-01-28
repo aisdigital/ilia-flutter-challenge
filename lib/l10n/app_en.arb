@@ -1,5 +1,6 @@
 {
   "iliaChallenge": "Ília Challenge",
+  "flutterChallenge": "Technical Challenge Flutter",
   "signin": "SignIn",
   "categories": "Categories",
   "nowPlaying": "Now Playing",
@@ -9,5 +10,6 @@
   "search": "Search",
   "language": "Language",
   "darkMode": "Dark Mode",
-  "exit": "Exit"
+  "exit": "Exit",
+  "overview": "overview"
 }

@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage>
   ChallengeCore get core => injector.find<ChallengeCore>();
   IliaRouter get routes => injector.find<IliaRouter>();
   IliaLayout get layout => IliaLayout(context);
-  final node = FocusNode();
+  // late final FocusNode node;
 
   late final AnimationController _animate;
 
@@ -44,20 +44,25 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     bloc.add(const HomeEvent.started());
+    // node = FocusNode();
     _animate = AnimationController(vsync: this, duration: Durations.long1);
     super.initState();
   }
 
   @override
   void dispose() {
-    node.dispose();
+    // node.dispose();
     super.dispose();
   }
 
   void _handleIconAnimation() {
     setState(() {
       showMenu = !showMenu;
-      showMenu ? _animate.forward() : _animate.reverse();
+      if (showMenu) {
+        _animate.forward();
+      } else {
+        _animate.reverse();
+      }
     });
   }
 
@@ -94,8 +99,8 @@ class _HomePageState extends State<HomePage>
                         });
                         await Future.delayed(Durations.medium2);
 
-                        if (!showSearchBar) node.unfocus();
-                        if (showSearchBar) node.requestFocus();
+                        // if (!showSearchBar) node.unfocus();
+                        // if (showSearchBar) node.requestFocus();
                       },
                       icon: const Icon(
                         Icons.search,
@@ -122,13 +127,6 @@ class _HomePageState extends State<HomePage>
                             onTap: () async {
                               setState(() => loadDetails = true);
                               try {
-                                void printWrapped(String text) {
-                                  final pattern = RegExp(
-                                      '.{1,800}'); // 800 is the size of each chunk
-                                  pattern.allMatches(text).forEach(
-                                      (match) => print(match.group(0)));
-                                }
-
                                 Completer success = Completer();
                                 bloc.add(HomeEvent.loadMovieDetails(
                                     success: success, movieId: movie['id']));
@@ -168,21 +166,20 @@ class _HomePageState extends State<HomePage>
                       );
                     }),
               ),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () {},
-                child: Builder(builder: (ctx) {
-                  return IconButton(
+              floatingActionButton: Builder(
+                builder: (context) {
+                  return FloatingActionButton(
                     onPressed: () {
                       _handleIconAnimation();
-                      Scaffold.of(ctx).openDrawer();
+                      Scaffold.of(context).openDrawer();
                     },
-                    icon: AnimatedIcon(
+                    child: AnimatedIcon(
                       progress: _animate,
                       icon: AnimatedIcons.menu_home,
                       size: 30,
                     ),
                   );
-                }),
+                },
               ),
             ),
             AnimatedOpacity(
@@ -203,7 +200,7 @@ class _HomePageState extends State<HomePage>
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(30))),
                     child: TextFormField(
-                      focusNode: node,
+                      // focusNode: node,
                       textAlign: TextAlign.start,
                       style: const TextStyle(fontSize: 20, color: Colors.black),
                       cursorColor: Colors.black,
@@ -213,9 +210,7 @@ class _HomePageState extends State<HomePage>
                       ),
                       onFieldSubmitted: (value) {
                         bloc.add(HomeEvent.searchMovies(query: value));
-                        setState(() {
-                          showSearchBar = false;
-                        });
+                        setState(() => showSearchBar = false);
                       },
                     ),
                   ),

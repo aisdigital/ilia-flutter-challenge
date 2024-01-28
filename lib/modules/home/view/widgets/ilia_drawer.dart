@@ -33,7 +33,7 @@ class _IliaDrawerState extends State<IliaDrawer> {
         backgroundColor: backgroung,
         child: SizedBox(
           height: _layout.height * .95,
-          child: ListView(
+          child: Column(
             children: <Widget>[
               Container(
                 height: _layout.height * .13,
@@ -57,6 +57,7 @@ class _IliaDrawerState extends State<IliaDrawer> {
                 ontap: () {
                   context.read<HomeBloc>().add(const HomeEvent.switchSection(
                       section: MovieSection.nowPlaying));
+                  Navigator.of(context).pop();
                 },
               ),
               IliaDrawerTile(
@@ -64,6 +65,7 @@ class _IliaDrawerState extends State<IliaDrawer> {
                 ontap: () {
                   context.read<HomeBloc>().add(const HomeEvent.switchSection(
                       section: MovieSection.upcoming));
+                  Navigator.of(context).pop();
                 },
               ),
               IliaDrawerTile(
@@ -71,6 +73,7 @@ class _IliaDrawerState extends State<IliaDrawer> {
                 ontap: () {
                   context.read<HomeBloc>().add(const HomeEvent.switchSection(
                       section: MovieSection.discover));
+                  Navigator.of(context).pop();
                 },
               ),
               IliaDrawerTile(
@@ -78,6 +81,7 @@ class _IliaDrawerState extends State<IliaDrawer> {
                 ontap: () {
                   context.read<HomeBloc>().add(const HomeEvent.switchSection(
                       section: MovieSection.popular));
+                  Navigator.of(context).pop();
                 },
               ),
               const Spacer(),
@@ -141,17 +145,27 @@ class _IliaDrawerState extends State<IliaDrawer> {
                       }),
                 ),
               ),
-              Container(
-                  height: _layout.height * .07,
-                  alignment: Alignment.center,
-                  child: TextButton(
-                      onPressed: () async {
-                        Navigator.pop(context);
-                        Navigator.pushReplacementNamed(
-                          context,
-                          SignInPage.route,
-                        );
-                      },
+              GestureDetector(
+                  onTap: () async {
+                    print('GestureDetectorGestureDetectorGestureDetector');
+                    try {
+                      Navigator.of(context).pop();
+                      Navigator.pushReplacementNamed(
+                        context,
+                        SignInPage.route,
+                      );
+                    } catch (e) {
+                      print(
+                          'catch???? GestureDetectorGestureDetectorGestureDetector');
+                    }
+
+                    print('GestureDetectorGestureDetectorGestureDetector');
+                  },
+                  child: Container(
+                      height: _layout.height * .07,
+                      width: _layout.width * .3,
+                      alignment: Alignment.center,
+                      color: Colors.transparent,
                       child: Text(
                         AppLocalizations.of(context)?.exit ?? '',
                         style: TextStyle(
