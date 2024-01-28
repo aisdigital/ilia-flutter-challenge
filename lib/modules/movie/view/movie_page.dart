@@ -5,7 +5,7 @@ import 'package:ilia_challenge/modules/movie/view/cubit/movie_cubit.dart';
 
 class MoviePage extends StatefulWidget {
   const MoviePage({super.key, required this.movie});
-  static String get route => '/movie';
+  static const String route = '/movie';
 
   final Map movie;
 
@@ -17,7 +17,7 @@ class _MoviePageState extends State<MoviePage> {
   final MovieCubit cubit = MovieCubit();
 
   late Future movieDetails;
-
+  get settings => ModalRoute.of(context)?.settings.arguments;
   @override
   void initState() {
     super.initState();

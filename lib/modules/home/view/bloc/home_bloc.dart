@@ -19,15 +19,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeEvent>(
       (events, emit) async => events.map(
         started: (event) => _homeStarted(event, emit),
-        pinSearchBar: (event) => _pinSearchBar(event, emit),
         loadMovies: (event) => _loadMovies(event, emit),
         nextPageRequested: (event) => _nextPageRequested(event, emit),
+        switchSection: (event) => _switchSection(event, emit),
+        searchMovies: (event) => _searchMovies(event, emit),
       ),
     );
   }
 
   _homeStarted(_HomeStarted event, emit) async {
-    print(' ===================== HomeStarted ===================== ');
     emit(state.copyWith(
         loaders: switchLoaders(loaders: state.loaders, key: 'initialLoader')));
 
@@ -46,19 +46,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(movies: movies));
   }
 
-  _pinSearchBar(_PinSearchBar event, emit) {}
-
   _loadMovies(_LoadMovies event, emit) async {
-    print(' ===================== LoadMovies ===================== ');
-
     MoviesUriBuilderService uriService = state.sections[event.section]!;
 
     // uri is set to null when reaches last page
     if (uriService.uri == null) return;
 
     var (error, response) = await repo.loadMovies(route: uriService.uri!);
-
-    print(' ================= uri? ${uriService.uri} ================= ');
 
     /// TODO: handle incoming errors instead of return only
     if (error != null) return;
@@ -74,8 +68,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future _nextPageRequested(_NextPageRequested event, emit) async {
-    print(' ===================== NextPageRequested ===================== ');
-
     emit(state.copyWith(
         loaders: switchLoaders(loaders: state.loaders, key: 'nextPageLoader')));
 
@@ -125,5 +117,45 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     movies[section] = currentSection;
     return movies;
     //////////////////////////////
+  }
+
+  void _switchSection(_SwitchSection event, emit) async {
+    var (sections, movies) = _resetMoviesLists();
+
+    emit(state.copyWith(
+      movies: movies,
+      sections: sections,
+    ));
+    // aggregates incoming movies to the current state
+    emit(state.copyWith(currentSection: event.section));
+    final Completer<Map<MovieSection, List<dynamic>>> completer = Completer();
+    add(HomeEvent.loadMovies(section: event.section, result: completer));
+    movies = await completer.future;
+    emit(state.copyWith(movies: movies));
+    //////////////////////////////
+  }
+
+  void _searchMovies(_SearchMovies event, emit) async {
+    var (sections, movies) = _resetMoviesLists();
+
+    emit(state.copyWith(
+      movies: movies,
+      sections: sections,
+    ));
+
+    final uriBuilder = state.sections[MovieSection.search]!;
+    uriBuilder
+      ..addParameter(name: 'query', value: event.query)
+      ..addParameter(name: 'include_adult', value: 'false');
+    print('==================================================================');
+    print('==================================================================');
+    print('==================================================================');
+    print('==================================================================');
+    print(uriBuilder.uri);
+    emit(state.copyWith(currentSection: MovieSection.search));
+    final Completer<Map<MovieSection, List<dynamic>>> completer = Completer();
+    add(HomeEvent.loadMovies(section: MovieSection.search, result: completer));
+    movies = await completer.future;
+    emit(state.copyWith(movies: movies));
   }
 }

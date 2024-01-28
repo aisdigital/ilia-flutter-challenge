@@ -12,7 +12,7 @@ class MoviesUriBuilderService {
 
 // _page = 0 is set after last page in nextPage() validation;
   String? get uri => _page > 0
-      ? Config.tmdbBaseUrl + path + setLanguage() + _parameters + setPage()
+      ? Config.tmdbBaseUrl + path + _parameters + setLanguage() + setPage()
       : null;
 
   String _parameters = '';
@@ -20,7 +20,7 @@ class MoviesUriBuilderService {
   int _page = 1;
 
   void addParameter({required String name, required String value}) {
-    _parameters = '$_parameters + $name=$value&';
+    _parameters = '$_parameters$name=$value&';
   }
 
   String setLanguage() {
@@ -32,12 +32,13 @@ class MoviesUriBuilderService {
 
     switch (locale) {
       case port:
-        language = 'language=en-US';
-        break;
-      default:
         language = 'language=pt-BR';
         break;
+      default:
+        language = 'language=en-US';
+        break;
     }
+
     return language;
   }
 

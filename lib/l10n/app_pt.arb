@@ -1,10 +1,12 @@
 {
-  "iliaChallenge": "Desafio Ília!",
+  "iliaChallenge": "Desafio Ília",
+  "signin": "Entrar",
   "categories": "Categorias",
   "nowPlaying": "Em Cartaz",
   "upcoming": "Em Breve",
   "discover": "Novidades",
   "popular": "Populares",
+  "search": "Pesquisar",
   "language": "Idioma",
   "darkMode": "Modo Noturno",
   "exit": "Sair"

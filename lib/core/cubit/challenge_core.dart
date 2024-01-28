@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ilia_challenge/core/infra/services/router_service.dart';
+import 'package:ilia_challenge/main.dart';
+import 'package:ilia_challenge/modules/home/view/home_page.dart';
 
 part 'core_state.dart';
 
@@ -40,6 +43,18 @@ class ChallengeCore extends ValueNotifier<CoreState> {
     }
     value = value.copyWith(themeMode: themeMode);
     notifyListeners();
+  }
+
+  boostrap() async {
+    IliaRouter routes = injector.find<IliaRouter>();
+    print(' routes.service.pushReplacement(SystemRoutes.signin)');
+    if (navigatorKey.currentContext != null) {
+      Navigator.pushNamed(
+        navigatorKey.currentContext!,
+        HomePage.route,
+        arguments: {"name": "Movie!!!!!"},
+      );
+    }
   }
 }
 

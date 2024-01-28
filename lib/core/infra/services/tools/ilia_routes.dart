@@ -1,21 +1,21 @@
-import 'package:ilia_challenge/main.dart';
+import 'package:ilia_challenge/modules/auth/view/pages/signin_page.dart';
 import 'package:ilia_challenge/modules/home/view/home_page.dart';
 import 'package:ilia_challenge/modules/movie/view/movie_page.dart';
 
 class SystemRoutes {
-  static String get root => IliaApp.route;
+  static String get signin => SignInPage.route;
   static String get home => HomePage.route;
   static String get movies => '$home${MoviePage.route}';
 }
 
 enum IliaRoutes {
-  root,
+  signin,
   home,
   movies;
 
   String get path {
     return switch (this) {
-      root => SystemRoutes.root,
+      signin => SystemRoutes.signin,
       home => SystemRoutes.home,
       movies => SystemRoutes.movies,
     };

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ilia_challenge/core/cubit/challenge_core.dart';
 import 'package:ilia_challenge/core/infra/services/tools/ilia_layout.dart';
 import 'package:ilia_challenge/main.dart';
+import 'package:ilia_challenge/modules/auth/view/pages/signin_page.dart';
+import 'package:ilia_challenge/modules/home/view/bloc/home_bloc.dart';
 import 'package:ilia_challenge/modules/home/view/widgets/ilia_drawer_tile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -14,6 +17,7 @@ class IliaDrawer extends StatefulWidget {
 
 class _IliaDrawerState extends State<IliaDrawer> {
   ChallengeCore get core => injector.find<ChallengeCore>();
+  HomeBloc get bloc => context.read<HomeBloc>();
   IliaLayout get _layout => IliaLayout(context);
 
   get tileColor => Theme.of(context).colorScheme.primaryContainer;
@@ -33,38 +37,45 @@ class _IliaDrawerState extends State<IliaDrawer> {
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.only(left: 12),
                 child: Text(
-                  'Ília Challenge',
+                  AppLocalizations.of(context)?.iliaChallenge ?? '',
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
               ),
-              InkWell(
-                onTap: () {
-                  // routes.service.push(SystemRoutes.customers);
-                },
-                child: Container(
-                    height: _layout.height * .1,
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Categorias',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    )),
-              ),
+              Container(
+                  height: _layout.height * .1,
+                  alignment: Alignment.center,
+                  child: Text(
+                    AppLocalizations.of(context)?.categories ?? '',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  )),
               const Spacer(),
               IliaDrawerTile(
                 title: AppLocalizations.of(context)?.nowPlaying ?? '',
-                ontap: () {},
+                ontap: () {
+                  context.read<HomeBloc>().add(const HomeEvent.switchSection(
+                      section: MovieSection.nowPlaying));
+                },
               ),
               IliaDrawerTile(
                 title: AppLocalizations.of(context)?.upcoming ?? '',
-                ontap: () {},
+                ontap: () {
+                  context.read<HomeBloc>().add(const HomeEvent.switchSection(
+                      section: MovieSection.upcoming));
+                },
               ),
               IliaDrawerTile(
                 title: AppLocalizations.of(context)?.discover ?? '',
-                ontap: () {},
+                ontap: () {
+                  context.read<HomeBloc>().add(const HomeEvent.switchSection(
+                      section: MovieSection.discover));
+                },
               ),
               IliaDrawerTile(
                 title: AppLocalizations.of(context)?.popular ?? '',
-                ontap: () {},
+                ontap: () {
+                  context.read<HomeBloc>().add(const HomeEvent.switchSection(
+                      section: MovieSection.popular));
+                },
               ),
               const Spacer(),
               Container(
@@ -132,8 +143,11 @@ class _IliaDrawerState extends State<IliaDrawer> {
                   alignment: Alignment.center,
                   child: TextButton(
                       onPressed: () async {
-                        // await core.clearCoreData();
-                        // routes.service.pushReplacement(SystemRoutes.root);
+                        Navigator.pop(context);
+                        Navigator.pushReplacementNamed(
+                          context,
+                          SignInPage.route,
+                        );
                       },
                       child: Text(
                         AppLocalizations.of(context)?.exit ?? '',

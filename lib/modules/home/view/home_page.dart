@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ilia_challenge/core/infra/services/router_service.dart';
+import 'package:ilia_challenge/core/infra/services/tools/ilia_layout.dart';
 
 import 'package:ilia_challenge/main.dart';
 import 'package:ilia_challenge/core/cubit/challenge_core.dart';
@@ -12,81 +14,203 @@ import 'package:ilia_challenge/modules/home/view/widgets/ilia_drawer.dart';
 import 'package:ilia_challenge/modules/home/view/widgets/ilia_fullscreen_loader.dart';
 import 'package:ilia_challenge/modules/home/view/widgets/pull_to_refresh_infitine_list.dart';
 
-class HomePage extends StatefulWidget {
-  static String get route => '/home';
-  const HomePage({super.key, required this.title});
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ilia_challenge/modules/movie/view/movie_page.dart';
 
-  final String title;
+class HomePage extends StatefulWidget {
+  static const String route = '/home';
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   final HomeBloc bloc = HomeBloc();
   ChallengeCore get core => injector.find<ChallengeCore>();
-  final section = MovieSection.nowPlaying;
+  IliaRouter get routes => injector.find<IliaRouter>();
+  IliaLayout get layout => IliaLayout(context);
+  final node = FocusNode();
+
+  late final AnimationController _animate;
+
+  bool showMenu = false;
+  bool showSearchBar = false;
+
   @override
   void initState() {
-    super.initState();
     bloc.add(const HomeEvent.started());
+    _animate = AnimationController(vsync: this, duration: Durations.long1);
+    super.initState();
   }
+
+  @override
+  void dispose() {
+    node.dispose();
+    super.dispose();
+  }
+
+  void _handleIconAnimation() {
+    setState(() {
+      showMenu = !showMenu;
+      showMenu ? _animate.forward() : _animate.reverse();
+    });
+  }
+
+  String? get _title => bloc.state.currentSection == MovieSection.discover
+      ? AppLocalizations.of(context)?.discover
+      : bloc.state.currentSection == MovieSection.nowPlaying
+          ? AppLocalizations.of(context)?.nowPlaying
+          : bloc.state.currentSection == MovieSection.popular
+              ? AppLocalizations.of(context)?.popular
+              : bloc.state.currentSection == MovieSection.upcoming
+                  ? AppLocalizations.of(context)?.upcoming
+                  : bloc.state.currentSection == MovieSection.search
+                      ? AppLocalizations.of(context)?.search
+                      : AppLocalizations.of(context)?.iliaChallenge;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Stack(
-        children: [
-          Scaffold(
-            appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-              title: Text(widget.title),
-            ),
-            drawer: const IliaDrawer(),
-            body: Center(
-              child: BlocBuilder<HomeBloc, HomeState>(
-                  bloc: bloc,
-                  builder: (context, state) {
-                    return PullToRefreshInfiniteList(
-                      itemCount:
-                          state.movies[state.currentSection]?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        final movie =
-                            state.movies[state.currentSection]?[index];
-                        return Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(json.encode(movie)),
-                          ),
-                        );
-                      },
-                      loadNext: () async {
-                        final success = Completer<bool>();
+      child: PopScope(
+        canPop: false,
+        child: Stack(
+          children: [
+            Scaffold(
+              appBar: AppBar(
+                toolbarHeight: 80,
+                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                title: Text(_title ?? ''),
+                actions: [
+                  IconButton(
+                      onPressed: () async {
+                        setState(() {
+                          showSearchBar = !showSearchBar;
+                        });
+                        await Future.delayed(Durations.medium2);
 
-                        bloc.add(HomeEvent.nextPageRequested(
-                            section: state.currentSection,
-                            success: () {
-                              success.complete(true);
-                            }));
+                        if (!showSearchBar) node.unfocus();
+                        if (showSearchBar) node.requestFocus();
+                      },
+                      icon: const Icon(
+                        Icons.search,
+                        size: 40,
+                      ))
+                ],
+              ),
+              drawer:
+                  BlocProvider.value(value: bloc, child: const IliaDrawer()),
+              onDrawerChanged: (isOpened) {
+                if (!isOpened) _handleIconAnimation();
+              },
+              body: Center(
+                child: BlocBuilder<HomeBloc, HomeState>(
+                    bloc: bloc,
+                    builder: (context, state) {
+                      return PullToRefreshInfiniteList(
+                        itemCount:
+                            state.movies[state.currentSection]?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          final movie =
+                              state.movies[state.currentSection]?[index];
+                          return InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                MoviePage.route,
+                                arguments: {"name": "Movie!!!!!"},
+                              );
+                            },
+                            child: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(json.encode(movie)),
+                              ),
+                            ),
+                          );
+                        },
+                        loadNext: () async {
+                          final success = Completer<bool>();
 
-                        return await success.future;
-                      },
-                      onRefresh: () async {
-                        bloc.add(const HomeEvent.started());
-                      },
-                    );
-                  }),
+                          bloc.add(HomeEvent.nextPageRequested(
+                              section: state.currentSection,
+                              success: () {
+                                success.complete(true);
+                              }));
+
+                          return await success.future;
+                        },
+                        onRefresh: () async {
+                          bloc.add(const HomeEvent.started());
+                        },
+                      );
+                    }),
+              ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {},
+                child: Builder(builder: (ctx) {
+                  return IconButton(
+                    onPressed: () {
+                      _handleIconAnimation();
+                      Scaffold.of(ctx).openDrawer();
+                    },
+                    icon: AnimatedIcon(
+                      progress: _animate,
+                      icon: AnimatedIcons.menu_home,
+                      size: 30,
+                    ),
+                  );
+                }),
+              ),
             ),
-          ),
-          ValueListenableBuilder(
-              valueListenable: core,
-              builder: (context, store, _) {
-                return const IliaFullscreenLoader(
-                  loading: false,
-                  color: Colors.white,
-                );
-              }),
-        ],
+            AnimatedOpacity(
+              opacity: showSearchBar ? 1 : 0,
+              duration: Durations.medium1,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    height: 70,
+                    width: layout.width * .8,
+                    alignment: Alignment.centerLeft,
+                    margin:
+                        EdgeInsets.only(bottom: layout.viewInsets.bottom + 20),
+                    padding: const EdgeInsets.fromLTRB(30, 15, 15, 5),
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    child: TextFormField(
+                      focusNode: node,
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(fontSize: 20, color: Colors.black),
+                      cursorColor: Colors.black,
+                      decoration: const InputDecoration(
+                        hintText: 'Pesquisar',
+                        border: InputBorder.none,
+                      ),
+                      onFieldSubmitted: (value) {
+                        bloc.add(HomeEvent.searchMovies(query: value));
+                        setState(() {
+                          showSearchBar = false;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            ValueListenableBuilder(
+                valueListenable: core,
+                builder: (context, store, _) {
+                  return const IliaFullscreenLoader(
+                    loading: false,
+                    color: Colors.white,
+                  );
+                }),
+          ],
+        ),
       ),
     );
   }
