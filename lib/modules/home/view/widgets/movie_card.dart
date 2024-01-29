@@ -51,7 +51,7 @@ class MovieCard extends StatelessWidget {
                   width: 90,
                   child: CachedNetworkImage(
                       errorWidget: (context, url, error) =>
-                          Image.asset('assets/images/nobanner.jpeg'),
+                          const SizedBox.shrink(),
                       fit: BoxFit.cover,
                       alignment: Alignment.topCenter,
                       imageUrl: poster),
