@@ -7,7 +7,6 @@ import 'package:ilia_challenge/core/infra/services/models/api_config.dart';
 import 'package:ilia_challenge/core/infra/services/models/movie_model.dart';
 import 'package:ilia_challenge/core/infra/services/tools/ilia_layout.dart';
 import 'package:ilia_challenge/main.dart';
-import 'package:ilia_challenge/modules/home/view/bloc/home_bloc.dart';
 import 'package:ilia_challenge/modules/movie/view/cubit/movie_cubit.dart';
 import 'package:ilia_challenge/modules/movie/view/widgets/gallery_grid.dart';
 import 'package:ilia_challenge/modules/movie/view/widgets/video_player.dart';
@@ -44,6 +43,10 @@ class _MoviePageState extends State<MoviePage> {
     _backdrops = _gallery['backdrops'] ?? [];
     _logos = _gallery['logos'] ?? [];
     _posters = _gallery['posters'] ?? [];
+
+    _backdrops.shuffle();
+    _logos.shuffle();
+    _posters.shuffle();
   }
 
   @override
@@ -70,10 +73,11 @@ class _MoviePageState extends State<MoviePage> {
                   height: 350,
                   width: _layout.width,
                   child: Builder(builder: (context) {
-                    final backdrop =
-                        _backdrops[Random().nextInt(_backdrops.length)];
-                    final poster = _posters[Random().nextInt(_posters.length)];
+                    final backdrop = _backdrops.first;
+                    final poster = _posters.first;
                     return CachedNetworkImage(
+                        errorWidget: (context, url, error) =>
+                            Image.asset('assets/images/nobanner.jpeg'),
                         fit: BoxFit.cover,
                         alignment: Alignment.topCenter,
                         imageUrl: backdrop ?? poster);
@@ -142,17 +146,17 @@ class _MoviePageState extends State<MoviePage> {
                 const SizedBox(height: 80),
                 if (_logos.isNotEmpty)
                   Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: _layout.width * .25),
-                    constraints: BoxConstraints(
-                      maxHeight: _layout.width * .5,
-                      maxWidth: _layout.width * .5,
-                    ),
-                    child: CachedNetworkImage(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: _layout.width * .25),
+                      constraints: BoxConstraints(
+                        maxHeight: _layout.width * .5,
+                        maxWidth: _layout.width * .5,
+                      ),
+                      child: CachedNetworkImage(
                         fit: BoxFit.cover,
                         alignment: Alignment.topCenter,
-                        imageUrl: _logos[Random().nextInt(_logos.length)]),
-                  ),
+                        imageUrl: _logos.first,
+                      )),
                 const SizedBox(height: 50),
               ],
             ),

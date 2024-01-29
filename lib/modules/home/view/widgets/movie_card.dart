@@ -34,6 +34,8 @@ class MovieCard extends StatelessWidget {
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(15)),
             child: CachedNetworkImage(
+                errorWidget: (context, url, error) =>
+                    Image.asset('assets/images/nobanner.jpeg'),
                 fit: BoxFit.cover,
                 alignment: Alignment.topCenter,
                 imageUrl: backdrop),
@@ -48,6 +50,8 @@ class MovieCard extends StatelessWidget {
                   height: 150,
                   width: 90,
                   child: CachedNetworkImage(
+                      errorWidget: (context, url, error) =>
+                          Image.asset('assets/images/nobanner.jpeg'),
                       fit: BoxFit.cover,
                       alignment: Alignment.topCenter,
                       imageUrl: poster),
