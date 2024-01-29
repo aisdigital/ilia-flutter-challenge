@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ilia_challenge/core/cubit/challenge_core.dart';
@@ -23,25 +25,25 @@ class MoviePage extends StatefulWidget {
 }
 
 class _MoviePageState extends State<MoviePage> {
-  final MovieCubit cubit = MovieCubit();
-  final ChallengeCore core = injector.find<ChallengeCore>();
-  MediaConfig? get mediaConfig => core.value.mediaConfig;
-  IliaLayout get layout => IliaLayout(context);
+  final MovieCubit _cubit = MovieCubit();
+  final ChallengeCore _core = injector.find<ChallengeCore>();
+  MediaConfig? get _mediaConfig => _core.value.mediaConfig;
+  IliaLayout get _layout => IliaLayout(context);
 
-  late final Map<String, List> gallery;
-  late final List backdrops;
-  late final List logos;
-  late final List posters;
+  late final Map<String, List> _gallery;
+  late final List _backdrops;
+  late final List _logos;
+  late final List _posters;
 
   @override
   void initState() {
     super.initState();
-    gallery = cubit.handleMoviePostersLinks(
-        images: widget.movie.images, config: mediaConfig);
+    _gallery = _cubit.handleMoviePostersLinks(
+        images: widget.movie.images, config: _mediaConfig);
 
-    backdrops = gallery['backdrops'] ?? [];
-    logos = gallery['logos'] ?? [];
-    posters = gallery['posters'] ?? [];
+    _backdrops = _gallery['backdrops'] ?? [];
+    _logos = _gallery['logos'] ?? [];
+    _posters = _gallery['posters'] ?? [];
   }
 
   @override
@@ -49,9 +51,9 @@ class _MoviePageState extends State<MoviePage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          if (widget.movie.posterPath != null)
+          if (_backdrops.isNotEmpty || _posters.isNotEmpty)
             SliverAppBar(
-              pinned: true,
+              pinned: false,
               floating: true,
               expandedHeight: 350,
               backgroundColor: Theme.of(context).colorScheme.background,
@@ -66,22 +68,15 @@ class _MoviePageState extends State<MoviePage> {
                 ),
                 background: SizedBox(
                   height: 350,
-                  width: layout.width,
+                  width: _layout.width,
                   child: Builder(builder: (context) {
-                    const apiBaseUrl = 'https://image.tmdb.org';
-                    final poster = widget.movie.posterPath!;
-                    final path = MovieSection.media.path;
-                    final posterSizes = mediaConfig?.posterSizes ?? [];
-                    int? middle = posterSizes.length > 2
-                        ? (posterSizes.length / 2).ceil()
-                        : null;
-                    final posterSize =
-                        middle != null ? posterSizes[middle] : null;
-
+                    final backdrop =
+                        _backdrops[Random().nextInt(_backdrops.length)];
+                    final poster = _posters[Random().nextInt(_posters.length)];
                     return CachedNetworkImage(
                         fit: BoxFit.cover,
                         alignment: Alignment.topCenter,
-                        imageUrl: '$apiBaseUrl$path/$posterSize$poster}');
+                        imageUrl: backdrop ?? poster);
                   }),
                 ),
               ),
@@ -119,9 +114,9 @@ class _MoviePageState extends State<MoviePage> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                GalleryGrid(gallery: backdrops),
+                GalleryGrid(gallery: _backdrops),
                 const SizedBox(height: 10),
-                GalleryGrid(gallery: posters),
+                GalleryGrid(gallery: _posters),
                 Padding(
                   padding: const EdgeInsets.only(top: 20, bottom: 10),
                   child: Text(
@@ -134,7 +129,7 @@ class _MoviePageState extends State<MoviePage> {
                   ),
                 ),
                 Builder(builder: (context) {
-                  final List<String> videos = cubit
+                  final List<String> videos = _cubit
                       .handleMovieVideoLinks(widget.movie.videos ?? <Video>[]);
 
                   final String? video = videos.isEmpty ? null : videos.first;
@@ -145,18 +140,18 @@ class _MoviePageState extends State<MoviePage> {
                   // return SizedBox();
                 }),
                 const SizedBox(height: 80),
-                if (logos.isNotEmpty)
+                if (_logos.isNotEmpty)
                   Container(
                     padding:
-                        EdgeInsets.symmetric(horizontal: layout.width * .25),
+                        EdgeInsets.symmetric(horizontal: _layout.width * .25),
                     constraints: BoxConstraints(
-                      maxHeight: layout.width * .5,
-                      maxWidth: layout.width * .5,
+                      maxHeight: _layout.width * .5,
+                      maxWidth: _layout.width * .5,
                     ),
                     child: CachedNetworkImage(
                         fit: BoxFit.cover,
                         alignment: Alignment.topCenter,
-                        imageUrl: logos.first),
+                        imageUrl: _logos[Random().nextInt(_logos.length)]),
                   ),
                 const SizedBox(height: 50),
               ],

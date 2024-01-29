@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:ilia_challenge/core/cubit/challenge_core.dart';
 import 'package:ilia_challenge/core/domain/services/movies_uri_builder_service.dart';
+import 'package:ilia_challenge/core/infra/services/config/config.dart';
 import 'package:ilia_challenge/main.dart';
 import 'package:ilia_challenge/modules/home/domain/home_repository.dart';
 import 'package:ilia_challenge/modules/home/domain/movies_section.dart';
@@ -198,5 +200,32 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       event.success.complete(data);
     }
+  }
+
+  getImageUri({String? poster, String? backdrop}) {
+    if (poster == null && backdrop == null) return ('', '');
+    final ChallengeCore core = injector.find<ChallengeCore>();
+
+    const apiBaseUrl = Config.imageApi;
+
+    final path = MovieSection.media.path;
+
+    final posterSizes = core.value.mediaConfig?.posterSizes ?? [];
+
+    int? posterMiddle =
+        posterSizes.length > 2 ? (posterSizes.length / 2).ceil() : null;
+
+    final posterSize = posterMiddle != null ? posterSizes[posterMiddle] : null;
+
+    final backdropSizes = core.value.mediaConfig?.backdropSizes ?? [];
+
+    int? backMiddle = backdropSizes.length - 1;
+
+    final backSize = posterSizes[backMiddle];
+
+    return (
+      '$apiBaseUrl$path/$posterSize/$poster}',
+      '$apiBaseUrl$path/$backSize/$backdrop}'
+    );
   }
 }

@@ -11,6 +11,8 @@
   "language": "Language",
   "darkMode": "Dark Mode",
   "gallery": "Gallery",
+  "score": "Score",
+  "year": "Year",
   "exit": "Exit",
   "overview": "Overview"
 }

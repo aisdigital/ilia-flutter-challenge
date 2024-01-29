@@ -14,6 +14,7 @@ import 'package:ilia_challenge/core/cubit/challenge_core.dart';
 import 'package:ilia_challenge/modules/home/view/bloc/home_bloc.dart';
 import 'package:ilia_challenge/modules/home/view/widgets/ilia_drawer.dart';
 import 'package:ilia_challenge/modules/home/view/widgets/ilia_fullscreen_loader.dart';
+import 'package:ilia_challenge/modules/home/view/widgets/movie_card.dart';
 import 'package:ilia_challenge/modules/home/view/widgets/pull_to_refresh_infitine_list.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -29,12 +30,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  final HomeBloc bloc = HomeBloc();
-  ChallengeCore get core => injector.find<ChallengeCore>();
-  IliaRouter get routes => injector.find<IliaRouter>();
-  IliaLayout get layout => IliaLayout(context);
-  // late final FocusNode node;
-
+  IliaLayout get _layout => IliaLayout(context);
+  final HomeBloc _bloc = HomeBloc();
+  late final FocusNode _node;
+  late final TextEditingController _search;
   late final AnimationController _animate;
 
   bool showMenu = false;
@@ -43,15 +42,18 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
-    bloc.add(const HomeEvent.started());
-    // node = FocusNode();
+    _bloc.add(const HomeEvent.started());
+    _node = FocusNode();
+    _search = TextEditingController();
     _animate = AnimationController(vsync: this, duration: Durations.long1);
     super.initState();
   }
 
   @override
   void dispose() {
-    // node.dispose();
+    _node.dispose();
+    _search.dispose();
+
     super.dispose();
   }
 
@@ -66,17 +68,22 @@ class _HomePageState extends State<HomePage>
     });
   }
 
-  String? get _title => bloc.state.currentSection == MovieSection.discover
-      ? AppLocalizations.of(context)?.discover
-      : bloc.state.currentSection == MovieSection.nowPlaying
-          ? AppLocalizations.of(context)?.nowPlaying
-          : bloc.state.currentSection == MovieSection.popular
-              ? AppLocalizations.of(context)?.popular
-              : bloc.state.currentSection == MovieSection.upcoming
-                  ? AppLocalizations.of(context)?.upcoming
-                  : bloc.state.currentSection == MovieSection.search
-                      ? AppLocalizations.of(context)?.search
-                      : AppLocalizations.of(context)?.iliaChallenge;
+  String getTitle() {
+    switch (_bloc.state.currentSection) {
+      case MovieSection.discover:
+        return AppLocalizations.of(context)?.discover ?? '';
+      case MovieSection.nowPlaying:
+        return AppLocalizations.of(context)?.nowPlaying ?? '';
+      case MovieSection.popular:
+        return AppLocalizations.of(context)?.popular ?? '';
+      case MovieSection.upcoming:
+        return AppLocalizations.of(context)?.upcoming ?? '';
+      case MovieSection.search:
+        return AppLocalizations.of(context)?.search ?? '';
+      default:
+        return AppLocalizations.of(context)?.iliaChallenge ?? '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,9 +95,14 @@ class _HomePageState extends State<HomePage>
           children: [
             Scaffold(
               appBar: AppBar(
-                toolbarHeight: 80,
-                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-                title: Text(_title ?? ''),
+                toolbarHeight: 70,
+                backgroundColor:
+                    Theme.of(context).colorScheme.background.withOpacity(.5),
+                centerTitle: true,
+                title: Text(
+                  getTitle(),
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 leading: const SizedBox.shrink(),
                 actions: [
                   IconButton(
@@ -100,38 +112,38 @@ class _HomePageState extends State<HomePage>
                         });
                         await Future.delayed(Durations.medium2);
 
-                        // if (!showSearchBar) node.unfocus();
-                        // if (showSearchBar) node.requestFocus();
+                        if (!showSearchBar) _node.unfocus();
+                        if (showSearchBar) _node.requestFocus();
                       },
                       icon: const Icon(
                         Icons.search,
-                        size: 40,
+                        size: 35,
                       ))
                 ],
               ),
               drawer:
-                  BlocProvider.value(value: bloc, child: const IliaDrawer()),
+                  BlocProvider.value(value: _bloc, child: const IliaDrawer()),
               onDrawerChanged: (isOpened) {
                 if (!isOpened) _handleIconAnimation();
               },
               body: Center(
                 child: BlocBuilder<HomeBloc, HomeState>(
-                    bloc: bloc,
+                    bloc: _bloc,
                     builder: (context, state) {
                       return PullToRefreshInfiniteList(
                         itemCount:
                             state.movies[state.currentSection]?.length ?? 0,
                         itemBuilder: (context, index) {
-                          final movie =
-                              state.movies[state.currentSection]?[index];
+                          final movie = Movie.fromJson(
+                              state.movies[state.currentSection]?[index]);
                           return InkWell(
                             onTap: () async {
                               setState(() => loadDetails = true);
                               try {
                                 Completer<Map<String, dynamic>> success =
                                     Completer();
-                                bloc.add(HomeEvent.loadMovieDetails(
-                                    success: success, movieId: movie['id']));
+                                _bloc.add(HomeEvent.loadMovieDetails(
+                                    success: success, movieId: movie.id!));
                                 await success.future.then((value) {
                                   final movie = Movie.fromJson(value);
 
@@ -144,18 +156,14 @@ class _HomePageState extends State<HomePage>
                               } finally {}
                               setState(() => loadDetails = false);
                             },
-                            child: Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(json.encode(movie)),
-                              ),
-                            ),
+                            child: BlocProvider.value(
+                                value: _bloc, child: MovieCard(movie: movie)),
                           );
                         },
                         loadNext: () async {
                           final success = Completer<bool>();
 
-                          bloc.add(HomeEvent.nextPageRequested(
+                          _bloc.add(HomeEvent.nextPageRequested(
                               section: state.currentSection,
                               success: () {
                                 success.complete(true);
@@ -164,7 +172,16 @@ class _HomePageState extends State<HomePage>
                           return await success.future;
                         },
                         onRefresh: () async {
-                          bloc.add(const HomeEvent.started());
+                          if (_search.text.isNotEmpty &&
+                              _bloc.state.currentSection ==
+                                  MovieSection.search) {
+                            _bloc.add(
+                                HomeEvent.searchMovies(query: _search.text));
+
+                            setState(() => showSearchBar = false);
+                          } else {
+                            _bloc.add(const HomeEvent.started());
+                          }
                         },
                       );
                     }),
@@ -196,16 +213,17 @@ class _HomePageState extends State<HomePage>
                   color: Colors.transparent,
                   child: Container(
                     height: 70,
-                    width: layout.width * .8,
+                    width: _layout.width * .8,
                     alignment: Alignment.centerLeft,
                     margin:
-                        EdgeInsets.only(bottom: layout.viewInsets.bottom + 20),
+                        EdgeInsets.only(bottom: _layout.viewInsets.bottom + 20),
                     padding: const EdgeInsets.fromLTRB(30, 15, 15, 5),
                     decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(30))),
                     child: TextFormField(
-                      // focusNode: node,
+                      focusNode: _node,
+                      controller: _search,
                       textAlign: TextAlign.start,
                       style: const TextStyle(fontSize: 20, color: Colors.black),
                       cursorColor: Colors.black,
@@ -214,7 +232,8 @@ class _HomePageState extends State<HomePage>
                         border: InputBorder.none,
                       ),
                       onFieldSubmitted: (value) {
-                        bloc.add(HomeEvent.searchMovies(query: value));
+                        _bloc.add(HomeEvent.searchMovies(query: value));
+
                         setState(() => showSearchBar = false);
                       },
                     ),
@@ -223,10 +242,10 @@ class _HomePageState extends State<HomePage>
               ),
               secondChild: Container(
                 height: 70,
-                width: layout.width * .8,
+                width: _layout.width * .8,
                 alignment: Alignment.centerLeft,
                 color: Colors.transparent,
-                margin: EdgeInsets.only(bottom: layout.viewInsets.bottom + 20),
+                margin: EdgeInsets.only(bottom: _layout.viewInsets.bottom + 20),
                 padding: const EdgeInsets.fromLTRB(30, 15, 15, 5),
               ),
             ),
