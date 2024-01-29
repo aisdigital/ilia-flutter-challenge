@@ -54,37 +54,44 @@ class _MoviePageState extends State<MoviePage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          if (_backdrops.isNotEmpty || _posters.isNotEmpty)
-            SliverAppBar(
-              pinned: false,
-              floating: true,
-              expandedHeight: 350,
-              backgroundColor: Theme.of(context).colorScheme.background,
-              foregroundColor: Theme.of(context).colorScheme.onBackground,
-              flexibleSpace: FlexibleSpaceBar(
-                title: Text(
-                  widget.movie.title ?? '',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
-                ),
-                background: SizedBox(
-                  height: 350,
-                  width: _layout.width,
-                  child: Builder(builder: (context) {
-                    final backdrop = _backdrops.first;
-                    final poster = _posters.first;
-                    return CachedNetworkImage(
-                        errorWidget: (context, url, error) =>
-                            Image.asset('assets/images/nobanner.jpeg'),
-                        fit: BoxFit.cover,
-                        alignment: Alignment.topCenter,
-                        imageUrl: backdrop ?? poster);
-                  }),
+          SliverAppBar(
+            pinned: false,
+            floating: true,
+            expandedHeight: 350,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            foregroundColor: Theme.of(context).colorScheme.onBackground,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(
+                widget.movie.title ?? '',
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
                 ),
               ),
+              background: SizedBox(
+                height: 350,
+                width: _layout.width,
+                child: Builder(builder: (context) {
+                  final String? backdrop =
+                      _backdrops.isNotEmpty ? _backdrops.first : null;
+
+                  final String? poster =
+                      _posters.isNotEmpty ? _posters.first : null;
+
+                  final String url = backdrop ?? poster ?? '';
+
+                  return url.isNotEmpty
+                      ? CachedNetworkImage(
+                          errorWidget: (context, url, error) =>
+                              Image.asset('assets/images/nobanner.jpeg'),
+                          fit: BoxFit.cover,
+                          alignment: Alignment.topCenter,
+                          imageUrl: url)
+                      : Image.asset('assets/images/nobanner.jpeg');
+                }),
+              ),
             ),
+          ),
           SliverList(
             delegate: SliverChildListDelegate(
               [
