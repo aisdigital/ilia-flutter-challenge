@@ -21,14 +21,14 @@ This project uses environment variables to store the credentials for API access.
 
 To set up the credentials, you’ll need to create an account with TMDB to obtain them.
 
-FOR MY RECRUITERS ONLY ^^, I´LL SEND THE CREDENTIALS BY E-MAIL.
-
 Once you have the credentials, copy them into a .env file into the project directory, following this pattern:
 
 API_BASE_URL=https://api.themoviedb.org
 IMAGE_API=https://image.tmdb.org
 API_KEY=#######YOUR API KEY HERE#######
 BEARER_TOKEN=#######YOUR BEARER TOKEN HERE#######
+
+FOR MY RECRUITERS ^^ Altought it´s not correct, i´ll share mine, since it can cause no harm (and the api is puclic already).
 
 Now, when running, building, or profiling, add this Dart flag: --dart-define-from-file={{YourEnvFileName}}.env
 
