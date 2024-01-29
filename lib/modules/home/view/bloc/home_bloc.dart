@@ -67,6 +67,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         // set last page in the first request
         uriService.handleLastPage(last: response?.data['total_pages'] ?? 1);
       }
+      print('wich page? ${uriService.uriMoviesList}');
 
       event.result.complete(handleResult(
           section: event.section, results: response?.data['results'] ?? []));
@@ -85,6 +86,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final newUriBuilder = state.sections[event.section]!..nextPage();
 
     newSection[event.section] = newUriBuilder;
+
+    print(newUriBuilder.uriMoviesList);
 
     emit(state.copyWith(sections: newSection));
 

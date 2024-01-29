@@ -1,5 +1,5 @@
-## Overview ==================================================================================================================
-
+=======================================================
+## Overview 
 Hello! I’m Lucas Fernandes. This project is designed to address the technical challenge presented by Ília Digital. The application is designed to interact with The Movie Database (TMDB) API.
 
 I’ve used various approaches to address common issues, such as using Blocs, Cubits, and ValueNotifiers for state management.
@@ -9,7 +9,8 @@ In a production project, it’s best practice to maintain a consistent pattern t
 
 Here I opted to show diferent aproaches that I can use.
 
-## Getting Started ===========================================================================================================
+=======================================================
+## Getting Started 
 
 Firstly, you´ll need to have a Flutter environment set up and running. You can find the instructions here [https://docs.flutter.dev/get-started/install].
 
@@ -39,13 +40,14 @@ flutter run --dart-define-from-file=dev.env
 flutter build apk --release --dart-define-from-file=dev.env
 
 
-
-## The Challenge ==================================================================================================================
+=======================================================
+## The Challenge 
 Using the API from [TheMovieDB](https://developers.themoviedb.org/3/getting-started/introduction), You must create an app that shows the featured movies in the Theaters, in a list.
 
 When the user touches in a movie, the app must show in a detail screen detailed information about it. You can choose which information should be shown.
 
-## Extra features ==================================================================================================================
+=======================================================
+## Extra features 
 
 - In the main list of the movies, would be nice if the app could load more movies, as the scroll reaches the bottom section of the current page.
 - In the detail screen, would be nice to have an option to play the movie trailer.

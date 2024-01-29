@@ -48,7 +48,7 @@ class MoviesUriBuilderService {
   }
 
   String setPage({int? jumpToPage}) {
-    return 'page=${jumpToPage ?? _page}';
+    return '&page=${jumpToPage ?? _page}';
   }
 
   bool handleLastPage({int? last}) {
