@@ -1,0 +1,29 @@
+name: ilia_challenge
+
+packages:
+  - app/**
+  - core/**
+  - service/**
+  - design_system/**
+  - "*"
+
+scripts:
+  analyze:
+    description: analyze.
+    exec: "flutter analyze --no-fatal-infos"
+
+format:
+  description: format files.
+  exec: "dart format --set-exit-if-changed ."
+
+get:
+  description: downloads pub packages.
+  exec: "flutter pub get"
+
+test:
+  description: test all packages.
+  exec: "flutter test --no-pub --coverage"
+  packageFilters:
+    dirExists:
+      - test
+    failFast: true

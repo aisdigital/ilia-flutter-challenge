@@ -1,0 +1,39 @@
+name: app
+description: "A new Flutter project."
+
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  flutter_animate: ^4.5.0
+  youtube_player_flutter: ^9.0.3
+
+  # modules
+
+  core:
+    path: ../core
+  
+  service:
+    path: ../service
+
+  design_system:
+    path: ../design_system
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+
+flutter:
+
+  uses-material-design: true
