@@ -1,43 +1,55 @@
-# ília - Code Challenge Flutter
-**English**
-##### Before we start ⚠️
-**Please create a fork from this repository**
+# ILIA Flutter Challenge
 
-## The Challenge:
-Using the API from [TheMovieDB](https://developers.themoviedb.org/3/getting-started/introduction), You must create an app that shows the featured movies in the Theaters, in a list.
+This project is a Flutter-based mobile application developed as part of the ILIA Flutter Challenge. The application is designed to list movies that are playing right now on theaters, including their details and trailers.
 
-When the user touches in a movie, the app must show in a detail screen detailed information about it. You can choose which information should be shown.
+## Table of Contents
 
-## Extra features:
+- [Overview](#overview)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Dependencies](#dependencies)
+- [Contributing](#contributing)
+- [License](#license)
 
-- In the main list of the movies, would be nice if the app could load more movies, as the scroll reaches the bottom section of the current page.
-- In the detail screen, would be nice to have an option to play the movie trailer.
-- In the main screen, would be nice to have the possibility to search by the movie title.
+## Overview
 
-In the end, a pull request must be created in the Github repo. As soon as you finish, please let us know.
+The ILIA Flutter Challenge app is a demonstration of best practices in Flutter development, including state management, dependency injection and networking. The app is designed to be scalable and maintainable, with a focus on clean architecture.
 
-We are available to answer any questions.
+## Features
 
-***
+- **State Management:** Implemented using `flutter_bloc`.
+- **Dependency Injection:** Managed using `get_it`.
+- **Networking:** Handled with `Dio` for HTTP requests.
+- **Clean Architecture:** Separation of concerns with clearly defined layers (Data, Domain, Presentation).
 
-**Português**
-##### Antes de começar ⚠️
-**Por favor, crie um fork desse repositório**
+## Getting Started
 
-## The Challenge:
-Utilizando a API do [TheMovieDB](https://developers.themoviedb.org/3/getting-started/introduction), Criar um app que mostre os filmes que estão em cartaz nos cinemas, em forma de lista.
+### Prerequisites
 
-Ao tocar em um filme, mostrar em uma nova tela, informações detalhadas sobre ele, você pode escolher quais informações acha interessante mostrar.
+- Flutter SDK
+- Dart SDK
+- Android Studio or Visual Studio Code with Flutter plugins
 
-## Extras:
+### Installation
 
-- Na tela de listagem dos filmes, ir carregando as próximas páginas ao dar scroll até o final da página atual
-- Na tela de detalhe, criar uma opçāo para tocar o vídeo do trailer do filme.
-- Na tela inicial, possibilitar a busca por título do filme
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/AnadinhoAd/ilia-flutter-challenge.git
+   cd ilia-flutter-challenge
+   
+2. Create a .env file on the root of your project:\
+![image](https://github.com/user-attachments/assets/18cef225-9e0c-4e1e-a0ac-5e882920e93d)
 
+3. Inside this .env file, set a variable named API_KEY:\
+![image](https://github.com/user-attachments/assets/a06f87c4-9f3f-4faf-a118-c70f2ecaefe9)
 
-No final, um pull request deve ser criado no repositório do Github. Assim que terminar, por favor nos avise.
+4. Get your api key from https://developer.themoviedb.org/docs/getting-started
 
-Estamos à disposição, para tirar dúvidas.
+5. Now replace 'yourapikey' value with your actual API Key
 
-Happy coding! 🤓
+6. Now run the command:
+   ```bash
+   flutter pub get
+
+7. And run the project with vscode or build it to install in a device

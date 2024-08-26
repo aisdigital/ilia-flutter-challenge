@@ -1,0 +1,16 @@
+export 'data/data_sources/movie_details_remote_data_source.dart';
+export 'data/data_sources/movie_videos_response_remote_data_source.dart';
+export 'data/models/genre_model_detail.dart';
+export 'data/models/movie_details_model.dart';
+export 'data/models/movie_video_model.dart';
+export 'data/models/movie_videos_response_model.dart';
+export 'data/repositories/movie_details_repository_impl.dart';
+export 'data/repositories/movie_videos_response_repository_impl.dart';
+export 'domain/entities/movie_video.dart';
+export 'domain/entities/movie_videos_response.dart';
+export 'domain/repositories/movie_details_repository.dart';
+export 'domain/repositories/movie_videos_response_repository.dart';
+export 'domain/use_cases/get_movie_details_use_case.dart';
+export 'domain/use_cases/get_movie_videos_response_use_case.dart';
+export 'presentation/cubit/movie_details_page_cubit.dart';
+export 'presentation/pages/movie_details_page.dart';
