@@ -1,7 +1,9 @@
 import 'package:movies_app/models/movie_model.dart';
 
+import 'dates_model.dart';
+
 class MovieRequestModel {
-  List<String> dates;
+  MovieDatesModel dates;
   int page;
   List<MovieModel> results;
   int totalPages;
@@ -16,12 +18,11 @@ class MovieRequestModel {
   });
 
   MovieRequestModel.fromJson(Map<String, dynamic> json)
-    : dates = json['dates'],
-      page = json['page'],
-      results = List<MovieModel>.from(json['results'].map((movie) {
-        return MovieModel.fromJson(movie);
-      })),
-      totalPages = json['total_pages'],
-      totalResults = json['total_results'];
+      : dates = MovieDatesModel.fromJson(json['dates'] as Map<String, dynamic>),
+        page = json['page'],
+        results = (json['results'] as List).map((movie) => MovieModel.fromJson(movie as Map<String, dynamic>)).toList(),
+        totalPages = json['total_pages'],
+        totalResults = json['total_results'];
 
+  void addMovie(MovieModel movie) => results.add(movie);
 }

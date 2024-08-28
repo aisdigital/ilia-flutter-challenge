@@ -35,6 +35,8 @@ dependencies:
   flutter_bloc: ^8.1.6
   freezed_annotation: ^2.4.4
   carousel_slider: ^5.0.0
+  flutter_modular: ^6.3.4
+  modular_core: ^3.3.3
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -46,6 +48,7 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^2.4.12
   freezed: ^2.5.7
+  intl: ^0.19.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

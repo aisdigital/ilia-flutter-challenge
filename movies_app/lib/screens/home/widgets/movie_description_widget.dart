@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+
+import '../../../models/movie_model.dart';
 
 class MovieDescriptionWidget extends StatelessWidget {
-  const MovieDescriptionWidget({super.key, required this.movies});
+  const MovieDescriptionWidget({super.key, required this.movie});
 
-  final List<String> movies;
+  final MovieModel movie;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,7 @@ class MovieDescriptionWidget extends StatelessWidget {
         Column(
           children: [
             Text(
-              '9.5',
+              NumberFormat('#.0').format(movie.voteAverage),
               style: GoogleFonts.roboto(
                 textStyle: Theme.of(context).textTheme.labelLarge,
                 color: Colors.white,
@@ -36,7 +39,7 @@ class MovieDescriptionWidget extends StatelessWidget {
         Column(
           children: [
             Text(
-              'English',
+              movie.originalLanguage,
               softWrap: true,
               style: GoogleFonts.roboto(
                 textStyle: Theme.of(context).textTheme.labelLarge,
