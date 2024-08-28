@@ -15,36 +15,33 @@ class CarouselWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MovieModel? selectedMovie;
-
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: Center(
-        child: InkWell(
-          onTap: () {
-            Modular.get<HomeCubit>().setSelectedMovie(selectedMovie!);
-            Navigator.of(context).pushNamed('/details');
-          },
-          child: CarouselSlider(
-            options: CarouselOptions(
-              height: MediaQuery.of(context).size.height,
-              initialPage: 0,
-              enableInfiniteScroll: true,
-              autoPlayInterval: const Duration(seconds: 3),
-              autoPlayAnimationDuration: const Duration(milliseconds: 800),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: true,
-              enlargeFactor: 0.3,
-              scrollDirection: Axis.horizontal,
-            ),
-            items: movies.map((movie) {
-              selectedMovie = movie;
-              return Builder(
-                builder: (BuildContext context) {
-                  return Column(
+        child: CarouselSlider(
+          options: CarouselOptions(
+            height: MediaQuery.of(context).size.height,
+            initialPage: 0,
+            enableInfiniteScroll: true,
+            autoPlayInterval: const Duration(seconds: 3),
+            autoPlayAnimationDuration: const Duration(milliseconds: 800),
+            autoPlayCurve: Curves.fastOutSlowIn,
+            enlargeCenterPage: true,
+            enlargeFactor: 0.3,
+            scrollDirection: Axis.horizontal,
+          ),
+          items: movies.map((movie) {
+            return Builder(
+              builder: (BuildContext context) {
+                return InkWell(
+                  onTap: () {
+                    Modular.get<HomeCubit>().setSelectedMovie(movie);
+                    Navigator.of(context).pushNamed('/details');
+                  },
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const MovieBannerWidget(),
+                      MovieBannerWidget(posterPath: movie.posterPath),
                       const SizedBox(height: 20),
                       Text(
                         movie.title,
@@ -57,14 +54,14 @@ class CarouselWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       MovieDescriptionWidget(
-                        movies: movies
+                        movie: movie,
                       ),
                     ],
-                  );
-                },
-              );
-            }).toList(),
-          ),
+                  ),
+                );
+              },
+            );
+          }).toList(),
         ),
       ),
     );

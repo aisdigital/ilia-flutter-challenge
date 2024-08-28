@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movies_app/models/movie_model.dart';
+import 'package:intl/intl.dart';
 
 class DetailsContentWidget extends StatelessWidget {
-  const DetailsContentWidget({super.key, required this.movies});
+  const DetailsContentWidget({super.key, required this.movieInfo});
 
-  final List<MovieModel> movies;
+  final MovieModel movieInfo;
 
   @override
   Widget build(BuildContext context) {
+    DateTime date = DateTime.parse(movieInfo.releaseDate);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 50),
+            padding: const EdgeInsets.symmetric(vertical: 35),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Column(
                   children: [
                     Text(
-                      '6.3',
+                      NumberFormat('#.0').format(movieInfo.voteAverage),
                       style: GoogleFonts.roboto(
                         textStyle: Theme.of(context).textTheme.labelLarge,
                         color: Colors.white,
@@ -43,7 +45,7 @@ class DetailsContentWidget extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      'English',
+                      movieInfo.originalLanguage,
                       softWrap: true,
                       style: GoogleFonts.roboto(
                         textStyle: Theme.of(context).textTheme.labelLarge,
@@ -66,7 +68,7 @@ class DetailsContentWidget extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      '53%',
+                      DateFormat('dd/MM/yyyy').format(date),
                       softWrap: true,
                       style: GoogleFonts.roboto(
                         textStyle: Theme.of(context).textTheme.labelLarge,
@@ -76,7 +78,7 @@ class DetailsContentWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Popularity',
+                      'Release date',
                       style: GoogleFonts.roboto(
                         textStyle: Theme.of(context).textTheme.bodyMedium,
                         color: Colors.white,
@@ -91,7 +93,7 @@ class DetailsContentWidget extends StatelessWidget {
           ),
           SizedBox(
             child: Text(
-              'Lorem ipsum dolor sit amet. Aut consequuntur temporibus ea tempora quisquam vel ipsum ipsam? Et quia laborum aut voluptatem deserunt nam distinctio sequi. Et omnis praesentium ea sint nemo et explicabo perspiciatis. Sed accusamus numquam qui magnam voluptas aut quasi corrupti.',
+              movieInfo.overview,
               softWrap: true,
               style: GoogleFonts.roboto(
                 textStyle: Theme.of(context).textTheme.bodyMedium,
@@ -101,7 +103,7 @@ class DetailsContentWidget extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 20),
           Container(
             height: MediaQuery.of(context).size.height * 0.25,
             width: MediaQuery.of(context).size.width,

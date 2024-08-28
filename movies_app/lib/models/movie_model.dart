@@ -11,6 +11,9 @@ class MovieModel {
   double popularity;
   double voteAverage;
   int voteCount;
+  bool adult;
+  String backdropPath;
+
 
   MovieModel({
     required this.id,
@@ -25,11 +28,13 @@ class MovieModel {
     required this.popularity,
     required this.voteAverage,
     required this.voteCount,
+    required this.adult,
+    required this.backdropPath,
   });
 
   MovieModel.fromJson(Map<String, dynamic> json)
     : id = json['id'],
-      genreIds = json['genre_ids'],
+      genreIds = List<int>.from(json['genre_ids']),
       originalLanguage = json['original_language'],
       originalTitle = json['original_title'],
       title = json['title'],
@@ -37,8 +42,10 @@ class MovieModel {
       releaseDate = json['release_date'],
       posterPath = json['poster_path'],
       video = json['video'],
-      popularity = json['popularity'],
-      voteAverage = json['vote_average'],
-      voteCount = json['vote_count'];
+      popularity = (json['popularity'] as num).toDouble(),
+      voteAverage = (json['vote_average'] as num).toDouble(),
+      voteCount = json['vote_count'],
+      adult = json['adult'],
+      backdropPath = json['backdrop_path'];
 
 }

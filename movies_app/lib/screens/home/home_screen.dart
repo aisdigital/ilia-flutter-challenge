@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _cubit = Modular.get<HomeCubit>();
+  final HomeCubit _cubit = Modular.get<HomeCubit>();
 
   @override
   void initState() {
@@ -33,7 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: BlocConsumer<HomeCubit, HomeState>(
           bloc: _cubit,
-          listener: (context, state) {},
+          listener: (context, state) {
+            
+          },
           builder: (context, state) => Scaffold(
             extendBodyBehindAppBar: true,
             appBar: AppBar(
@@ -68,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              CarouselWidget(movies: state.moviesInfo)
+              CarouselWidget(movies: state.movies),
             ]),
           ),
         ));

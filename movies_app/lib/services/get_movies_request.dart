@@ -5,7 +5,7 @@ import '../models/api_result_model.dart';
 import '../models/movie_request_model.dart';
 import '../utils/utils.dart';
 
-class RequestMoviesImpl implements IGetMoviesClient {
+class GetMoviesImpl implements IGetMoviesClient {
   @override
   Future<ApiResult<MovieRequestModel>> requestMovies() async {
     try {

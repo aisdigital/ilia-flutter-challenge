@@ -22,9 +22,11 @@ mixin _$HomeState {
   bool get isBusy => throw _privateConstructorUsedError;
   bool get couponPurchaseSucess => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
-  List<MovieModel> get moviesInfo => throw _privateConstructorUsedError;
+  List<MovieModel> get movies => throw _privateConstructorUsedError;
   MovieRequestModel? get moviesRequest => throw _privateConstructorUsedError;
   MovieModel? get selectedMovie => throw _privateConstructorUsedError;
+  ApiConfigurationModel? get apiConfigurations =>
+      throw _privateConstructorUsedError;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -45,9 +47,10 @@ abstract class $HomeStateCopyWith<$Res> {
       bool isBusy,
       bool couponPurchaseSucess,
       String errorMessage,
-      List<MovieModel> moviesInfo,
+      List<MovieModel> movies,
       MovieRequestModel? moviesRequest,
-      MovieModel? selectedMovie});
+      MovieModel? selectedMovie,
+      ApiConfigurationModel? apiConfigurations});
 }
 
 /// @nodoc
@@ -71,9 +74,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? isBusy = null,
     Object? couponPurchaseSucess = null,
     Object? errorMessage = null,
-    Object? moviesInfo = null,
+    Object? movies = null,
     Object? moviesRequest = freezed,
     Object? selectedMovie = freezed,
+    Object? apiConfigurations = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -100,9 +104,9 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
-      moviesInfo: null == moviesInfo
-          ? _value.moviesInfo
-          : moviesInfo // ignore: cast_nullable_to_non_nullable
+      movies: null == movies
+          ? _value.movies
+          : movies // ignore: cast_nullable_to_non_nullable
               as List<MovieModel>,
       moviesRequest: freezed == moviesRequest
           ? _value.moviesRequest
@@ -112,6 +116,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.selectedMovie
           : selectedMovie // ignore: cast_nullable_to_non_nullable
               as MovieModel?,
+      apiConfigurations: freezed == apiConfigurations
+          ? _value.apiConfigurations
+          : apiConfigurations // ignore: cast_nullable_to_non_nullable
+              as ApiConfigurationModel?,
     ) as $Val);
   }
 }
@@ -131,9 +139,10 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       bool isBusy,
       bool couponPurchaseSucess,
       String errorMessage,
-      List<MovieModel> moviesInfo,
+      List<MovieModel> movies,
       MovieRequestModel? moviesRequest,
-      MovieModel? selectedMovie});
+      MovieModel? selectedMovie,
+      ApiConfigurationModel? apiConfigurations});
 }
 
 /// @nodoc
@@ -155,9 +164,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? isBusy = null,
     Object? couponPurchaseSucess = null,
     Object? errorMessage = null,
-    Object? moviesInfo = null,
+    Object? movies = null,
     Object? moviesRequest = freezed,
     Object? selectedMovie = freezed,
+    Object? apiConfigurations = freezed,
   }) {
     return _then(_$HomeStateImpl(
       isLoading: null == isLoading
@@ -184,9 +194,9 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
-      moviesInfo: null == moviesInfo
-          ? _value._moviesInfo
-          : moviesInfo // ignore: cast_nullable_to_non_nullable
+      movies: null == movies
+          ? _value._movies
+          : movies // ignore: cast_nullable_to_non_nullable
               as List<MovieModel>,
       moviesRequest: freezed == moviesRequest
           ? _value.moviesRequest
@@ -196,6 +206,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.selectedMovie
           : selectedMovie // ignore: cast_nullable_to_non_nullable
               as MovieModel?,
+      apiConfigurations: freezed == apiConfigurations
+          ? _value.apiConfigurations
+          : apiConfigurations // ignore: cast_nullable_to_non_nullable
+              as ApiConfigurationModel?,
     ));
   }
 }
@@ -210,10 +224,11 @@ class _$HomeStateImpl implements _HomeState {
       this.isBusy = false,
       this.couponPurchaseSucess = false,
       this.errorMessage = '',
-      final List<MovieModel> moviesInfo = const [],
+      final List<MovieModel> movies = const [],
       this.moviesRequest,
-      this.selectedMovie})
-      : _moviesInfo = moviesInfo;
+      this.selectedMovie,
+      this.apiConfigurations})
+      : _movies = movies;
 
   @override
   @JsonKey()
@@ -233,23 +248,25 @@ class _$HomeStateImpl implements _HomeState {
   @override
   @JsonKey()
   final String errorMessage;
-  final List<MovieModel> _moviesInfo;
+  final List<MovieModel> _movies;
   @override
   @JsonKey()
-  List<MovieModel> get moviesInfo {
-    if (_moviesInfo is EqualUnmodifiableListView) return _moviesInfo;
+  List<MovieModel> get movies {
+    if (_movies is EqualUnmodifiableListView) return _movies;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_moviesInfo);
+    return EqualUnmodifiableListView(_movies);
   }
 
   @override
   final MovieRequestModel? moviesRequest;
   @override
   final MovieModel? selectedMovie;
+  @override
+  final ApiConfigurationModel? apiConfigurations;
 
   @override
   String toString() {
-    return 'HomeState(isLoading: $isLoading, success: $success, hasError: $hasError, isBusy: $isBusy, couponPurchaseSucess: $couponPurchaseSucess, errorMessage: $errorMessage, moviesInfo: $moviesInfo, moviesRequest: $moviesRequest, selectedMovie: $selectedMovie)';
+    return 'HomeState(isLoading: $isLoading, success: $success, hasError: $hasError, isBusy: $isBusy, couponPurchaseSucess: $couponPurchaseSucess, errorMessage: $errorMessage, movies: $movies, moviesRequest: $moviesRequest, selectedMovie: $selectedMovie, apiConfigurations: $apiConfigurations)';
   }
 
   @override
@@ -267,12 +284,13 @@ class _$HomeStateImpl implements _HomeState {
                 other.couponPurchaseSucess == couponPurchaseSucess) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
-            const DeepCollectionEquality()
-                .equals(other._moviesInfo, _moviesInfo) &&
+            const DeepCollectionEquality().equals(other._movies, _movies) &&
             (identical(other.moviesRequest, moviesRequest) ||
                 other.moviesRequest == moviesRequest) &&
             (identical(other.selectedMovie, selectedMovie) ||
-                other.selectedMovie == selectedMovie));
+                other.selectedMovie == selectedMovie) &&
+            (identical(other.apiConfigurations, apiConfigurations) ||
+                other.apiConfigurations == apiConfigurations));
   }
 
   @override
@@ -284,9 +302,10 @@ class _$HomeStateImpl implements _HomeState {
       isBusy,
       couponPurchaseSucess,
       errorMessage,
-      const DeepCollectionEquality().hash(_moviesInfo),
+      const DeepCollectionEquality().hash(_movies),
       moviesRequest,
-      selectedMovie);
+      selectedMovie,
+      apiConfigurations);
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -305,9 +324,10 @@ abstract class _HomeState implements HomeState {
       final bool isBusy,
       final bool couponPurchaseSucess,
       final String errorMessage,
-      final List<MovieModel> moviesInfo,
+      final List<MovieModel> movies,
       final MovieRequestModel? moviesRequest,
-      final MovieModel? selectedMovie}) = _$HomeStateImpl;
+      final MovieModel? selectedMovie,
+      final ApiConfigurationModel? apiConfigurations}) = _$HomeStateImpl;
 
   @override
   bool get isLoading;
@@ -322,11 +342,13 @@ abstract class _HomeState implements HomeState {
   @override
   String get errorMessage;
   @override
-  List<MovieModel> get moviesInfo;
+  List<MovieModel> get movies;
   @override
   MovieRequestModel? get moviesRequest;
   @override
   MovieModel? get selectedMovie;
+  @override
+  ApiConfigurationModel? get apiConfigurations;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.

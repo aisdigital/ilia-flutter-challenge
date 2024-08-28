@@ -15,7 +15,7 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
-  final _cubit = Modular.get<HomeCubit>();
+  final HomeCubit _cubit = Modular.get<HomeCubit>();
 
   @override
   void initState() {
@@ -33,23 +33,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
         slivers: [
           SliverAppBar(
             iconTheme: const IconThemeData(color: Colors.white),
-            backgroundColor: const Color(0xFF321347),
-            expandedHeight: 200.0,
+            backgroundColor: const Color(0xFF3D2D63),
+            expandedHeight: MediaQuery.of(context).size.height * 0.2,
             floating: false,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                'Harry Potter',
-                style: GoogleFonts.roboto(
-                  textStyle: Theme.of(context).textTheme.labelLarge,
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              background: Center(
-                child: Text(
-                  'Background',
+              title: Stack(
+                children: [
+                  Text(
+                  state.selectedMovie!.title,
                   style: GoogleFonts.roboto(
                     textStyle: Theme.of(context).textTheme.labelLarge,
                     color: Colors.white,
@@ -57,6 +49,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
+              ]),
+              background: Image.network(
+                '${state.apiConfigurations!.images.baseUrl}original/${state.selectedMovie!.posterPath.split('/').last}',
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -74,7 +70,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ),
                   ),
                 ),
-                DetailsContentWidget(movies: state.moviesInfo)
+                DetailsContentWidget(movieInfo: state.selectedMovie!)
               ],
             ),
           )
