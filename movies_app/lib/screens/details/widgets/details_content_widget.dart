@@ -2,15 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movies_app/models/movie_model.dart';
 import 'package:intl/intl.dart';
+import 'package:video_player/video_player.dart';
 
-class DetailsContentWidget extends StatelessWidget {
+class DetailsContentWidget extends StatefulWidget {
   const DetailsContentWidget({super.key, required this.movieInfo});
 
   final MovieModel movieInfo;
 
   @override
+  State<DetailsContentWidget> createState() => _DetailsContentWidgetState();
+}
+
+class _DetailsContentWidgetState extends State<DetailsContentWidget> {
+  late VideoPlayerController _videoController;
+
+  @override
+  void initState() {
+    _videoController = VideoPlayerController.networkUrl(Uri.parse(
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+  }
+  
+  @override
   Widget build(BuildContext context) {
-    DateTime date = DateTime.parse(movieInfo.releaseDate);
+    DateTime date = DateTime.parse(widget.movieInfo.releaseDate);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -23,7 +41,7 @@ class DetailsContentWidget extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      NumberFormat('#.0').format(movieInfo.voteAverage),
+                      NumberFormat('#.0').format(widget.movieInfo.voteAverage),
                       style: GoogleFonts.roboto(
                         textStyle: Theme.of(context).textTheme.labelLarge,
                         color: Colors.white,
@@ -45,7 +63,7 @@ class DetailsContentWidget extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      movieInfo.originalLanguage,
+                      widget.movieInfo.originalLanguage,
                       softWrap: true,
                       style: GoogleFonts.roboto(
                         textStyle: Theme.of(context).textTheme.labelLarge,
@@ -93,7 +111,7 @@ class DetailsContentWidget extends StatelessWidget {
           ),
           SizedBox(
             child: Text(
-              movieInfo.overview,
+              widget.movieInfo.overview,
               softWrap: true,
               style: GoogleFonts.roboto(
                 textStyle: Theme.of(context).textTheme.bodyMedium,
@@ -104,17 +122,33 @@ class DetailsContentWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.25,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.black,
-            child: const Icon(
-              Icons.play_circle_outline,
-              color: Colors.white,
+          InkWell(
+            onTap: () {
+              _videoController.play();
+            },
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.25,
+              width: MediaQuery.of(context).size.width,
+              child: _videoController.value.isInitialized
+                ? Stack(
+                  children: [
+                    AspectRatio(
+                      aspectRatio: _videoController.value.aspectRatio,
+                      child: VideoPlayer(_videoController),
+                    ),
+                      Center(child: Icon(_videoController.value.isPlaying ? Icons.pause : Icons.play_arrow,)),
+                  ])
+                : const CircularProgressIndicator(),
             ),
           )
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _videoController.dispose();
+    super.dispose();
   }
 }
