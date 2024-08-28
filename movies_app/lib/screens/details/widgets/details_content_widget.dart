@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:movies_app/models/movie_model.dart';
 
 class DetailsContentWidget extends StatelessWidget {
   const DetailsContentWidget({super.key, required this.movies});
 
-  final List<String> movies;
+  final List<MovieModel> movies;
 
   @override
   Widget build(BuildContext context) {

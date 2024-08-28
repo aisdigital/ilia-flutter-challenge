@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../models/movie_model.dart';
+import '../../blocs/home_bloc/home_cubit.dart';
+import '../../blocs/home_bloc/home_state.dart';
 import 'widgets/details_content_widget.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -12,16 +15,20 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
-  List<String> movies = [
-    'Saw',
-    'Harry Potter',
-    'Lord of The Rings',
-    'Fast and Furious',
-  ];
+  final _cubit = Modular.get<HomeCubit>();
+
+  @override
+  void initState() {
+    _cubit.init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocConsumer<HomeCubit, HomeState>(
+          bloc: _cubit,
+          listener: (context, state) {},
+          builder: (context, state) => Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -67,12 +74,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ),
                   ),
                 ),
-                DetailsContentWidget(movies: movies)
+                DetailsContentWidget(movies: state.moviesInfo)
               ],
             ),
           )
         ],
       ),
-    );
+    ));
   }
 }

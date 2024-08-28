@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../models/movie_model.dart';
+
 class MovieDescriptionWidget extends StatelessWidget {
   const MovieDescriptionWidget({super.key, required this.movies});
 
-  final List<String> movies;
+  final List<MovieModel> movies;
 
   @override
   Widget build(BuildContext context) {

@@ -16,12 +16,11 @@ class MovieRequestModel {
   });
 
   MovieRequestModel.fromJson(Map<String, dynamic> json)
-    : dates = json['dates'],
-      page = json['page'],
-      results = List<MovieModel>.from(json['results'].map((movie) {
-        return MovieModel.fromJson(movie);
-      })),
-      totalPages = json['total_pages'],
-      totalResults = json['total_results'];
+      : dates = json['dates'],
+        page = json['page'],
+        results = (json['results'] as List).map((movie) => MovieModel.fromJson(movie as Map<String, dynamic>)).toList(),
+        totalPages = json['total_pages'],
+        totalResults = json['total_results'];
 
+  void addMovie(MovieModel movie) => results.add(movie);
 }
