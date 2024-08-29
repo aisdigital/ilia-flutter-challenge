@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:movies_app/screens/home/widgets/carousel_widget.dart';
+import 'package:movies_app/screens/home/widgets/home_carousel_view.dart';
 
-import '../../blocs/home_bloc/home_cubit.dart';
-import '../../blocs/home_bloc/home_state.dart';
+import '../../bloc/home_cubit.dart';
+import '../../bloc/home_state.dart';
+import 'widgets/home_list_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,11 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: BlocConsumer<HomeCubit, HomeState>(
           bloc: _cubit,
-          listener: (context, state) {
-            
-          },
+          listener: (context, state) {},
           builder: (context, state) => Scaffold(
-            extendBodyBehindAppBar: true,
+            extendBodyBehindAppBar: state.isListView ? false : true,
             appBar: AppBar(
               title: Text(
                 'Cinema',
@@ -48,30 +47,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              backgroundColor: Colors.transparent,
+              backgroundColor: state.isListView ? const Color(0xFF3D2D63) : Colors.transparent,
               elevation: 0,
               centerTitle: true,
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.search, color: Colors.white),
-                  onPressed: () {},
+                  icon: const Icon(Icons.auto_awesome_mosaic_outlined, color: Colors.white),
+                  onPressed: () {
+                    if (state.isListView) {
+                      _cubit.setIsListView(false);
+                    } else {
+                      _cubit.setIsListView(true);
+                    }
+                  },
                 ),
               ],
             ),
-            body: Stack(children: [
-              Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [Color(0xFF612CCC), Color(0xFF9771FF)],
-                  ),
-                ),
-              ),
-              CarouselWidget(movies: state.movies),
-            ]),
+            body: state.isListView ? const HomeListView() : HomeCarouselView(movies: state.movies),
           ),
         ));
   }

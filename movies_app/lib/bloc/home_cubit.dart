@@ -1,14 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/blocs/home_bloc/home_state.dart';
+import 'package:movies_app/bloc/home_state.dart';
 import 'package:movies_app/models/movie_model.dart';
 import 'package:movies_app/models/movie_request_model.dart';
 import 'package:movies_app/models/videos_request_model.dart';
 import 'package:movies_app/services/api_configurations/get_configurations_client.dart';
 import 'package:movies_app/services/movies/get_movies_client.dart';
 
-import '../../models/api_configuration_model.dart';
-import '../../models/video_model.dart';
-import '../../services/videos/get_videos_client.dart';
+import '../models/api_configuration_model.dart';
+import '../models/video_model.dart';
+import '../services/videos/get_videos_client.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final IGetMoviesClient _getMoviesClient;
@@ -118,9 +118,7 @@ class HomeCubit extends Cubit<HomeState> {
     return '';
   }
 
-  void setSelectedMovie(MovieModel selectedMovie) {
-    emit(state.copyWith(
-      selectedMovie: selectedMovie,
-    ));
-  }
+  void setSelectedMovie(MovieModel selectedMovie) => emit(state.copyWith(selectedMovie: selectedMovie));
+
+  void setIsListView(bool isListView) => emit(state.copyWith(isListView: isListView));
 }

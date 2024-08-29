@@ -23,6 +23,7 @@ mixin _$HomeState {
   bool get couponPurchaseSucess => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
   List<MovieModel> get movies => throw _privateConstructorUsedError;
+  bool get isListView => throw _privateConstructorUsedError;
   MovieRequestModel? get moviesRequest => throw _privateConstructorUsedError;
   MovieModel? get selectedMovie => throw _privateConstructorUsedError;
   ApiConfigurationModel? get apiConfigurations =>
@@ -48,6 +49,7 @@ abstract class $HomeStateCopyWith<$Res> {
       bool couponPurchaseSucess,
       String errorMessage,
       List<MovieModel> movies,
+      bool isListView,
       MovieRequestModel? moviesRequest,
       MovieModel? selectedMovie,
       ApiConfigurationModel? apiConfigurations});
@@ -75,6 +77,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? couponPurchaseSucess = null,
     Object? errorMessage = null,
     Object? movies = null,
+    Object? isListView = null,
     Object? moviesRequest = freezed,
     Object? selectedMovie = freezed,
     Object? apiConfigurations = freezed,
@@ -108,6 +111,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.movies
           : movies // ignore: cast_nullable_to_non_nullable
               as List<MovieModel>,
+      isListView: null == isListView
+          ? _value.isListView
+          : isListView // ignore: cast_nullable_to_non_nullable
+              as bool,
       moviesRequest: freezed == moviesRequest
           ? _value.moviesRequest
           : moviesRequest // ignore: cast_nullable_to_non_nullable
@@ -140,6 +147,7 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       bool couponPurchaseSucess,
       String errorMessage,
       List<MovieModel> movies,
+      bool isListView,
       MovieRequestModel? moviesRequest,
       MovieModel? selectedMovie,
       ApiConfigurationModel? apiConfigurations});
@@ -165,6 +173,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? couponPurchaseSucess = null,
     Object? errorMessage = null,
     Object? movies = null,
+    Object? isListView = null,
     Object? moviesRequest = freezed,
     Object? selectedMovie = freezed,
     Object? apiConfigurations = freezed,
@@ -198,6 +207,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value._movies
           : movies // ignore: cast_nullable_to_non_nullable
               as List<MovieModel>,
+      isListView: null == isListView
+          ? _value.isListView
+          : isListView // ignore: cast_nullable_to_non_nullable
+              as bool,
       moviesRequest: freezed == moviesRequest
           ? _value.moviesRequest
           : moviesRequest // ignore: cast_nullable_to_non_nullable
@@ -225,6 +238,7 @@ class _$HomeStateImpl implements _HomeState {
       this.couponPurchaseSucess = false,
       this.errorMessage = '',
       final List<MovieModel> movies = const [],
+      this.isListView = false,
       this.moviesRequest,
       this.selectedMovie,
       this.apiConfigurations})
@@ -258,6 +272,9 @@ class _$HomeStateImpl implements _HomeState {
   }
 
   @override
+  @JsonKey()
+  final bool isListView;
+  @override
   final MovieRequestModel? moviesRequest;
   @override
   final MovieModel? selectedMovie;
@@ -266,7 +283,7 @@ class _$HomeStateImpl implements _HomeState {
 
   @override
   String toString() {
-    return 'HomeState(isLoading: $isLoading, success: $success, hasError: $hasError, isBusy: $isBusy, couponPurchaseSucess: $couponPurchaseSucess, errorMessage: $errorMessage, movies: $movies, moviesRequest: $moviesRequest, selectedMovie: $selectedMovie, apiConfigurations: $apiConfigurations)';
+    return 'HomeState(isLoading: $isLoading, success: $success, hasError: $hasError, isBusy: $isBusy, couponPurchaseSucess: $couponPurchaseSucess, errorMessage: $errorMessage, movies: $movies, isListView: $isListView, moviesRequest: $moviesRequest, selectedMovie: $selectedMovie, apiConfigurations: $apiConfigurations)';
   }
 
   @override
@@ -285,6 +302,8 @@ class _$HomeStateImpl implements _HomeState {
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
             const DeepCollectionEquality().equals(other._movies, _movies) &&
+            (identical(other.isListView, isListView) ||
+                other.isListView == isListView) &&
             (identical(other.moviesRequest, moviesRequest) ||
                 other.moviesRequest == moviesRequest) &&
             (identical(other.selectedMovie, selectedMovie) ||
@@ -303,6 +322,7 @@ class _$HomeStateImpl implements _HomeState {
       couponPurchaseSucess,
       errorMessage,
       const DeepCollectionEquality().hash(_movies),
+      isListView,
       moviesRequest,
       selectedMovie,
       apiConfigurations);
@@ -325,6 +345,7 @@ abstract class _HomeState implements HomeState {
       final bool couponPurchaseSucess,
       final String errorMessage,
       final List<MovieModel> movies,
+      final bool isListView,
       final MovieRequestModel? moviesRequest,
       final MovieModel? selectedMovie,
       final ApiConfigurationModel? apiConfigurations}) = _$HomeStateImpl;
@@ -343,6 +364,8 @@ abstract class _HomeState implements HomeState {
   String get errorMessage;
   @override
   List<MovieModel> get movies;
+  @override
+  bool get isListView;
   @override
   MovieRequestModel? get moviesRequest;
   @override

@@ -4,7 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movies_app/models/movie_model.dart';
 
-import '../../../blocs/home_bloc/home_cubit.dart';
+import '../../../bloc/home_cubit.dart';
 import 'movie_banner_widget.dart';
 import 'movie_description_widget.dart';
 
