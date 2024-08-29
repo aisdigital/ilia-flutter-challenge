@@ -8,7 +8,9 @@ import '../../blocs/home_bloc/home_state.dart';
 import 'widgets/details_content_widget.dart';
 
 class DetailsScreen extends StatefulWidget {
-  const DetailsScreen({super.key});
+  const DetailsScreen({super.key, required this.trailerKey});
+
+  final String trailerKey;
 
   @override
   State<DetailsScreen> createState() => _DetailsScreenState();

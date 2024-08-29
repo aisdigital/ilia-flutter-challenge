@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 
-import '../models/api_configuration_model.dart';
-import '../models/api_result_model.dart';
-import '../utils/utils.dart';
+import '../../models/api_configuration_model.dart';
+import '../../models/api_result_model.dart';
+import '../../utils/utils.dart';
 import 'get_configurations_client.dart';
 
 class GetConfigurationsImpl implements IGetConfigurationsClient {

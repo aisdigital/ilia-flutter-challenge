@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../../models/movie_model.dart';
+import '../../../utils/language_helper.dart';
 
 class MovieDescriptionWidget extends StatelessWidget {
   const MovieDescriptionWidget({super.key, required this.movie});
@@ -39,7 +40,7 @@ class MovieDescriptionWidget extends StatelessWidget {
         Column(
           children: [
             Text(
-              movie.originalLanguage,
+              LanguageHelper.getLanguage(movie.originalLanguage),
               softWrap: true,
               style: GoogleFonts.roboto(
                 textStyle: Theme.of(context).textTheme.labelLarge,

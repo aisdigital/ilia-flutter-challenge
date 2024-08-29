@@ -15,6 +15,8 @@ class CarouselWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final HomeCubit _cubit = Modular.get<HomeCubit>();
+
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: Center(
@@ -35,8 +37,9 @@ class CarouselWidget extends StatelessWidget {
               builder: (BuildContext context) {
                 return InkWell(
                   onTap: () {
-                    Modular.get<HomeCubit>().setSelectedMovie(movie);
-                    Navigator.of(context).pushNamed('/details');
+                    final trailerKey = _cubit.getTrailer(movie.id.toString());
+                    _cubit.setSelectedMovie(movie);
+                    Navigator.of(context).pushNamed('/details/:$trailerKey');
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

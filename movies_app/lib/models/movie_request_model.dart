@@ -24,5 +24,4 @@ class MovieRequestModel {
         totalPages = json['total_pages'],
         totalResults = json['total_results'];
 
-  void addMovie(MovieModel movie) => results.add(movie);
 }
