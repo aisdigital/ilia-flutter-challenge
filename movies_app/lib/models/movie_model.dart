@@ -13,6 +13,7 @@ class MovieModel {
   int voteCount;
   bool adult;
   String backdropPath;
+  String? trailerKey;
 
 
   MovieModel({
@@ -30,6 +31,7 @@ class MovieModel {
     required this.voteCount,
     required this.adult,
     required this.backdropPath,
+    this.trailerKey,
   });
 
   MovieModel.fromJson(Map<String, dynamic> json)

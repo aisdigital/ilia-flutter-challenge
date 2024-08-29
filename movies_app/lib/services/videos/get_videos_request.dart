@@ -1,17 +1,17 @@
 import 'package:dio/dio.dart';
-import 'package:movies_app/services/get_movies_client.dart';
+import 'package:movies_app/models/videos_request_model.dart';
 
-import '../models/api_result_model.dart';
-import '../models/movie_request_model.dart';
-import '../utils/utils.dart';
+import '../../models/api_result_model.dart';
+import '../../utils/utils.dart';
+import 'get_videos_client.dart';
 
-class GetMoviesImpl implements IGetMoviesClient {
+class GetVideosImpl implements IGetVideosClient {
   @override
-  Future<ApiResult<MovieRequestModel>> requestMovies() async {
+  Future<ApiResult<VideosRequestModel>> requestVideos(String idMovie) async {
     try {
       final dio = Dio();
       const token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMjM2OGVkNDA3NTQ5NjZlYzYyYzBlNjczYTVhMzljMyIsIm5iZiI6MTcyNDcxNzcyOC4yMjIyNjUsInN1YiI6IjY2Y2QxOTgxOGYyMGMxNTllYTk3YzFjNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.us5MNUDpNHzN1wMcAj7LbplZk8hIGz-EN_dNkp_Prps';
-      final response = await dio.get('https://api.themoviedb.org/3/movie/now_playing?language=en-US',
+      final response = await dio.get('https://api.themoviedb.org/3/movie/$idMovie/videos?language=en-US',
           options: Options(
             headers: {
               "Content-Type": "application/json",
@@ -21,9 +21,9 @@ class GetMoviesImpl implements IGetMoviesClient {
 
       final result = response.data;
 
-      return ApiResult.success(MovieRequestModel.fromJson(result));
+      return ApiResult.success(VideosRequestModel.fromJson(result));
     } catch (exception) {
-      return ApiResult.error(extractErrorMessage(exception as Exception) ?? 'Error during movies request');
+      return ApiResult.error(extractErrorMessage(exception as Exception) ?? 'Error during videos request');
     }
   }
 }
