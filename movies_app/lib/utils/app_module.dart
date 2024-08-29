@@ -3,7 +3,7 @@ import 'package:movies_app/screens/home/home_screen.dart';
 import 'package:movies_app/screens/details/details_screen.dart';
 import 'package:movies_app/services/api_configurations/get_configurations_client.dart';
 import 'package:movies_app/services/movies/get_movies_request.dart';
-import '../blocs/home_bloc/home_cubit.dart';
+import '../bloc/home_cubit.dart';
 import '../services/api_configurations/get_configurations_request.dart';
 import '../services/movies/get_movies_client.dart';
 import '../services/videos/get_videos_client.dart';

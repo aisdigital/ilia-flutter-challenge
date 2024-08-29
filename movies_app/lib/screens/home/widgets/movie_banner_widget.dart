@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:movies_app/blocs/home_bloc/home_state.dart';
+import 'package:movies_app/bloc/home_state.dart';
 
-import '../../../blocs/home_bloc/home_cubit.dart';
+import '../../../bloc/home_cubit.dart';
 
 class MovieBannerWidget extends StatefulWidget {
   const MovieBannerWidget({super.key, required this.posterPath, });

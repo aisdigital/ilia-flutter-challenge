@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../blocs/home_bloc/home_cubit.dart';
-import '../../blocs/home_bloc/home_state.dart';
+import '../../bloc/home_cubit.dart';
+import '../../bloc/home_state.dart';
 import 'widgets/details_content_widget.dart';
 
 class DetailsScreen extends StatefulWidget {
