@@ -1,43 +1,50 @@
-# ília - Code Challenge Flutter
-**English**
-##### Before we start ⚠️
-**Please create a fork from this repository**
+# Pixel Cinema
 
-## The Challenge:
-Using the API from [TheMovieDB](https://developers.themoviedb.org/3/getting-started/introduction), You must create an app that shows the featured movies in the Theaters, in a list.
+## Overview
 
-When the user touches in a movie, the app must show in a detail screen detailed information about it. You can choose which information should be shown.
-
-## Extra features:
-
-- In the main list of the movies, would be nice if the app could load more movies, as the scroll reaches the bottom section of the current page.
-- In the detail screen, would be nice to have an option to play the movie trailer.
-- In the main screen, would be nice to have the possibility to search by the movie title.
-
-In the end, a pull request must be created in the Github repo. As soon as you finish, please let us know.
-
-We are available to answer any questions.
-
-***
-
-**Português**
-##### Antes de começar ⚠️
-**Por favor, crie um fork desse repositório**
-
-## The Challenge:
-Utilizando a API do [TheMovieDB](https://developers.themoviedb.org/3/getting-started/introduction), Criar um app que mostre os filmes que estão em cartaz nos cinemas, em forma de lista.
-
-Ao tocar em um filme, mostrar em uma nova tela, informações detalhadas sobre ele, você pode escolher quais informações acha interessante mostrar.
-
-## Extras:
-
-- Na tela de listagem dos filmes, ir carregando as próximas páginas ao dar scroll até o final da página atual
-- Na tela de detalhe, criar uma opçāo para tocar o vídeo do trailer do filme.
-- Na tela inicial, possibilitar a busca por título do filme
+Welcome to the Pixel Cinema! This app provides a comprehensive experience for exploring featured movies. It uses TheMovieDB API to fetch and display movie information.
 
 
-No final, um pull request deve ser criado no repositório do Github. Assim que terminar, por favor nos avise.
+The development of the app was based on Clean Architecture, ensuring a solid and scalable structure. However, I made some simplifications to make development more agile and dynamic. The presentation layer acts as a mini design system, aligning with the VIP design pattern to promote a clear separation between business logic and user interface. The app aims to follow SOLID principles.
 
-Estamos à disposição, para tirar dúvidas.
+## Features
 
-Happy coding! 🤓
+- **Movie List**: Displays a list of featured movies in theaters.
+- **Movie Details**: When a movie is selected, detailed information about the movie is shown on a separate screen.
+- **Load More**: As the user scrolls to the bottom of the movie list, more movies are automatically loaded.
+- **Search**: Allows users to search for movies by title.
+- **Trailer**: On the detail screen, an option to play the movie trailer is available.
+
+## Requirements
+
+- [Flutter - v3.24.1](https://docs.flutter.dev/get-started/install)
+- TheMovieDB API key (register at [TheMovieDB](https://www.themoviedb.org/) to get your API key)
+
+
+## Steps to tun
+- Clone the repository and enter the folder with your terminal;
+- If you are using [VSCode](https://code.visualstudio.com/), create a `.vscode` in the root of the application folder;
+- Inside the `.vscode` folder, create a `launch.json` file and fill with this information:
+  - `{
+   "configurations": [
+        {
+            "name": "Pixel Cinema",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define",
+                "API_KEY={YOUR-API-KEY}"
+            ],
+        },
+    ]
+}`
+  - Change `{YOUR-API-KEY}` for the key you got in the [TMDB keys section](https://www.themoviedb.org/settings/api);
+- Run `Flutter pub get` to install the dependencies;
+- Press F5 if using VSCode.
+  - NOTICE: If you are not using VSCode, do not forget to use the `--dart-define` variable passing you key to the `API_KEY` variable, otherwise the app will not work.
+
+### Enjoy :D
+
+## License
+
+Software licensed under the [MIT license](https://opensource.org/licenses/MIT).

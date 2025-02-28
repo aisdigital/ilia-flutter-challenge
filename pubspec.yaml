@@ -1,0 +1,28 @@
+name: pixel_cinema
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_modular: ^6.3.4
+  dio: ^5.5.0+1
+  get: ^4.6.6
+  youtube_player_flutter: 9.0.3
+  cached_network_image: 3.4.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
